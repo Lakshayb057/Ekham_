@@ -68,8 +68,8 @@ export default function Header({ onOpenDemo }) {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled 
-        ? 'h-14 sm:h-16 bg-[#f5f3ed]/95 backdrop-blur-md border-b border-[#d8d9cf] shadow-xs' 
-        : 'h-15 sm:h-18 bg-[#f5f3ed]/90 backdrop-blur-sm border-b border-[#d8d9cf]/50'
+        ? 'h-14 sm:h-16 md:h-18 bg-[#f5f3ed]/95 backdrop-blur-md border-b border-[#d8d9cf] shadow-xs' 
+        : 'h-14 sm:h-16 md:h-20 bg-[#f5f3ed]/90 backdrop-blur-sm border-b border-[#d8d9cf]/40'
     }`}>
       {/* Scroll Reading Progress Bar */}
       <div 
@@ -77,23 +77,24 @@ export default function Header({ onOpenDemo }) {
         style={{ width: `${progress}%` }}
       />
 
-      <div className="max-w-[1360px] mx-auto h-full px-3.5 xs:px-5 sm:px-8 lg:px-12 flex items-center justify-between gap-2">
-        {/* Wordmark */}
+      <div className="max-w-[1360px] mx-auto h-full px-4 sm:px-6 md:px-10 lg:px-12 flex items-center justify-between">
+        
+        {/* Wordmark (Vertically centered) */}
         <a 
           href="#" 
-          className="text-xl xs:text-2xl sm:text-3xl font-extrabold tracking-tight text-[#222720] hover:opacity-85 transition-opacity flex items-center shrink-0 py-1"
+          className="text-2xl sm:text-3xl font-black tracking-tight text-[#222720] hover:opacity-85 transition-opacity flex items-center shrink-0 leading-none select-none"
           aria-label="Ekhum Home"
         >
           ekhum<span className="text-[#e95126]">.</span>
         </a>
 
-        {/* Desktop & Tablet Navigation */}
-        <nav className="hidden md:flex items-center space-x-3.5 lg:space-x-6 xl:space-x-8 text-[11px] lg:text-xs font-semibold uppercase tracking-wider text-[#66695f]">
+        {/* Desktop & Tablet Nav (> 768px) */}
+        <nav className="hidden md:flex items-center space-x-4 lg:space-x-7 xl:space-x-8 text-xs font-semibold uppercase tracking-wider text-[#66695f]">
           {navItems.map((item) => (
             <a
               key={item.id}
               href={item.href}
-              className={`relative py-1.5 transition-colors duration-200 whitespace-nowrap ${
+              className={`relative py-2 transition-colors duration-200 whitespace-nowrap ${
                 activeSection === item.id ? 'text-[#e95126] font-bold' : 'hover:text-[#222720]'
               }`}
             >
@@ -108,84 +109,107 @@ export default function Header({ onOpenDemo }) {
           ))}
         </nav>
 
-        {/* Actions & Mobile Menu Toggle */}
-        <div className="flex items-center space-x-1.5 xs:space-x-2.5 sm:space-x-3 shrink-0">
+        {/* Right Actions Container */}
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          
+          {/* Desktop/Tablet CTA */}
           <button
             onClick={onOpenDemo}
-            className="group px-3 xs:px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#222720] text-white hover:bg-[#e95126] text-[11px] xs:text-xs font-semibold transition-all duration-300 transform active:scale-95 hover:-translate-y-0.5 flex items-center gap-1.5 sm:gap-2 shadow-xs cursor-pointer min-h-[36px] sm:min-h-[40px]"
+            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#222720] text-white hover:bg-[#e95126] text-xs font-semibold transition-all duration-300 transform active:scale-95 hover:-translate-y-0.5 shadow-xs cursor-pointer min-h-[40px]"
           >
-            <span className="hidden 2xs:inline">Let’s talk</span>
-            <span className="2xs:hidden">Talk</span>
+            <span>Let’s talk</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </button>
 
+          {/* Mobile CTA (Compact) */}
+          <button
+            onClick={onOpenDemo}
+            className="sm:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#222720] text-white hover:bg-[#e95126] text-[11px] font-bold transition-all active:scale-95 shadow-xs cursor-pointer min-h-[34px]"
+          >
+            <span>Talk</span>
+            <ArrowRight className="w-3 h-3" />
+          </button>
+
+          {/* Mobile Animated Hamburger / Close Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-xl text-[#222720] hover:text-[#e95126] hover:bg-[#d8d9cf]/40 active:scale-95 transition-all focus:outline-none cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            className={`md:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer ${
+              mobileMenuOpen 
+                ? 'bg-[#222720] text-white rotate-90' 
+                : 'bg-[#e9ece2] text-[#222720] hover:bg-[#d8d9cf] active:scale-90'
+            }`}
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
+
         </div>
       </div>
 
-      {/* Mobile Animated Drawer Navigation */}
+      {/* Full-Screen Mobile Animated Drawer Navigation */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 top-[56px] sm:top-[64px] bg-black/50 backdrop-blur-xs z-40 md:hidden"
-            />
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'calc(100dvh - 56px)' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-x-0 top-14 bg-[#f5f3ed] z-50 md:hidden flex flex-col justify-between px-6 py-8 border-b border-[#d8d9cf] overflow-y-auto pb-[calc(2rem+env(safe-area-inset-bottom,0px))]"
+          >
+            <div className="space-y-2">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#e95126] px-1">
+                Navigation
+              </span>
 
-            {/* Menu Sheet */}
-            <motion.div
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute top-full left-0 right-0 bg-[#f5f3ed] border-b border-[#d8d9cf] px-5 xs:px-6 py-6 shadow-2xl z-50 md:hidden space-y-4 max-h-[calc(100dvh-64px)] overflow-y-auto pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))]"
-            >
-              <div className="space-y-1 divide-y divide-[#d8d9cf]/40">
-                {navItems.map((item) => (
-                  <a
+              <nav className="divide-y divide-[#d8d9cf]/60">
+                {navItems.map((item, idx) => (
+                  <motion.a
                     key={item.id}
                     href={item.href}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.05 + 0.1, duration: 0.3 }}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center justify-between py-3.5 text-base font-medium transition-colors ${
+                    className={`flex items-center justify-between py-4 text-xl font-medium tracking-tight transition-colors ${
                       activeSection === item.id 
                         ? 'text-[#e95126] font-bold' 
                         : 'text-[#222720] hover:text-[#e95126]'
                     }`}
                   >
                     <span>{item.label}</span>
-                    <ArrowRight className={`w-4 h-4 transition-transform ${
-                      activeSection === item.id ? 'text-[#e95126] translate-x-1' : 'text-[#66695f]/50'
+                    <ArrowRight className={`w-5 h-5 transition-transform ${
+                      activeSection === item.id ? 'text-[#e95126] translate-x-1' : 'text-[#8c9285]'
                     }`} />
-                  </a>
+                  </motion.a>
                 ))}
-              </div>
+              </nav>
+            </div>
 
-              <div className="pt-2">
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    onOpenDemo();
-                  }}
-                  className="w-full py-3.5 px-4 rounded-xl bg-[#e95126] text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md active:scale-98 transition-all cursor-pointer min-h-[48px]"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  <span>Book an Interactive Walkthrough</span>
-                </button>
-              </div>
+            {/* Bottom Drawer CTA Block */}
+            <motion.div 
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+              className="pt-6 border-t border-[#d8d9cf]/80 space-y-3"
+            >
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenDemo();
+                }}
+                className="w-full py-4 px-6 rounded-2xl bg-[#e95126] text-white font-bold text-base flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all cursor-pointer min-h-[52px]"
+              >
+                <Sparkles className="w-5 h-5" />
+                <span>Book a Live Demo</span>
+              </button>
+
+              <p className="text-center text-xs text-[#66695f]">
+                DPDP Act 2023 Compliant · 100% Indian Sovereign Stack
+              </p>
             </motion.div>
-          </>
+
+          </motion.div>
         )}
       </AnimatePresence>
     </header>
