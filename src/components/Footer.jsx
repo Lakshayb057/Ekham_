@@ -22,7 +22,7 @@ export default function Footer({ onOpenDemo }) {
           </div>
 
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-6 font-semibold text-[#44483e] shrink-0">
-            <a href="#journey" className="hover:text-[#e95126] transition-colors py-1">How it works</a>
+            <a href="#platform" className="hover:text-[#e95126] transition-colors py-1">How it works</a>
             <a href="#technology" className="hover:text-[#e95126] transition-colors py-1">Technology</a>
             <a href="#trust" className="hover:text-[#e95126] transition-colors py-1">Trust</a>
             <a href="#calculator" className="hover:text-[#e95126] transition-colors py-1">Calculator</a>
