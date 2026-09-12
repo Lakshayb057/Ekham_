@@ -9,25 +9,32 @@ export default function Header({ onOpenDemo }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setScrolled(scrollY > 20);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          setScrolled(scrollY > 20);
 
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalHeight > 0) {
-        setProgress((scrollY / totalHeight) * 100);
-      }
-
-      const sections = ['platform', 'technology', 'trust', 'funders', 'calculator'];
-      for (const sectionId of sections) {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 220 && rect.bottom >= 100) {
-            setActiveSection(sectionId);
-            break;
+          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+          if (totalHeight > 0) {
+            setProgress((scrollY / totalHeight) * 100);
           }
-        }
+
+          const sections = ['platform', 'technology', 'trust', 'funders', 'calculator'];
+          for (const sectionId of sections) {
+            const el = document.getElementById(sectionId);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              if (rect.top <= 220 && rect.bottom >= 100) {
+                setActiveSection(sectionId);
+                break;
+              }
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
@@ -66,7 +73,7 @@ export default function Header({ onOpenDemo }) {
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <header className={`fixed top-0 inset-x-0 w-full z-50 transition-all duration-300 ${
       scrolled 
         ? 'h-14 sm:h-16 md:h-18 bg-[#f5f3ed]/95 backdrop-blur-md border-b border-[#d8d9cf] shadow-xs' 
         : 'h-14 sm:h-16 md:h-20 bg-[#f5f3ed]/90 backdrop-blur-sm border-b border-[#d8d9cf]/40'
@@ -77,7 +84,7 @@ export default function Header({ onOpenDemo }) {
         style={{ width: `${progress}%` }}
       />
 
-      <div className="max-w-[1360px] mx-auto h-full px-4 sm:px-6 md:px-10 lg:px-12 flex items-center justify-between">
+      <div className="max-w-[1360px] mx-auto h-full px-4 sm:px-6 md:px-10 lg:px-12 flex items-center justify-between w-full">
         
         {/* Wordmark (Vertically centered) */}
         <a 
@@ -124,7 +131,7 @@ export default function Header({ onOpenDemo }) {
           {/* Mobile CTA (Compact) */}
           <button
             onClick={onOpenDemo}
-            className="sm:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#222720] text-white hover:bg-[#e95126] text-[11px] font-bold transition-all active:scale-95 shadow-xs cursor-pointer min-h-[34px]"
+            className="sm:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#222720] text-white hover:bg-[#e95126] text-[11px] font-bold transition-all active:scale-95 shadow-xs cursor-pointer min-h-[32px]"
           >
             <span>Talk</span>
             <ArrowRight className="w-3 h-3" />
@@ -133,7 +140,7 @@ export default function Header({ onOpenDemo }) {
           {/* Mobile Animated Hamburger / Close Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`md:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer ${
+            className={`md:hidden w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all duration-200 cursor-pointer shrink-0 ${
               mobileMenuOpen 
                 ? 'bg-[#222720] text-white rotate-90' 
                 : 'bg-[#e9ece2] text-[#222720] hover:bg-[#d8d9cf] active:scale-90'
@@ -141,7 +148,7 @@ export default function Header({ onOpenDemo }) {
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <X className="w-4.5 h-4.5 xs:w-5 xs:h-5" /> : <Menu className="w-4.5 h-4.5 xs:w-5 xs:h-5" />}
           </button>
 
         </div>

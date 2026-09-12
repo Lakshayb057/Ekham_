@@ -12,31 +12,42 @@ import {
   ArrowRight, 
   X, 
   CheckCircle2, 
-  Sparkles,
-  ShieldAlert,
   ArrowUpRight,
   Play,
   Pause
 } from 'lucide-react';
 
 export default function TrustSection({ onOpenDemo }) {
-  const [activeIndex, setActiveIndex] = useState(1); // Default to FCRA-aware flows (02 / 06) matching reference
+  const [activeIndex, setActiveIndex] = useState(1); // Default to FCRA-aware flows (02 / 06)
   const [isPaused, setIsPaused] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [selectedExplainer, setSelectedExplainer] = useState(null);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1200
   );
   
   const containerRef = useRef(null);
+  const isVisibleRef = useRef(true);
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
-  const SLIDE_DURATION = 3200;
+  const SLIDE_INTERVAL = 4200;
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize, { passive: true });
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Use IntersectionObserver so auto-slideshow pauses completely when off-screen
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
   }, []);
 
   const trustNodes = [
@@ -166,17 +177,14 @@ export default function TrustSection({ onOpenDemo }) {
 
   const handleNext = () => {
     setActiveIndex((prev) => (prev + 1) % total);
-    setProgress(0);
   };
 
   const handlePrev = () => {
     setActiveIndex((prev) => (prev - 1 + total) % total);
-    setProgress(0);
   };
 
   const handleSelect = (idx) => {
     setActiveIndex(idx);
-    setProgress(0);
   };
 
   // Keyboard navigation
@@ -193,22 +201,15 @@ export default function TrustSection({ onOpenDemo }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedExplainer]);
 
-  // Cinematic automatic slideshow with continuous progress animation
+  // Efficient automatic slideshow timer (zero high-frequency state thrashing)
   useEffect(() => {
     if (isPaused || selectedExplainer) return;
 
-    const intervalMs = 40;
-    const increment = (intervalMs / SLIDE_DURATION) * 100;
-
     const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          setActiveIndex((current) => (current + 1) % total);
-          return 0;
-        }
-        return prev + increment;
-      });
-    }, intervalMs);
+      if (isVisibleRef.current) {
+        setActiveIndex((current) => (current + 1) % total);
+      }
+    }, SLIDE_INTERVAL);
 
     return () => clearInterval(timer);
   }, [isPaused, selectedExplainer, total]);
@@ -231,26 +232,11 @@ export default function TrustSection({ onOpenDemo }) {
     }
   };
 
-  // Wheel scroll throttling for desktop scroll-advancing
-  const lastScrollTime = useRef(0);
-  const handleWheel = (e) => {
-    const now = Date.now();
-    if (now - lastScrollTime.current < 450) return;
-    if (Math.abs(e.deltaY) > 35) {
-      if (e.deltaY > 0) {
-        handleNext();
-      } else {
-        handlePrev();
-      }
-      lastScrollTime.current = now;
-    }
-  };
-
   const getResponsiveXOffset = (diff) => {
-    if (windowWidth < 400) return diff * 110;
-    if (windowWidth < 500) return diff * 140;
-    if (windowWidth < 768) return diff * 180;
-    if (windowWidth < 1024) return diff * 215;
+    if (windowWidth < 380) return diff * 70;
+    if (windowWidth < 480) return diff * 90;
+    if (windowWidth < 768) return diff * 150;
+    if (windowWidth < 1024) return diff * 210;
     return diff * 255;
   };
 
@@ -258,22 +244,21 @@ export default function TrustSection({ onOpenDemo }) {
     <section 
       id="trust" 
       ref={containerRef}
-      onWheel={handleWheel}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className="min-h-screen py-10 sm:py-14 lg:py-18 bg-[#f5f3ed] text-[#222720] relative overflow-hidden select-none flex flex-col justify-center"
+      className="content-auto py-12 sm:py-16 lg:py-20 bg-[#f5f3ed] text-[#222720] relative overflow-hidden select-none flex flex-col justify-center"
     >
-      {/* Background Soft Sage and Orange Radial Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[450px] sm:w-[650px] h-[350px] sm:h-[450px] bg-[#dce4d3]/35 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-[#e95126]/5 rounded-full blur-[120px] pointer-events-none" />
+      {/* Background Soft Sage and Warm Highlights */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[450px] sm:w-[650px] h-[350px] sm:h-[450px] bg-[#dce4d3]/30 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-[#e95126]/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 w-full space-y-6 sm:space-y-10 relative z-10">
         
         {/* Top Header Section */}
-        <div className="border-b border-[#d8d9cf]/80 pb-4 sm:pb-6">
+        <div className="border-b border-[#d8d9cf] pb-4 sm:pb-6">
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#e95126] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
               <span>04 / BUILT FOR ACCOUNTABILITY</span>
             </div>
             
@@ -318,12 +303,11 @@ export default function TrustSection({ onOpenDemo }) {
               if (!isVisible) return null;
 
               const xOffset = getResponsiveXOffset(diff);
-              const yOffset = Math.abs(diff) * 12;
-              const rotateY = diff * -18;
-              const scale = isActive ? 1 : Math.abs(diff) === 1 ? 0.72 : 0.5;
-              const opacity = isActive ? 1 : Math.abs(diff) === 1 ? 0.7 : 0.35;
+              const yOffset = Math.abs(diff) * 10;
+              const rotateY = diff * -16;
+              const scale = isActive ? 1 : Math.abs(diff) === 1 ? 0.78 : 0.55;
+              const opacity = isActive ? 1 : Math.abs(diff) === 1 ? 0.75 : 0.35;
               const zIndex = 30 - Math.abs(diff) * 10;
-              const blurAmount = isActive ? 0 : Math.abs(diff) === 1 ? 0.5 : 2;
 
               return (
                 <motion.div
@@ -340,20 +324,19 @@ export default function TrustSection({ onOpenDemo }) {
                     rotateY: rotateY,
                     scale: scale,
                     opacity: opacity,
-                    filter: `blur(${blurAmount}px)`,
                   }}
                   transition={{
-                    duration: 0.5,
-                    ease: [0.22, 1, 0.36, 1],
+                    duration: 0.45,
+                    ease: [0.16, 1, 0.3, 1],
                   }}
                   style={{
                     zIndex: zIndex,
                     transformStyle: 'preserve-3d',
                   }}
-                  className={`absolute w-full rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer transition-shadow duration-300 touch-manipulation ${
+                  className={`absolute w-full rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer transition-shadow duration-300 touch-manipulation transform-gpu ${
                     isActive
-                      ? 'shadow-[0_20px_45px_rgba(34,39,32,0.18)] ring-1 ring-[#d8d9cf] bg-white h-[355px] xs:h-[375px] sm:h-[405px] flex flex-col'
-                      : 'shadow-md bg-white/95 hover:bg-white hover:opacity-95 border border-[#d8d9cf]/90 h-[335px] xs:h-[355px] sm:h-[385px] p-4 sm:p-5 flex flex-col justify-between'
+                      ? 'shadow-[0_16px_36px_rgba(34,39,32,0.12)] border border-[#d8d9cf] bg-white h-[355px] xs:h-[375px] sm:h-[405px] flex flex-col'
+                      : 'shadow-sm bg-white/95 hover:bg-white hover:opacity-95 border border-[#d8d9cf]/80 h-[335px] xs:h-[355px] sm:h-[385px] p-4 sm:p-5 flex flex-col justify-between'
                   }`}
                 >
                   {isActive ? (
@@ -411,7 +394,7 @@ export default function TrustSection({ onOpenDemo }) {
                       </div>
                     </>
                   ) : (
-                    /* Locked Small Side Background Card */
+                    /* Side Background Card */
                     <>
                       <div className="space-y-3 sm:space-y-4">
                         <div className="flex items-center justify-between">
@@ -453,7 +436,7 @@ export default function TrustSection({ onOpenDemo }) {
           <button
             onClick={handlePrev}
             aria-label="Previous trust card"
-            className="absolute left-1 xs:left-2 sm:left-6 lg:left-12 z-40 w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-md border border-[#d8d9cf] shadow-md hover:shadow-lg text-[#222720] hover:text-[#e95126] active:scale-95 hover:scale-105 transition-all flex items-center justify-center cursor-pointer"
+            className="absolute left-1 xs:left-2 sm:left-6 lg:left-12 z-40 w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-md border border-[#d8d9cf] shadow-sm hover:shadow-md text-[#222720] hover:text-[#e95126] active:scale-95 hover:scale-105 transition-all flex items-center justify-center cursor-pointer"
           >
             <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
@@ -461,32 +444,25 @@ export default function TrustSection({ onOpenDemo }) {
           <button
             onClick={handleNext}
             aria-label="Next trust card"
-            className="absolute right-1 xs:right-2 sm:right-6 lg:right-12 z-40 w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-md border border-[#d8d9cf] shadow-md hover:shadow-lg text-[#222720] hover:text-[#e95126] active:scale-95 hover:scale-105 transition-all flex items-center justify-center cursor-pointer"
+            className="absolute right-1 xs:right-2 sm:right-6 lg:right-12 z-40 w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-md border border-[#d8d9cf] shadow-sm hover:shadow-md text-[#222720] hover:text-[#e95126] active:scale-95 hover:scale-105 transition-all flex items-center justify-center cursor-pointer"
           >
             <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
 
         </div>
 
-        {/* Clean Step Progress Dot Selectors with Animated Slideshow Progress Bar */}
+        {/* Clean Step Progress Dot Selectors */}
         <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 pt-3 sm:pt-6">
           {trustNodes.map((node, i) => (
             <button
               key={node.id}
               onClick={() => handleSelect(i)}
-              className={`relative overflow-hidden transition-all duration-300 flex items-center gap-1 sm:gap-1.5 px-2.5 xs:px-3 sm:px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-semibold cursor-pointer ${
+              className={`relative overflow-hidden transition-all duration-200 flex items-center gap-1 sm:gap-1.5 px-2.5 xs:px-3 sm:px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-semibold cursor-pointer ${
                 activeIndex === i
-                  ? 'bg-[#222720] text-white shadow-md scale-105'
+                  ? 'bg-[#222720] text-white shadow-sm scale-105'
                   : 'bg-[#e7e5dc] text-[#66695f] hover:bg-[#dedcd2]'
               }`}
             >
-              {/* Active Slide Progress Fill */}
-              {activeIndex === i && (
-                <div
-                  className="absolute left-0 top-0 bottom-0 bg-[#e95126]/35 transition-all duration-75 pointer-events-none rounded-full"
-                  style={{ width: `${progress}%` }}
-                />
-              )}
               <span className="relative z-10">{node.step.split(' ')[0]}</span>
               {activeIndex === i && (
                 <span className="relative z-10 hidden md:inline text-[10px] text-[#dce4d3] font-normal">
@@ -496,7 +472,7 @@ export default function TrustSection({ onOpenDemo }) {
             </button>
           ))}
 
-          {/* Subtle Play / Pause Auto-Slideshow Button */}
+          {/* Play / Pause Auto-Slideshow Button */}
           <button
             onClick={() => setIsPaused((prev) => !prev)}
             aria-label={isPaused ? "Play slideshow" : "Pause slideshow"}
@@ -512,26 +488,27 @@ export default function TrustSection({ onOpenDemo }) {
         </div>
 
       </div>
+
       {/* Deep-Dive Trust Feature Explainer Modal */}
       <AnimatePresence>
         {selectedExplainer && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-3 xs:p-4 sm:p-6 overflow-y-auto">
-            {/* Backdrop Blur */}
+            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedExplainer(null)}
-              className="fixed inset-0 bg-[#142013]/80 backdrop-blur-md"
+              className="fixed inset-0 bg-[#142013]/70 backdrop-blur-sm"
             />
 
             {/* Modal Dialog Body */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="relative w-full max-w-2xl max-h-[90dvh] overflow-y-auto bg-[#f5f3ed] text-[#222720] rounded-2xl sm:rounded-3xl shadow-2xl border border-white/80 p-5 sm:p-8 z-10 space-y-4 sm:space-y-5 safe-p-bottom"
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-2xl max-h-[90dvh] overflow-y-auto bg-[#f5f3ed] text-[#222720] rounded-2xl sm:rounded-3xl shadow-xl border border-white/80 p-5 sm:p-8 z-10 space-y-4 sm:space-y-5 safe-p-bottom"
             >
               {/* Modal Top Bar */}
               <div className="flex items-start justify-between gap-3 sm:gap-4 border-b border-[#d8d9cf] pb-3 sm:pb-4">
@@ -566,7 +543,7 @@ export default function TrustSection({ onOpenDemo }) {
                     onClick={() => setSelectedExplainer(node)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                       selectedExplainer.id === node.id
-                        ? 'bg-[#222720] text-white shadow-2xs'
+                        ? 'bg-[#222720] text-white shadow-xs'
                         : 'bg-white/80 text-[#66695f] hover:text-[#222720] hover:bg-white border border-[#d8d9cf]/60'
                     }`}
                   >
@@ -638,7 +615,7 @@ export default function TrustSection({ onOpenDemo }) {
                         setSelectedExplainer(null);
                         onOpenDemo();
                       }}
-                      className="px-5 py-2 rounded-full bg-[#e95126] text-white hover:bg-[#d4431a] text-xs font-bold transition-all shadow-md flex items-center gap-2"
+                      className="px-5 py-2 rounded-full bg-[#e95126] text-white hover:bg-[#d4431a] text-xs font-bold transition-all shadow-sm flex items-center gap-2"
                     >
                       <span>Book a live demo</span>
                       <ArrowRight className="w-3.5 h-3.5" />

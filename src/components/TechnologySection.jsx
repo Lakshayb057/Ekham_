@@ -163,10 +163,10 @@ export default function TechnologySection({ onOpenDemo }) {
   ];
 
   return (
-    <section id="technology" className="min-h-screen py-12 sm:py-18 lg:py-24 bg-[#222720] text-[#f5f3ed] relative overflow-hidden select-none flex flex-col justify-center">
+    <section id="technology" className="content-auto min-h-screen py-12 sm:py-18 lg:py-24 bg-[#222720] text-[#f5f3ed] relative overflow-hidden select-none flex flex-col justify-center">
       
       {/* Background Subtle Ambient Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] sm:w-[700px] h-[500px] sm:h-[700px] bg-[#e95126]/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] sm:w-[700px] h-[500px] sm:h-[700px] bg-[#e95126]/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 space-y-8 sm:space-y-12 lg:space-y-14 relative z-10 w-full">
         
@@ -194,16 +194,16 @@ export default function TechnologySection({ onOpenDemo }) {
           </div>
         </div>
 
-        {/* Tall, Immersive Visual Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-7">
+        {/* Compact, Clean Visual Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-5">
           {modules.map((mod) => (
             <div
               key={mod.id}
               onClick={() => setActiveModalModule(mod)}
-              className="group bg-[#1a1f18] border border-[#343d31] hover:border-[#e95126]/60 rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-300 active:scale-98 hover:-translate-y-2 hover:shadow-2xl cursor-pointer flex flex-col justify-between touch-manipulation"
+              className="group bg-[#1a1f18] border border-[#343d31] hover:border-[#e95126]/60 rounded-xl sm:rounded-2xl overflow-hidden transition-all duration-300 active:scale-98 hover:-translate-y-0.5 hover:shadow-lg cursor-pointer flex flex-col justify-between touch-manipulation transform-gpu"
             >
-              {/* Grand Tall Photographic Window */}
-              <div className="relative h-48 xs:h-56 sm:h-64 lg:h-72 xl:h-80 w-full overflow-hidden bg-[#141913]">
+              {/* Proportional Compact Photographic Window */}
+              <div className="relative h-32 xs:h-36 sm:h-44 lg:h-48 xl:h-52 w-full overflow-hidden bg-[#141913]">
                 <img
                   src={mod.image}
                   alt={mod.title}
@@ -213,22 +213,22 @@ export default function TechnologySection({ onOpenDemo }) {
                 />
                 
                 {/* Subtle Top-Left Step Index */}
-                <div className="absolute top-3 left-3 sm:top-3.5 sm:left-3.5 bg-[#1a1f18]/85 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/10 text-[10px] xs:text-[11px] font-mono font-bold text-[#dce4d3]">
+                <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 bg-[#1a1f18]/85 backdrop-blur-md px-2 py-0.5 rounded-md border border-white/10 text-[9.5px] xs:text-[10px] font-mono font-bold text-[#dce4d3]">
                   {mod.step}
                 </div>
 
                 {/* Subtle Hover Action Icon */}
-                <div className="absolute top-3 right-3 sm:top-3.5 sm:right-3.5 w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 group-hover:text-white group-hover:bg-[#e95126] transition-all">
-                  <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 group-hover:text-white group-hover:bg-[#e95126] transition-all">
+                  <ArrowUpRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
               </div>
 
               {/* Minimal Clean Details Footer */}
-              <div className="p-4 sm:p-5 lg:p-6 space-y-1">
-                <h3 className="text-sm xs:text-base font-bold text-white group-hover:text-[#dce4d3] transition-colors leading-tight">
+              <div className="p-3 xs:p-3.5 sm:p-4 space-y-0.5">
+                <h3 className="text-xs xs:text-sm sm:text-base font-bold text-white group-hover:text-[#dce4d3] transition-colors leading-tight">
                   {mod.title}
                 </h3>
-                <p className="text-[11px] xs:text-xs text-[#a9b0a1] font-normal">
+                <p className="text-[10px] xs:text-[11px] sm:text-xs text-[#a9b0a1] font-normal truncate">
                   {mod.subtitle}
                 </p>
               </div>

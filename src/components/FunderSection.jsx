@@ -110,14 +110,14 @@ export default function FunderSection({ onOpenDemo }) {
   const currentItem = featurePoints[hoveredPointIndex] || featurePoints[0];
 
   return (
-    <section id="funders" className="bg-[#e7eadf] py-12 sm:py-16 lg:py-20 text-[#222720] select-none">
+    <section id="funders" className="content-auto bg-[#e7eadf] py-12 sm:py-16 lg:py-20 text-[#222720] select-none">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 space-y-8 sm:space-y-10">
         
         {/* Header Divided by Line */}
         <div className="border-b border-[#c9cebf] pb-4 sm:pb-6">
           <div className="space-y-1.5 sm:space-y-2">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#e95126] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
               <span>05 / For Funders</span>
             </div>
             
@@ -140,11 +140,11 @@ export default function FunderSection({ onOpenDemo }) {
         </div>
 
         {/* Two-Column Section Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-center">
           
-          {/* Left Column: Large Dynamic Image with Pure Typography Overlay */}
+          {/* Left Column: Proportional Dynamic Image with Animated Typography Overlay */}
           <div className="lg:col-span-6">
-            <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-[#d5dacb] bg-[#1a1f18] aspect-[16/11] sm:aspect-[4/3] group">
+            <div className="relative w-full rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-[#d5dacb] bg-[#1a1f18] aspect-[16/9] xs:aspect-[16/10] sm:aspect-[16/10] lg:aspect-[4/3] max-h-[220px] xs:max-h-[260px] sm:max-h-[320px] lg:max-h-[440px] group">
               
               {/* Dynamic Image Crossfade */}
               <AnimatePresence mode="wait">
@@ -152,35 +152,35 @@ export default function FunderSection({ onOpenDemo }) {
                   key={currentItem.image}
                   src={currentItem.image}
                   alt={currentItem.title}
-                  initial={{ opacity: 0.4, scale: 1.02 }}
+                  initial={{ opacity: 0.3, scale: 1.03 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0.4, scale: 0.98 }}
-                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                  exit={{ opacity: 0.3, scale: 0.98 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                   className="w-full h-full object-cover object-center block"
                 />
               </AnimatePresence>
 
               {/* Gradient Shade for Pure Font Legibility */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none" />
 
-              {/* Pure Typography Overlay with Smooth Animation */}
-              <div className="absolute bottom-4 xs:bottom-6 left-4 xs:left-6 right-4 xs:right-6 z-10">
+              {/* Pure Typography Overlay with Noticeable Animation */}
+              <div className="absolute bottom-3 xs:bottom-4 sm:bottom-6 left-3.5 xs:left-4 sm:left-6 right-3.5 xs:right-4 sm:right-6 z-10">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`text-${currentItem.id}`}
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="space-y-1 sm:space-y-1.5"
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    className="space-y-0.5 xs:space-y-1 sm:space-y-1.5"
                   >
-                    <span className="text-[10px] xs:text-[11px] font-bold uppercase tracking-widest text-[#ff8059]">
+                    <span className="text-[9.5px] xs:text-[10.5px] font-bold uppercase tracking-widest text-[#ff8059]">
                       {currentItem.badge}
                     </span>
-                    <h4 className="text-xl xs:text-2xl sm:text-3xl font-medium text-white tracking-tight leading-tight">
+                    <h4 className="text-base xs:text-lg sm:text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight">
                       {currentItem.title}
                     </h4>
-                    <p className="text-[11px] xs:text-xs sm:text-sm text-white/90 font-light leading-relaxed max-w-lg line-clamp-2 sm:line-clamp-none">
+                    <p className="text-[10px] xs:text-xs sm:text-sm text-white/90 font-light leading-relaxed max-w-lg line-clamp-2 sm:line-clamp-none">
                       {currentItem.desc}
                     </p>
                   </motion.div>
@@ -191,14 +191,14 @@ export default function FunderSection({ onOpenDemo }) {
           </div>
 
           {/* Right Column: Heading + Interactive Lines + Explore Action */}
-          <div className="lg:col-span-6 space-y-4 sm:space-y-6">
+          <div className="lg:col-span-6 space-y-3 sm:space-y-5">
             
             {/* Heading on the Points */}
-            <div className="space-y-1">
+            <div className="space-y-0.5 sm:space-y-1">
               <span className="text-[10px] xs:text-[11px] uppercase font-bold tracking-wider text-[#66695f]">
                 What It Enables
               </span>
-              <h3 className="text-lg xs:text-xl sm:text-2xl font-bold tracking-tight text-[#222720]">
+              <h3 className="text-base xs:text-lg sm:text-2xl font-bold tracking-tight text-[#222720]">
                 Continuous Funding Visibility
               </h3>
             </div>
@@ -206,24 +206,28 @@ export default function FunderSection({ onOpenDemo }) {
             {/* Interactive Feature List */}
             <div className="divide-y divide-[#c9cebf]/70 border-y border-[#c9cebf]/70">
               {featurePoints.map((item, idx) => {
-                const isHovered = hoveredPointIndex === idx;
+                const isSelected = hoveredPointIndex === idx || activeTab === item.id;
                 return (
-                  <div
+                  <button
+                    type="button"
                     key={item.title}
-                    onMouseEnter={() => setHoveredPointIndex(idx)}
+                    onMouseEnter={() => {
+                      setHoveredPointIndex(idx);
+                      setActiveTab(item.id);
+                    }}
                     onClick={() => {
                       setHoveredPointIndex(idx);
                       setActiveTab(item.id);
                     }}
-                    className={`py-2.5 sm:py-3 px-2.5 sm:px-3 rounded-xl transition-all duration-200 cursor-pointer flex items-center justify-between gap-3 touch-manipulation ${
-                      isHovered
-                        ? 'bg-[#dce4d3]/85'
-                        : 'hover:bg-[#e0e5d8]/40'
+                    className={`w-full text-left py-2 xs:py-2.5 sm:py-3 px-2 xs:px-2.5 sm:px-3 rounded-xl transition-all duration-200 cursor-pointer flex items-center justify-between gap-2.5 sm:gap-3 touch-manipulation active:scale-[0.99] ${
+                      isSelected
+                        ? 'bg-[#dce4d3] shadow-2xs'
+                        : 'hover:bg-[#e0e5d8]/50'
                     }`}
                   >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-9 h-9 xs:w-11 xs:h-11 rounded-xl overflow-hidden shrink-0 border transition-all duration-200 ${
-                        isHovered 
+                    <div className="flex items-center gap-2.5 sm:gap-3">
+                      <div className={`w-8 h-8 xs:w-10 xs:h-10 rounded-lg xs:rounded-xl overflow-hidden shrink-0 border transition-all duration-200 ${
+                        isSelected 
                           ? 'border-[#e95126] ring-2 ring-[#e95126]/30 scale-105' 
                           : 'border-[#c9cebf] bg-white'
                       }`}>
@@ -237,11 +241,11 @@ export default function FunderSection({ onOpenDemo }) {
                       </div>
                       <div className="space-y-0.5">
                         <h4 className={`text-xs sm:text-sm font-bold transition-colors leading-tight ${
-                          isHovered ? 'text-[#e95126]' : 'text-[#222720]'
+                          isSelected ? 'text-[#e95126]' : 'text-[#222720]'
                         }`}>
                           {item.title}
                         </h4>
-                        <p className="text-[10px] xs:text-[11px] sm:text-xs text-[#66695f] leading-snug">
+                        <p className="text-[10px] xs:text-[11px] sm:text-xs text-[#66695f] leading-snug line-clamp-1 xs:line-clamp-none">
                           {item.desc}
                         </p>
                       </div>
@@ -249,11 +253,11 @@ export default function FunderSection({ onOpenDemo }) {
 
                     {/* Active line indicator arrow */}
                     <div className={`shrink-0 transition-all duration-200 ${
-                      isHovered ? 'opacity-100 translate-x-0 text-[#e95126]' : 'opacity-30 -translate-x-1 text-[#66695f]'
+                      isSelected ? 'opacity-100 translate-x-0 text-[#e95126]' : 'opacity-30 -translate-x-1 text-[#66695f]'
                     }`}>
                       <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </div>
-                  </div>
+                  </button>
                 );
               })}
             </div>

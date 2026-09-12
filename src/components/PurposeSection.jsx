@@ -60,7 +60,7 @@ export default function PurposeSection({ onOpenDemo }) {
   }, [isExplainerOpen]);
 
   return (
-    <section id="purpose-section" className="py-14 sm:py-20 md:py-28 bg-[#f5f3ed] relative overflow-hidden">
+    <section id="purpose-section" className="content-auto py-14 sm:py-20 md:py-28 bg-[#f5f3ed] relative overflow-hidden">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 space-y-16 sm:space-y-24">
         
         {/* ========================================================
@@ -71,7 +71,7 @@ export default function PurposeSection({ onOpenDemo }) {
           {/* Section Header */}
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
-              <span className="w-2 h-2 rounded-full bg-[#e95126] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#e95126]" />
               <span>The Scale of Good</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-[#222720] leading-[1.1]">
@@ -84,7 +84,7 @@ export default function PurposeSection({ onOpenDemo }) {
 
           {/* Interactive Scale Scene: 3 Full-Bleed Photography Metric Cards */}
           <div className="relative pt-1 sm:pt-2 pb-2">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 relative z-20">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 xs:gap-4 sm:gap-5 md:gap-4 lg:gap-6 relative z-20">
               
               {/* Station 1: 40 Organisations with Logo Collage Mosaic Background */}
               <motion.div 
@@ -92,20 +92,20 @@ export default function PurposeSection({ onOpenDemo }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.6 }}
-                className="group relative rounded-2xl overflow-hidden shadow-md border border-white/80 h-[210px] xs:h-[230px] sm:h-[250px] flex flex-col justify-between p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl bg-[#222720]"
+                className="group relative rounded-2xl overflow-hidden shadow-md border border-white/80 h-[165px] xxs:h-[175px] xs:h-[190px] sm:h-[220px] md:h-[230px] lg:h-[250px] flex flex-col justify-between p-3.5 xs:p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl bg-[#222720]"
               >
                 {/* Full Card Background: Aesthetic Mosaic Collage of Partner Logos */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#1b1f1a] to-[#282e25] overflow-hidden">
-                  <div className="absolute inset-0 grid grid-cols-3 gap-2 p-2.5 opacity-35 group-hover:opacity-55 transition-opacity duration-700 transform scale-105 group-hover:scale-100">
+                  <div className="absolute inset-0 grid grid-cols-3 gap-1.5 xs:gap-2 p-2 xs:p-2.5 opacity-35 group-hover:opacity-55 transition-opacity duration-700 transform scale-105 group-hover:scale-100">
                     {partnerLogos.map((logo, lIdx) => (
                       <div 
                         key={lIdx} 
-                        className="bg-white/90 rounded-lg p-1.5 flex items-center justify-center shadow-xs backdrop-blur-xs"
+                        className="bg-white/90 rounded-lg p-1 xs:p-1.5 flex items-center justify-center shadow-xs backdrop-blur-xs"
                       >
                         <img 
                           src={logo.src} 
                           alt={logo.name} 
-                          className="h-4 xs:h-5 sm:h-6 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-500" 
+                          className="h-3.5 xs:h-4 sm:h-5 md:h-6 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-500" 
                           loading="lazy"
                           decoding="async"
                         />
@@ -119,21 +119,21 @@ export default function PurposeSection({ onOpenDemo }) {
 
                 {/* Top Pill Badges */}
                 <div className="relative z-10 flex items-center justify-between">
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-bold border border-white/30 shadow-xs">
+                  <span className="px-2 xs:px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[10px] xs:text-[11px] font-bold border border-white/30 shadow-xs">
                     01 / Network
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#e95126] text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
+                  <span className="px-2 xs:px-2.5 py-0.5 rounded-full bg-[#e95126] text-white text-[9px] xs:text-[10px] font-bold uppercase tracking-wider shadow-xs">
                     Pan-India
                   </span>
                 </div>
 
                 {/* Bottom Overlay Metric */}
                 <div className="relative z-10 space-y-0.5 text-white">
-                  <div className="flex items-baseline gap-2 drop-shadow-sm">
-                    <span className="text-3xl sm:text-4xl font-medium tracking-tight">40</span>
-                    <span className="text-lg sm:text-xl font-normal text-white/90">organisations</span>
+                  <div className="flex items-baseline gap-1.5 xs:gap-2 drop-shadow-sm">
+                    <span className="text-2xl xs:text-3xl sm:text-3xl lg:text-4xl font-medium tracking-tight">40</span>
+                    <span className="text-base xs:text-lg sm:text-lg lg:text-xl font-normal text-white/90">organisations</span>
                   </div>
-                  <p className="text-xs text-white/80 font-normal leading-snug">
+                  <p className="text-[11px] xs:text-xs text-white/80 font-normal leading-snug">
                     Partner NGOs and impact institutions across India.
                   </p>
                 </div>
@@ -145,7 +145,7 @@ export default function PurposeSection({ onOpenDemo }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="group relative rounded-2xl overflow-hidden shadow-md border border-white/80 h-[230px] sm:h-[250px] flex flex-col justify-between p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                className="group relative rounded-2xl overflow-hidden shadow-md border border-white/80 h-[165px] xxs:h-[175px] xs:h-[190px] sm:h-[220px] md:h-[230px] lg:h-[250px] flex flex-col justify-between p-3.5 xs:p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
                 {/* Full Card Background Image */}
                 <img
@@ -161,21 +161,21 @@ export default function PurposeSection({ onOpenDemo }) {
 
                 {/* Top Pill Badges */}
                 <div className="relative z-10 flex items-center justify-between">
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-bold border border-white/30 shadow-xs">
+                  <span className="px-2 xs:px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[10px] xs:text-[11px] font-bold border border-white/30 shadow-xs">
                     02 / Disbursals
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
+                  <span className="px-2 xs:px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[9px] xs:text-[10px] font-bold uppercase tracking-wider shadow-xs">
                     18 States
                   </span>
                 </div>
 
                 {/* Bottom Overlay Metric */}
                 <div className="relative z-10 space-y-0.5 text-white">
-                  <div className="flex items-baseline gap-2 drop-shadow-sm">
-                    <span className="text-3xl sm:text-4xl font-medium tracking-tight">Rs. 1</span>
-                    <span className="text-lg sm:text-xl font-normal text-white/90">billion</span>
+                  <div className="flex items-baseline gap-1.5 xs:gap-2 drop-shadow-sm">
+                    <span className="text-2xl xs:text-3xl sm:text-3xl lg:text-4xl font-medium tracking-tight">Rs. 1</span>
+                    <span className="text-base xs:text-lg sm:text-lg lg:text-xl font-normal text-white/90">billion</span>
                   </div>
-                  <p className="text-xs text-white/80 font-normal leading-snug">
+                  <p className="text-[11px] xs:text-xs text-white/80 font-normal leading-snug">
                     Transparent, end-to-end verified funds deployed.
                   </p>
                 </div>
@@ -187,7 +187,7 @@ export default function PurposeSection({ onOpenDemo }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="group relative rounded-2xl overflow-hidden shadow-md border border-white/80 h-[230px] sm:h-[250px] flex flex-col justify-between p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                className="group relative rounded-2xl overflow-hidden shadow-md border border-white/80 h-[165px] xxs:h-[175px] xs:h-[190px] sm:h-[220px] md:h-[230px] lg:h-[250px] flex flex-col justify-between p-3.5 xs:p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
                 {/* Full Card Background Image */}
                 <img
@@ -203,21 +203,21 @@ export default function PurposeSection({ onOpenDemo }) {
 
                 {/* Top Pill Badges */}
                 <div className="relative z-10 flex items-center justify-between">
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-bold border border-white/30 shadow-xs">
+                  <span className="px-2 xs:px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[10px] xs:text-[11px] font-bold border border-white/30 shadow-xs">
                     03 / Verified
                   </span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#e95126] text-white text-[10px] font-bold uppercase tracking-wider shadow-xs">
+                  <span className="px-2 xs:px-2.5 py-0.5 rounded-full bg-[#e95126] text-white text-[9px] xs:text-[10px] font-bold uppercase tracking-wider shadow-xs">
                     100% Reconciled
                   </span>
                 </div>
 
                 {/* Bottom Overlay Metric */}
                 <div className="relative z-10 space-y-0.5 text-white">
-                  <div className="flex items-baseline gap-2 drop-shadow-sm">
-                    <span className="text-3xl sm:text-4xl font-medium tracking-tight">One</span>
-                    <span className="text-lg sm:text-xl font-normal text-white/90">ledger</span>
+                  <div className="flex items-baseline gap-1.5 xs:gap-2 drop-shadow-sm">
+                    <span className="text-2xl xs:text-3xl sm:text-3xl lg:text-4xl font-medium tracking-tight">One</span>
+                    <span className="text-base xs:text-lg sm:text-lg lg:text-xl font-normal text-white/90">ledger</span>
                   </div>
-                  <p className="text-xs text-white/80 font-normal leading-snug">
+                  <p className="text-[11px] xs:text-xs text-white/80 font-normal leading-snug">
                     Connecting every rupee back to verified human outcomes.
                   </p>
                 </div>
@@ -233,7 +233,7 @@ export default function PurposeSection({ onOpenDemo }) {
             SECTION 1 — “THE COST OF DISCONNECTED SYSTEMS”
             (Visual-first, minimal text, clickable heading with deep-dive modal)
            ======================================================== */}
-        <div id="disconnected-systems-section" className="relative pt-14 sm:pt-20 lg:pt-24 border-t border-[#d8d9cf]/80 mt-12 sm:mt-16">
+        <div id="disconnected-systems-section" className="relative pt-16 sm:pt-24 lg:pt-28 border-t border-[#d8d9cf] mt-16 sm:mt-24 lg:mt-32">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
             
@@ -324,58 +324,53 @@ export default function PurposeSection({ onOpenDemo }) {
             {/* Right Column: Visual Architecture (Matching Reference Mockup Exactly) */}
             <div className="lg:col-span-8 space-y-6 relative">
               
-              {/* Top 3 Visual Problem Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 relative z-10">
+              {/* Top 3 Visual Problem Cards in 1 Connected Row */}
+              <div className="grid grid-cols-3 gap-2 xs:gap-3 sm:gap-4 relative z-10">
                 
                 {/* Card 01: Scattered Donor Records */}
                 <motion.div 
                   whileHover={{ y: -3 }}
                   onClick={() => setActiveProblem(0)}
                   onMouseEnter={() => setActiveProblem(0)}
-                  className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
+                  className={`p-2.5 xs:p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
                     activeProblem === 0 
                       ? 'bg-white shadow-xl border-[#e95126] ring-2 ring-[#e95126]/20 scale-[1.01]' 
                       : 'bg-white/80 border-white/90 shadow-sm hover:bg-white hover:border-[#e95126]/40'
                   }`}
                 >
                   {/* Top Header: Badge + Title */}
-                  <div className="flex items-start gap-2.5">
-                    <span className="text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-2 py-0.5 rounded-md shrink-0">
+                  <div className="flex items-start gap-1.5 xs:gap-2">
+                    <span className="text-[10px] xs:text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 xs:px-2 py-0.5 rounded-md shrink-0">
                       01
                     </span>
-                    <h4 className="text-xs sm:text-sm font-bold text-[#222720] leading-snug">
+                    <h4 className="text-[11px] xs:text-xs sm:text-sm font-bold text-[#222720] leading-tight">
                       Scattered donor records
                     </h4>
                   </div>
 
                   {/* Middle Visual Area: 3 Floating App / Cloud Tiles */}
-                  <div className="py-2.5 flex items-center justify-center gap-2.5">
+                  <div className="py-2 sm:py-3.5 flex items-center justify-center gap-1 xs:gap-1.5 sm:gap-2.5 flex-1">
                     {/* Excel Tile */}
-                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white shadow-md border border-emerald-100 flex items-center justify-center transform -rotate-3 hover:rotate-0 transition-transform">
-                      <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-xs shadow-inner">
+                    <div className="w-7 h-7 xxs:w-8 xxs:h-8 xs:w-9 xs:h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white shadow-md border border-emerald-100 flex items-center justify-center transform -rotate-3 hover:rotate-0 transition-transform">
+                      <div className="w-5 h-5 xxs:w-6 xxs:h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-md sm:rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-[9px] xs:text-[10px] sm:text-xs shadow-inner">
                         X
                       </div>
                     </div>
 
                     {/* Google Sheets Tile */}
-                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white shadow-md border border-blue-100 flex items-center justify-center transform translate-y-[-3px] hover:translate-y-0 transition-transform">
-                      <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center text-white text-xs shadow-inner">
-                        <FileSpreadsheet className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <div className="w-7 h-7 xxs:w-8 xxs:h-8 xs:w-9 xs:h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white shadow-md border border-blue-100 flex items-center justify-center transform translate-y-[-2px] hover:translate-y-0 transition-transform">
+                      <div className="w-5 h-5 xxs:w-6 xxs:h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-md sm:rounded-lg bg-blue-500 flex items-center justify-center text-white text-[9px] xs:text-[10px] sm:text-xs shadow-inner">
+                        <FileSpreadsheet className="w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-5 sm:h-5" />
                       </div>
                     </div>
 
                     {/* Cloud Storage Tile */}
-                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white shadow-md border border-sky-100 flex items-center justify-center transform rotate-3 hover:rotate-0 transition-transform">
-                      <div className="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center text-white text-xs shadow-inner">
-                        <Cloud className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <div className="w-7 h-7 xxs:w-8 xxs:h-8 xs:w-9 xs:h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white shadow-md border border-sky-100 flex items-center justify-center transform rotate-3 hover:rotate-0 transition-transform">
+                      <div className="w-5 h-5 xxs:w-6 xxs:h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-md sm:rounded-lg bg-sky-500 flex items-center justify-center text-white text-[9px] xs:text-[10px] sm:text-xs shadow-inner">
+                        <Cloud className="w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-5 sm:h-5" />
                       </div>
                     </div>
                   </div>
-
-                  {/* Bottom Caption */}
-                  <p className="text-[11px] text-[#66695f] leading-relaxed">
-                    Data in different places. No single source of truth.
-                  </p>
                 </motion.div>
 
                 {/* Card 02: Compliance Assembled by Hand */}
@@ -383,25 +378,25 @@ export default function PurposeSection({ onOpenDemo }) {
                   whileHover={{ y: -3 }}
                   onClick={() => setActiveProblem(1)}
                   onMouseEnter={() => setActiveProblem(1)}
-                  className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
+                  className={`p-2.5 xs:p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
                     activeProblem === 1 
                       ? 'bg-white shadow-xl border-[#e95126] ring-2 ring-[#e95126]/20 scale-[1.01]' 
                       : 'bg-white/80 border-white/90 shadow-sm hover:bg-white hover:border-[#e95126]/40'
                   }`}
                 >
                   {/* Top Header: Badge + Title */}
-                  <div className="flex items-start gap-2.5">
-                    <span className="text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-2 py-0.5 rounded-md shrink-0">
+                  <div className="flex items-start gap-1.5 xs:gap-2">
+                    <span className="text-[10px] xs:text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 xs:px-2 py-0.5 rounded-md shrink-0">
                       02
                     </span>
-                    <h4 className="text-xs sm:text-sm font-bold text-[#222720] leading-snug">
+                    <h4 className="text-[11px] xs:text-xs sm:text-sm font-bold text-[#222720] leading-tight">
                       Compliance assembled by hand
                     </h4>
                   </div>
 
                   {/* Middle Visual Area: Paper Stack with Sticky Notes Image */}
-                  <div className="py-1.5 flex items-center justify-center">
-                    <div className="w-full h-20 sm:h-22 rounded-xl overflow-hidden shadow-xs border border-[#d8d9cf]/60 bg-white">
+                  <div className="py-1 xs:py-1.5 sm:py-2 flex items-center justify-center flex-1 w-full">
+                    <div className="w-full h-18 xxs:h-20 xs:h-22 sm:h-24 md:h-26 rounded-lg sm:rounded-xl overflow-hidden shadow-xs border border-[#d8d9cf]/60 bg-white">
                       <img
                         src="/assets/compliance-paper-stack.jpg"
                         alt="Paper compliance documents with sticky notes"
@@ -411,11 +406,6 @@ export default function PurposeSection({ onOpenDemo }) {
                       />
                     </div>
                   </div>
-
-                  {/* Bottom Caption */}
-                  <p className="text-[11px] text-[#66695f] leading-relaxed">
-                    Manual processes. More time, higher risk.
-                  </p>
                 </motion.div>
 
                 {/* Card 03: Outcomes Detached from Funding */}
@@ -423,25 +413,25 @@ export default function PurposeSection({ onOpenDemo }) {
                   whileHover={{ y: -3 }}
                   onClick={() => setActiveProblem(2)}
                   onMouseEnter={() => setActiveProblem(2)}
-                  className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
+                  className={`p-2.5 xs:p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
                     activeProblem === 2 
                       ? 'bg-white shadow-xl border-[#e95126] ring-2 ring-[#e95126]/20 scale-[1.01]' 
                       : 'bg-white/80 border-white/90 shadow-sm hover:bg-white hover:border-[#e95126]/40'
                   }`}
                 >
                   {/* Top Header: Badge + Title */}
-                  <div className="flex items-start gap-2.5">
-                    <span className="text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-2 py-0.5 rounded-md shrink-0">
+                  <div className="flex items-start gap-1.5 xs:gap-2">
+                    <span className="text-[10px] xs:text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 xs:px-2 py-0.5 rounded-md shrink-0">
                       03
                     </span>
-                    <h4 className="text-xs sm:text-sm font-bold text-[#222720] leading-snug">
+                    <h4 className="text-[11px] xs:text-xs sm:text-sm font-bold text-[#222720] leading-tight">
                       Outcomes detached from funding
                     </h4>
                   </div>
 
                   {/* Middle Visual Area: Field Coordinator & Child Photo */}
-                  <div className="py-1.5 flex items-center justify-center">
-                    <div className="w-full h-20 sm:h-22 rounded-xl overflow-hidden shadow-xs border border-[#d8d9cf]/60 bg-white">
+                  <div className="py-1 xs:py-1.5 sm:py-2 flex items-center justify-center flex-1 w-full">
+                    <div className="w-full h-18 xxs:h-20 xs:h-22 sm:h-24 md:h-26 rounded-lg sm:rounded-xl overflow-hidden shadow-xs border border-[#d8d9cf]/60 bg-white">
                       <img
                         src="/assets/outcomes-field-worker.jpg"
                         alt="Field coordinator talking with child"
@@ -451,21 +441,27 @@ export default function PurposeSection({ onOpenDemo }) {
                       />
                     </div>
                   </div>
-
-                  {/* Bottom Caption */}
-                  <p className="text-[11px] text-[#66695f] leading-relaxed">
-                    Impact hard to track. Stories remain incomplete.
-                  </p>
                 </motion.div>
 
               </div>
 
-              {/* Dotted Stream Convergence Funnel SVG */}
-              <div className="w-full h-8 sm:h-10 relative overflow-visible pointer-events-none -my-1 hidden sm:block">
+              {/* Dotted Stream Convergence Funnel SVG (Visible across ALL devices including phones) */}
+              <div className="w-full h-8 sm:h-10 relative overflow-visible pointer-events-none -my-1 block">
                 <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 600 50">
-                  <path d="M 100 0 C 100 25, 260 30, 290 50" fill="none" stroke="#e95126" strokeWidth="1.8" strokeDasharray="4 4" strokeOpacity="0.5" />
-                  <path d="M 300 0 C 300 25, 300 30, 300 50" fill="none" stroke="#e95126" strokeWidth="2.2" strokeOpacity="0.8" />
-                  <path d="M 500 0 C 500 25, 340 30, 310 50" fill="none" stroke="#e95126" strokeWidth="1.8" strokeDasharray="4 4" strokeOpacity="0.5" />
+                  {/* Left Stream */}
+                  <path d="M 100 0 C 100 25, 270 30, 290 50" fill="none" stroke="#e95126" strokeWidth="2" strokeDasharray="4 4" strokeOpacity="0.75" />
+                  {/* Center Stream */}
+                  <path d="M 300 0 C 300 25, 300 30, 300 50" fill="none" stroke="#e95126" strokeWidth="2.5" strokeDasharray="4 4" strokeOpacity="0.9" />
+                  {/* Right Stream */}
+                  <path d="M 500 0 C 500 25, 330 30, 310 50" fill="none" stroke="#e95126" strokeWidth="2" strokeDasharray="4 4" strokeOpacity="0.75" />
+                  
+                  {/* Top Origin Points from bottom center of the 3 cards */}
+                  <circle cx="100" cy="2" r="3" fill="#e95126" />
+                  <circle cx="300" cy="2" r="3.5" fill="#e95126" />
+                  <circle cx="500" cy="2" r="3" fill="#e95126" />
+
+                  {/* Destination Convergence Point */}
+                  <circle cx="300" cy="48" r="4" fill="#e95126" />
                 </svg>
               </div>
 
@@ -475,9 +471,9 @@ export default function PurposeSection({ onOpenDemo }) {
                 {/* Connected Record Card (7 cols) */}
                 <div className="md:col-span-7 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-[#e95126]/30 shadow-xl space-y-3.5 relative flex flex-col justify-center min-h-[180px] sm:min-h-[210px]">
                   
-                  {/* Glowing Top Pill Badge */}
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#e95126] text-white px-3.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest shadow-md flex items-center gap-1.5 whitespace-nowrap">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+                  {/* Top Pill Badge */}
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#e95126] text-white px-3.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest shadow-sm flex items-center gap-1.5 whitespace-nowrap">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white" />
                     <span>One Connected Record</span>
                   </div>
 
@@ -488,7 +484,7 @@ export default function PurposeSection({ onOpenDemo }) {
                   {/* 5 Connected Node Pipeline Icons */}
                   <div className="flex items-center justify-between pt-1 px-0.5 sm:px-1 relative overflow-x-auto">
                     {/* Connecting Bar */}
-                    <div className="absolute left-3 right-3 top-3.5 h-[2px] bg-gradient-to-r from-[#e95126]/30 via-[#e95126] to-[#e95126]/30 -z-0" />
+                    <div className="absolute left-3 right-3 top-3.5 h-[1.5px] bg-[#d8d9cf] -z-0" />
 
                     {[
                       { label: 'Donor', icon: <User className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> },
@@ -500,7 +496,7 @@ export default function PurposeSection({ onOpenDemo }) {
                       <div key={step.label} className="flex flex-col items-center gap-1 z-10 shrink-0">
                         <div className={`w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all ${
                           idx === 2 || idx === 4 
-                            ? 'bg-[#e95126] text-white shadow-md ring-2 ring-[#e95126]/30 scale-105' 
+                            ? 'bg-[#e95126] text-white shadow-sm ring-2 ring-[#e95126]/30 scale-105' 
                             : 'bg-white text-[#222720] border border-[#d8d9cf]'
                         }`}>
                           {step.icon}

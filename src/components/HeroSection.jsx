@@ -127,38 +127,46 @@ export default function HeroSection({ onOpenDemo }) {
   return (
     <section 
       id="hero-section" 
-      className="relative min-h-[92vh] sm:min-h-screen px-4 sm:px-6 md:px-12 max-w-[1360px] mx-auto flex flex-col justify-between pt-20 xs:pt-24 sm:pt-28 lg:pt-32 pb-4 sm:pb-6 overflow-visible"
+      className="relative min-h-[100dvh] min-h-screen px-4 sm:px-6 md:px-12 max-w-[1360px] mx-auto flex flex-col justify-between pt-16 xxs:pt-18 xs:pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-3 xs:pb-4 sm:pb-6 overflow-hidden lg:overflow-visible"
     >
       {/* 1. Top Section: 2-Column Split Horizontally Aligned (Text & Impact Images) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-center w-full my-auto pt-2 pb-0 sm:pt-4 sm:pb-0">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 xs:gap-6 sm:gap-8 lg:gap-12 items-center w-full my-auto pt-1 xs:pt-1.5 sm:pt-2 lg:pt-3 pb-0 flex-1">
         
         {/* Left Side: Headline & Copy Centered Vertically - Emerging smoothly from inside the images */}
-        <div className="lg:col-span-6 space-y-4 sm:space-y-6 z-10 flex flex-col justify-center pl-0 lg:pl-2 overflow-visible text-left">
+        <div className="lg:col-span-6 space-y-3.5 xs:space-y-4 sm:space-y-6 z-10 flex flex-col justify-center pl-0 lg:pl-2 overflow-visible text-left">
           
           <motion.h1 
-            initial={{ opacity: 0, x: 80, scale: 0.96 }}
-            animate={isLoaded ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: 80, scale: 0.96 }}
-            transition={{ duration: 0.85, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-[72px] xl:text-8xl font-medium tracking-tight text-[#222720] leading-[1.06] sm:leading-[1.02] transform-gpu"
+            initial={{ opacity: 0, y: 24, scale: 0.95 }}
+            animate={isLoaded ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 24, scale: 0.95 }}
+            transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="text-[34px] xxs:text-[36px] xs:text-[40px] sm:text-[52px] md:text-6xl lg:text-[72px] xl:text-8xl font-medium tracking-tight text-[#222720] leading-[1.08] sm:leading-[1.06] lg:leading-[1.02] transform-gpu whitespace-nowrap lg:whitespace-normal"
           >
-            Good <br />
-            deserves <br />
-            <span className="text-[#e95126] relative inline-block hover:scale-105 transition-transform cursor-pointer">
+            Good <br className="hidden lg:inline" />
+            deserves <br className="hidden lg:inline" />
+            <motion.span 
+              whileHover={{ scale: 1.04 }}
+              className="text-[#e95126] relative inline-block transition-transform cursor-pointer"
+            >
               better.
-              <span className="text-[#e95126] text-3xl xs:text-4xl sm:text-6xl inline-block ml-2 sm:ml-3 animate-spin-slow align-middle" aria-hidden="true">
+              <motion.span 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
+                className="text-[#e95126] text-[32px] xxs:text-[34px] xs:text-[38px] sm:text-[48px] lg:text-6xl inline-block ml-1.5 xs:ml-2 sm:ml-3 align-middle" 
+                aria-hidden="true"
+              >
                 ✳
-              </span>
-            </span>
+              </motion.span>
+            </motion.span>
           </motion.h1>
 
           {/* Description Paragraph */}
           <motion.div 
-            initial={{ opacity: 0, x: 60 }}
-            animate={isLoaded ? { opacity: 1, x: 0 } : { opacity: 0, x: 60 }}
-            transition={{ duration: 0.8, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            transition={{ duration: 0.75, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
             className="space-y-2 max-w-md transform-gpu"
           >
-            <p className="text-sm xs:text-base sm:text-lg text-[#222720] leading-relaxed font-normal">
+            <p className="text-xs xs:text-sm sm:text-base lg:text-lg text-[#222720] leading-relaxed font-normal">
               Ekhum connects fundraising, verification, disbursals and outcome reporting in one platform.
             </p>
           </motion.div>
@@ -168,14 +176,14 @@ export default function HeroSection({ onOpenDemo }) {
             initial={{ opacity: 0, x: 40 }}
             animate={isLoaded ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
             transition={{ duration: 0.75, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-wrap items-center gap-3 sm:gap-5 pt-1 relative z-20 transform-gpu"
+            className="flex flex-wrap items-center gap-3 sm:gap-5 pt-0.5 relative z-20 transform-gpu"
           >
             <button
               onClick={onOpenDemo}
-              className="group relative px-6 sm:px-7 py-3 sm:py-3.5 rounded-full bg-[#222720] text-white hover:bg-[#e95126] font-medium text-xs sm:text-sm transition-all duration-300 transform active:scale-95 hover:-translate-y-0.5 flex items-center justify-center gap-3 sm:gap-4 shadow-lg shadow-[#222720]/10 ring-2 ring-[#e95126]/30 cursor-pointer"
+              className="group relative px-5 xs:px-6 sm:px-7 py-2.5 xs:py-3 sm:py-3.5 rounded-full bg-[#222720] text-white hover:bg-[#e95126] font-medium text-xs sm:text-sm transition-all duration-300 transform active:scale-95 hover:-translate-y-0.5 flex items-center justify-center gap-2.5 xs:gap-3 sm:gap-4 shadow-lg shadow-[#222720]/10 ring-2 ring-[#e95126]/30 cursor-pointer min-h-[42px]"
             >
               <span>Book a demo</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-3.5 h-3.5 xs:w-4 xs:h-4 group-hover:translate-x-1 transition-transform" />
             </button>
 
             <a
@@ -192,7 +200,7 @@ export default function HeroSection({ onOpenDemo }) {
         </div>
 
         {/* Right Side: Centered 3D Stacked Glossy Glass Cards Deck Visual */}
-        <div className="lg:col-span-6 relative flex items-center justify-center lg:justify-start w-full overflow-visible">
+        <div className="lg:col-span-6 relative flex items-center justify-center lg:justify-start w-full overflow-visible mt-0 lg:mt-0">
           <HeroStackedDeck 
             isLoaded={isLoaded} 
             activeStage={activeStage} 
@@ -202,88 +210,58 @@ export default function HeroSection({ onOpenDemo }) {
 
       </div>
 
-      {/* 2. Platform Journey Pipeline — Completely Spanning Edge-to-Edge with Synchronized Pulse */}
-      <div className="w-full mt-3 sm:mt-6 lg:mt-7 pt-1 relative z-20 overflow-visible">
+      {/* 2. Platform Journey Pipeline — Positioned at the end of Hero Section */}
+      <div className="w-full mt-auto pt-7 xs:pt-8 sm:pt-11 lg:pt-9 relative z-20 overflow-hidden sm:overflow-visible">
         
-        {/* SVG Flowing Wave Path with Traveling Light Pulse */}
-        <div className="relative w-full h-20 xs:h-24 sm:h-28 overflow-visible">
+        {/* SVG Flowing Wave Path with Traveling Indicator */}
+        <div className="relative w-full h-24 xs:h-26 sm:h-28 lg:h-28 overflow-hidden sm:overflow-visible">
           
-          <div className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
-            <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 1200 90">
+          <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden sm:overflow-visible">
+            <svg className="w-full h-full overflow-hidden sm:overflow-visible" preserveAspectRatio="none" viewBox="0 0 1200 90">
               <defs>
-                {/* Shining Radiant Gradient with Specular Highlights */}
-                <linearGradient id="risingWaveGlow" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#e95126" stopOpacity="0.9" />
-                  <stop offset="25%" stopColor="#ff7a45" stopOpacity="1" />
-                  <stop offset="50%" stopColor="#ff9a6c" stopOpacity="1" />
-                  <stop offset="75%" stopColor="#ff7a45" stopOpacity="1" />
-                  <stop offset="100%" stopColor="#e95126" stopOpacity="0.9" />
-                </linearGradient>
-                <linearGradient id="waveCoreShimmer" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#ffffff" stopOpacity="0.4" />
-                  <stop offset="50%" stopColor="#ffffff" stopOpacity="0.85" />
-                  <stop offset="100%" stopColor="#ffffff" stopOpacity="0.4" />
+                <linearGradient id="risingWaveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#e95126" stopOpacity="0.75" />
+                  <stop offset="50%" stopColor="#e95126" stopOpacity="1" />
+                  <stop offset="100%" stopColor="#e95126" stopOpacity="0.75" />
                 </linearGradient>
               </defs>
 
-              {/* Deep Ambient Neon Aura Glow */}
+              {/* Underlying Track */}
               <path
                 d={wavePathD}
                 fill="none"
-                stroke="#e95126"
-                strokeWidth="12"
-                strokeOpacity="0.22"
-                className="blur-md"
-              />
-
-              {/* Secondary Vibrant Glow */}
-              <path
-                d={wavePathD}
-                fill="none"
-                stroke="#ff7a45"
-                strokeWidth="6"
-                strokeOpacity="0.4"
-                className="blur-sm"
+                stroke="#d8d9cf"
+                strokeWidth="2"
+                strokeDasharray="4 4"
+                strokeOpacity="0.6"
               />
 
               {/* Main Shining Solid Wave Line */}
               <path
                 d={wavePathD}
                 fill="none"
-                stroke="url(#risingWaveGlow)"
-                strokeWidth="3.2"
-                strokeLinecap="round"
-              />
-
-              {/* Crisp Inner Laser Shimmer Highlight */}
-              <path
-                d={wavePathD}
-                fill="none"
-                stroke="url(#waveCoreShimmer)"
-                strokeWidth="1"
+                stroke="url(#risingWaveGradient)"
+                strokeWidth="2.5"
                 strokeLinecap="round"
               />
 
               {/* Left Terminal Point at exact 0 edge */}
               <g>
-                <circle cx="0" cy="45" r="8" fill="#e95126" fillOpacity="0.35" className="animate-ping" />
-                <circle cx="0" cy="45" r="5" fill="#e95126" stroke="#ffffff" strokeWidth="2" />
+                <circle cx="0" cy="45" r="4" fill="#e95126" />
               </g>
 
               {/* Right Terminal Point at exact 1200 edge */}
               <g>
-                <circle cx="1200" cy="45" r="8" fill="#e95126" fillOpacity="0.35" className="animate-ping" />
-                <circle cx="1200" cy="45" r="5" fill="#e95126" stroke="#ffffff" strokeWidth="2" />
+                <circle cx="1200" cy="45" r="4" fill="#e95126" />
               </g>
 
-              {/* Travelling Light Pulse Ball — synchronized with slideshow */}
+              {/* Travelling Light Indicator — synchronized with slideshow */}
               <motion.circle
                 ref={dotRef}
-                r="5.5"
+                r="5"
                 fill="#ffffff"
                 stroke="#e95126"
                 strokeWidth="2.5"
-                filter="drop-shadow(0px 0px 8px #e95126)"
                 style={{
                   offsetPath: `path('${wavePathD}')`,
                   offsetDistance,
@@ -308,27 +286,22 @@ export default function HeroSection({ onOpenDemo }) {
                   className="absolute flex flex-col items-center group cursor-pointer touch-manipulation"
                   onClick={() => handleSelectStage(node.id)}
                 >
-                  {/* Active Ring Pulse Glow */}
-                  {isActiveNode && (
-                    <span className="animate-ping absolute -top-1 w-9 h-9 xs:w-11 xs:h-11 rounded-full bg-[#e95126]/30 opacity-75 pointer-events-none" />
-                  )}
-
                   {/* Icon Button Centered Directly on the Wave Line */}
                   <button
-                    className={`w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 shadow-md ${
+                    className={`w-7.5 h-7.5 xs:w-8.5 xs:h-8.5 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-sm ${
                       isActiveNode 
-                        ? 'bg-[#e95126] text-white scale-110 shadow-lg shadow-[#e95126]/40 ring-4 ring-[#e95126]/20' 
+                        ? 'bg-[#e95126] text-white scale-105 shadow-md ring-2 ring-[#e95126]/30' 
                         : 'bg-white text-[#e95126] border border-[#d8d9cf] hover:border-[#e95126] hover:scale-105'
                     }`}
                     aria-label={`Select stage ${node.label}`}
                   >
                     {React.cloneElement(node.icon, {
-                      className: `w-3.5 h-3.5 sm:w-4 sm:h-4 ${isActiveNode ? 'text-white' : 'text-[#e95126]'}`,
+                      className: `w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4 ${isActiveNode ? 'text-white' : 'text-[#e95126]'}`,
                     })}
                   </button>
 
                   {/* Text Label Cleanly Below Button */}
-                  <span className={`mt-1 xs:mt-1.5 text-[10px] xs:text-[11px] sm:text-xs font-semibold tracking-wide transition-colors whitespace-nowrap ${
+                  <span className={`mt-0.5 xs:mt-1 sm:mt-1.5 text-[9px] xs:text-[10px] sm:text-xs font-semibold tracking-wide transition-colors whitespace-nowrap ${
                     isActiveNode ? 'text-[#e95126] font-bold' : 'text-[#66695f] group-hover:text-[#222720]'
                   }`}>
                     {node.label}
@@ -341,20 +314,20 @@ export default function HeroSection({ onOpenDemo }) {
         </div>
 
         {/* Bottom Bar: Scroll Indicator & Synchronized Stage Caption */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 pt-3 sm:pt-4 mt-1 sm:mt-2 border-t border-[#d8d9cf]/50">
+        <div className="flex items-center justify-between gap-2 pt-2.5 sm:pt-4 mt-1 sm:mt-2 border-t border-[#d8d9cf]/50 text-[10px] xs:text-[11px] sm:text-xs">
           
           {/* Scroll Prompt */}
-          <div className="flex items-center gap-2.5 text-[11px] xs:text-xs text-[#66695f]">
-            <span className="w-[1px] h-4 sm:h-5 bg-[#d8d9cf] inline-block" />
-            <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 xs:gap-2 text-[#66695f]">
+            <span className="w-[1px] h-3.5 sm:h-5 bg-[#d8d9cf] inline-block" />
+            <div className="flex items-center gap-1.5 xs:gap-2">
               <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#222720]" />
-              <span className="font-medium">Scroll to explore platform</span>
+              <span className="font-medium truncate max-w-[130px] xs:max-w-none">Scroll to explore</span>
             </div>
-            <ChevronDown className="w-3.5 h-3.5 text-[#e95126] animate-bounce ml-0.5" />
+            <ChevronDown className="w-3.5 h-3.5 text-[#e95126] animate-bounce ml-0.5 shrink-0" />
           </div>
 
           {/* Active Stage Caption Synchronized with Cards */}
-          <div className="flex items-center gap-2 text-[11px] xs:text-xs">
+          <div className="flex items-center gap-1.5 xs:gap-2 shrink-0">
             <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#e95126] animate-pulse shrink-0" />
             <span className="font-bold text-[#e95126] uppercase tracking-wider whitespace-nowrap">
               {stageCaptions[activeStage]?.stage || '01 / COLLECT'}

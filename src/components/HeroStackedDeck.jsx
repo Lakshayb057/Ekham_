@@ -69,17 +69,35 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
 
   const currentCard = cards[activeStage] || cards[0];
 
-  // Dynamic responsive offsets based on viewport width to prevent clipping on mobile
-  const getResponsiveOffsets = () => {
-    if (windowWidth < 400) return [0, 20, 40, 60];
+  // Dynamic responsive horizontal & vertical offsets for a rich, visibly fanned 3D deck
+  const getResponsiveXOffsets = () => {
+    if (windowWidth < 380) return [0, 20, 40, 60];
     if (windowWidth < 500) return [0, 26, 52, 78];
-    if (windowWidth < 768) return [0, 45, 90, 135];
-    if (windowWidth < 1024) return [0, 65, 130, 195];
+    if (windowWidth < 768) return [0, 34, 68, 102];
+    if (windowWidth < 1024) return [0, 48, 96, 144];
     if (windowWidth < 1280) return [0, 80, 160, 240];
     return [0, 95, 190, 280];
   };
 
-  const offsets = getResponsiveOffsets();
+  const getResponsiveYOffsets = () => {
+    if (windowWidth < 380) return [0, 10, 20, 30];
+    if (windowWidth < 500) return [0, 14, 28, 42];
+    if (windowWidth < 768) return [0, 16, 32, 48];
+    if (windowWidth < 1024) return [0, 12, 24, 36];
+    return [0, 2, 4, 6];
+  };
+
+  const getResponsiveRotations = () => {
+    if (windowWidth < 380) return [0, 2.8, 5.6, 8.4];
+    if (windowWidth < 500) return [0, 3.2, 6.4, 9.6];
+    if (windowWidth < 768) return [0, 2.8, 5.6, 8.4];
+    if (windowWidth < 1024) return [0, 2.2, 4.4, 6.6];
+    return [0, 0.8, 1.6, 2.4];
+  };
+
+  const xOffsets = getResponsiveXOffsets();
+  const yOffsets = getResponsiveYOffsets();
+  const rotations = getResponsiveRotations();
 
   return (
     <div className="relative w-full flex flex-col items-center lg:items-start justify-center overflow-visible select-none py-2">
@@ -87,21 +105,22 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
       {/* Photographic Glossy Glass Cards Deck */}
       <div 
         ref={containerRef}
-        className="relative w-full max-w-[320px] xs:max-w-[360px] sm:max-w-[480px] md:max-w-[560px] lg:max-w-[640px] h-[300px] xs:h-[330px] sm:h-[380px] lg:h-[420px] flex items-center justify-center lg:justify-start z-10 will-change-transform"
+        className="relative w-[305px] xs:w-[355px] sm:w-[410px] md:w-[480px] lg:w-full lg:max-w-[640px] h-[415px] xs:h-[475px] sm:h-[495px] md:h-[500px] lg:h-[420px] mx-auto lg:mx-0 flex items-center justify-start z-10 will-change-transform"
         style={{
           transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        <div className="relative w-full h-full flex items-center justify-center lg:justify-start">
+        <div className="relative w-full h-full">
           {cards.map((card, idx) => {
             const order = (idx - activeStage + cards.length) % cards.length;
             const isActive = idx === activeStage;
 
-            const targetX = offsets[order] ?? order * (offsets[1] || 25);
-            const scale = isActive ? 1.02 : Math.max(0.86, 1 - order * 0.04);
+            const targetX = xOffsets[order] ?? order * 20;
+            const targetY = isActive ? -6 : (yOffsets[order] ?? order * 6);
+            const rotate = isActive ? 0 : (rotations[order] ?? order * 1.5);
+            const scale = isActive ? 1.02 : Math.max(0.85, 1 - order * 0.04);
             const zIndex = 50 - order * 10;
-            const opacity = isActive ? 1 : Math.max(0.4, 1 - order * 0.18);
-            const rotate = isActive ? 0 : order * 0.8;
+            const opacity = isActive ? 1 : Math.max(0.48, 1 - order * 0.16);
 
             return (
               <motion.div
@@ -109,21 +128,23 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
                 initial={{ x: -20, scale: 0.88, opacity: 0 }}
                 animate={isLoaded ? {
                   x: targetX,
+                  y: targetY,
                   scale,
                   opacity,
                   zIndex,
-                  y: isActive ? -6 : order * 2,
                   rotate,
                 } : { x: -20, scale: 0.88, opacity: 0 }}
                 transition={{
-                  duration: 0.65,
-                  ease: [0.22, 1, 0.36, 1],
+                  type: 'spring',
+                  stiffness: 280,
+                  damping: 24,
+                  mass: 0.8,
                 }}
                 onClick={() => setActiveStage && setActiveStage(idx)}
-                className={`absolute top-0 left-0 w-[215px] xs:w-[245px] sm:w-[300px] md:w-[325px] lg:w-[340px] xl:w-[365px] h-[280px] xs:h-[310px] sm:h-[360px] md:h-[385px] lg:h-[400px] xl:h-[415px] rounded-2xl overflow-hidden border origin-bottom-left cursor-pointer transition-shadow duration-500 select-none transform-gpu touch-manipulation ${
+                className={`absolute top-0 left-0 w-[245px] xs:w-[275px] sm:w-[305px] md:w-[335px] lg:w-[340px] xl:w-[365px] h-[385px] xs:h-[440px] sm:h-[460px] md:h-[470px] lg:h-[400px] xl:h-[415px] rounded-2xl sm:rounded-3xl overflow-hidden border origin-bottom-left cursor-pointer transition-shadow duration-300 select-none transform-gpu touch-manipulation ${
                   isActive 
-                    ? 'border-[#e95126]/80 shadow-[0_16px_36px_-10px_rgba(233,81,38,0.35)] ring-2 ring-[#e95126]' 
-                    : 'border-white/30 shadow-lg'
+                    ? 'border-[#e95126] shadow-[0_16px_36px_rgba(34,39,32,0.22)] ring-1 ring-[#e95126]/50' 
+                    : 'border-white/50 shadow-md'
                 }`}
                 style={{ zIndex }}
               >
@@ -142,7 +163,7 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35, delay: 0.1 }}
-                    className="absolute top-3 xs:top-4 left-3.5 xs:left-5 sm:left-6 z-40"
+                    className="absolute top-3 xs:top-3.5 sm:top-4 left-3.5 xs:left-4.5 sm:left-6 z-40"
                   >
                     <div className="inline-flex items-center gap-1.5 xs:gap-2 px-2.5 xs:px-3.5 py-1 xs:py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-[#e95126]/30 shadow-md text-[10px] xs:text-[11px] font-bold uppercase tracking-widest text-[#222720]">
                       <span className="w-1.5 h-1.5 xs:w-2 xs:h-2 rounded-full bg-[#e95126] animate-pulse" />
@@ -170,7 +191,7 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
                 <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-white/80 to-transparent pointer-events-none z-20" />
 
                 {/* Glass Inner Frame Ring */}
-                <div className="absolute inset-0 rounded-2xl border border-white/20 pointer-events-none z-20" />
+                <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border border-white/20 pointer-events-none z-20" />
 
                 {/* Main Quote Overlay */}
                 {isActive && (
@@ -178,9 +199,9 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: 0.12 }}
-                    className="absolute bottom-4 xs:bottom-5 sm:bottom-7 left-3.5 xs:left-5 sm:left-6 right-3.5 xs:right-5 sm:right-6 z-30 flex items-end justify-between gap-2"
+                    className="absolute bottom-3.5 xs:bottom-4.5 sm:bottom-7 left-3.5 xs:left-4.5 sm:left-6 right-3.5 xs:right-4.5 sm:right-6 z-30 flex items-end justify-between gap-1.5 xs:gap-2"
                   >
-                    <h3 className="text-sm xs:text-base sm:text-lg lg:text-xl font-medium tracking-tight text-white leading-snug drop-shadow-lg max-w-[220px] xs:max-w-[250px] sm:max-w-[270px]">
+                    <h3 className="text-sm xs:text-base sm:text-lg lg:text-xl font-medium tracking-tight text-white leading-snug drop-shadow-lg max-w-[195px] xs:max-w-[240px] sm:max-w-[270px]">
                       {card.title}
                     </h3>
                     

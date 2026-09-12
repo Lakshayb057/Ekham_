@@ -26,27 +26,19 @@ export default function DonationJourney({ onOpenDemo }) {
     offset: ['start start', 'end end']
   });
 
-  // Snappy, effortless spring physics: responsive to wheel ticks without drag or overshoot
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 65,
-    damping: 24,
-    mass: 0.45,
-    restDelta: 0.0005,
-  });
-
-  // Track active stage cleanly from smoothProgress with balanced thresholds
-  useMotionValueEvent(smoothProgress, 'change', (latest) => {
+  // Direct scroll tracking across section height for smooth 3-stage scroll progression
+  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
     let stageIndex = 0;
-    if (latest < 0.28) {
-      stageIndex = 0; // Collect
-    } else if (latest < 0.58) {
-      stageIndex = 1; // Verify
-    } else if (latest < 0.86) {
-      stageIndex = 2; // Disburse
+    if (latest < 0.25) {
+      stageIndex = 0; // 01 Collect (0 - 25%)
+    } else if (latest < 0.50) {
+      stageIndex = 1; // 02 Verify (25% - 50%)
+    } else if (latest < 0.76) {
+      stageIndex = 2; // 03 Disburse (50% - 76%) -> Held firmly so it never skips
     } else {
-      stageIndex = 3; // Prove
+      stageIndex = 3; // 04 Prove (76% - 100%)
     }
-    setActiveStage((prev) => (prev !== stageIndex ? stageIndex : prev));
+    setActiveStage(stageIndex);
   });
 
   // Programmatically scroll the page to a specific stage checkpoint
@@ -57,8 +49,8 @@ export default function DonationJourney({ onOpenDemo }) {
     const containerTop = rect.top + scrollTop;
     const totalHeight = containerRef.current.offsetHeight - window.innerHeight;
     
-    // Smooth target checkpoints
-    const checkpoints = [0.05, 0.38, 0.68, 0.95];
+    // Balanced checkpoints for the 4 stages
+    const checkpoints = [0.05, 0.35, 0.63, 0.88];
     const targetScroll = containerTop + totalHeight * (checkpoints[stageIdx] ?? 0);
     
     window.scrollTo({
@@ -164,31 +156,165 @@ export default function DonationJourney({ onOpenDemo }) {
     <section 
       id="platform" 
       ref={containerRef}
-      className="relative bg-[#f5f3ed] select-none min-h-[380vh]"
+      className="content-auto relative bg-[#f5f3ed] select-none min-h-[300vh] xs:min-h-[320vh] sm:min-h-[340vh] lg:min-h-[360vh]"
     >
       {/* Background Ambient Depth */}
       <div className="absolute inset-0 pointer-events-none opacity-40">
-        <div className="absolute top-1/4 left-10 w-[500px] h-[500px] bg-[#e3e8dc]/40 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-10 w-[600px] h-[600px] bg-[#eddcd2]/30 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-10 w-[500px] h-[500px] bg-[#e3e8dc]/30 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-10 w-[600px] h-[600px] bg-[#eddcd2]/25 rounded-full blur-3xl" />
       </div>
 
       {/* Sticky Viewport Container Pinned While Scrolling */}
-      <div className="sticky top-14 sm:top-18 lg:top-20 w-full max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 py-3 sm:py-6 flex flex-col justify-center min-h-[calc(100dvh-56px)] sm:min-h-[calc(100vh-80px)] relative z-10">
+      <div className="sticky top-14 sm:top-16 lg:top-20 w-full max-w-[1360px] mx-auto px-5 xs:px-6 sm:px-8 md:px-12 pt-6 pb-6 xs:pt-8 xs:pb-8 sm:pt-10 sm:pb-10 lg:py-6 flex flex-col justify-center h-[calc(100svh-3.5rem)] sm:h-[calc(100vh-4rem)] lg:h-[calc(100vh-5rem)] z-10 overflow-hidden">
         
         {/* ========================================================
-            TWO-COLUMN EDITORIAL COMPOSITION (BALANCED & ALIGNED)
+            1. MOBILE & TABLET PINNED SCROLL EXPERIENCE (< lg)
+               Compact, Premium, Unified Editorial Visual Story
            ======================================================== */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center w-full">
+        <div className="block lg:hidden w-full max-w-[430px] mx-auto h-full flex flex-col justify-between gap-3 xs:gap-3.5">
           
-          {/* ========================================================
-              LEFT COLUMN — CLEAN CARDLESS EDITORIAL LIST & GLOWING ACCENTS
-             ======================================================== */}
-          <div className="lg:col-span-6 space-y-4 sm:space-y-6 flex flex-col justify-center">
+          {/* Top Header & Segmented Navigation Block */}
+          <div className="space-y-2.5 xs:space-y-3 shrink-0">
+            {/* Section Eyebrow & Larger Heading */}
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-1.5 text-[10px] xs:text-xs font-bold uppercase tracking-widest text-[#e95126]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
+                <span>02 / The Contribution Journey</span>
+              </div>
+
+              <button
+                onClick={() => setIsContinuityModalOpen(true)}
+                className="text-left group cursor-pointer block focus:outline-none"
+              >
+                <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold tracking-tight text-[#222720] leading-tight group-hover:text-[#e95126] transition-colors flex items-center gap-2">
+                  <span>Good deserves <span className="text-[#e95126]">continuity.</span></span>
+                  <ArrowUpRight className="w-4 h-4 xs:w-5 xs:h-5 text-[#e95126] shrink-0" />
+                </h2>
+              </button>
+            </div>
+
+            {/* Clean Horizontal 4-Stage Segmented Bar */}
+            <div className="grid grid-cols-4 p-1 bg-[#eae8de]/80 backdrop-blur-xs rounded-xl border border-[#d8d9cf]/80 gap-1">
+              {stages.map((stg, idx) => {
+                const isActive = activeStage === idx;
+
+                return (
+                  <button
+                    key={stg.id}
+                    onClick={() => scrollToStage(idx)}
+                    className={`py-1.5 px-1 rounded-lg text-center transition-all duration-300 flex flex-col items-center justify-center touch-manipulation cursor-pointer ${
+                      isActive 
+                        ? 'bg-white text-[#e95126] shadow-xs font-bold ring-1 ring-[#e95126]/20' 
+                        : 'text-[#66695f] hover:text-[#222720]'
+                    }`}
+                  >
+                    <span className="text-[9px] font-mono leading-tight">
+                      {stg.step}
+                    </span>
+                    <span className="text-[11px] font-semibold leading-tight truncate w-full">
+                      {stg.name}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Clean Animated Text Block Directly Above Image */}
+          <div className="space-y-1.5 shrink-0 px-1">
+            {/* Stage Tag and Counter */}
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] xs:text-[11px] font-mono font-bold uppercase tracking-wider text-[#e95126] bg-[#e95126]/10 px-2.5 py-0.5 rounded-full">
+                {stages[activeStage].stageTag}
+              </span>
+
+              <span className="text-[10px] xs:text-[11px] font-mono text-[#66695f] bg-[#eae8de] px-2 py-0.5 rounded">
+                0{activeStage + 1} / 04
+              </span>
+            </div>
+
+            {/* Smooth Animated Text Above Image */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`story-text-${stages[activeStage].id}`}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="pt-0.5"
+              >
+                <h3 className="text-base xs:text-lg sm:text-xl font-bold text-[#222720] tracking-tight leading-snug">
+                  "{stages[activeStage].supporting}"
+                </h3>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Enlarged Prominent Image Container */}
+          <div className="relative w-full aspect-[4/3] xs:aspect-[16/11] rounded-2xl overflow-hidden shadow-lg border border-black/10 bg-[#1c201a] shrink-0">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`story-img-${stages[activeStage].id}`}
+                initial={{ opacity: 0, scale: 1.04 }}
+                animate={{ opacity: 1, scale: 1.0 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-0 w-full h-full"
+              >
+                <img
+                  src={stages[activeStage].photo}
+                  alt={stages[activeStage].alt}
+                  className="w-full h-full object-cover object-center transform-gpu"
+                  loading="eager"
+                  decoding="async"
+                />
+
+                {/* Subtle Vignette for Overlay Contrast */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/10 pointer-events-none" />
+
+                {/* Overlay Metadata Labels */}
+                <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-[10px] xs:text-[11px]">
+                  <div className="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-xs px-2.5 py-1 rounded-md border border-white/15 font-medium truncate max-w-[210px]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
+                    <span className="truncate">{stages[activeStage].contextLabel}</span>
+                  </div>
+
+                  <span className="font-bold text-[#ff9a6c] bg-black/60 backdrop-blur-xs px-2 py-1 rounded-md border border-white/15 uppercase tracking-wider text-[9px] xs:text-[10px]">
+                    {stages[activeStage].systemRef}
+                  </span>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Bottom Details Footer */}
+          <div className="flex items-center justify-between pt-0.5 shrink-0 text-[11px] xs:text-xs px-1">
+            <button
+              onClick={() => setIsContinuityModalOpen(true)}
+              className="inline-flex items-center gap-1 font-bold text-[#e95126] hover:underline cursor-pointer"
+            >
+              <span>Platform architecture</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+            <span className="text-[#66695f] font-mono text-[10px] xs:text-[11px]">
+              Stage 0{activeStage + 1} of 04
+            </span>
+          </div>
+
+        </div>
+
+        {/* ========================================================
+            2. DESKTOP APPROVED 2-COLUMN STICKY SCROLL VIEW (>= lg)
+           ======================================================== */}
+        <div className="hidden lg:grid lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full my-auto">
+          
+          {/* LEFT COLUMN — CLEAN CARDLESS EDITORIAL LIST */}
+          <div className="lg:col-span-6 flex flex-col justify-center">
             
-            {/* Top Heading Block */}
-            <div className="space-y-2">
+            {/* Top Heading Block with Increased Bottom Margin */}
+            <div className="space-y-2 mb-6 lg:mb-8">
               <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
-                <span className="w-2 h-2 rounded-full bg-[#e95126] animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-[#e95126]" />
                 <span>02 / The Contribution Journey</span>
               </div>
 
@@ -203,14 +329,10 @@ export default function DonationJourney({ onOpenDemo }) {
                   <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 text-[#e95126] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all shrink-0" />
                 </h2>
               </button>
-
-              <p className="text-xs xs:text-sm sm:text-base text-[#66695f] font-normal leading-relaxed max-w-md pt-0.5">
-                Ekhum carries each contribution through four connected stages, preserving the context and records needed at every step.
-              </p>
             </div>
 
             {/* Vertically Aligned Cardless Editorial Stage List */}
-            <div className="space-y-1 sm:space-y-1.5 pt-1 sm:pt-2 border-t border-[#d8d9cf]/80 relative">
+            <div className="space-y-1.5 sm:space-y-2 pt-2 border-t border-[#d8d9cf]/80 relative">
               {/* Subtle connecting vertical track */}
               <div className="absolute left-[24px] sm:left-[26px] top-6 bottom-6 w-[1.5px] bg-[#d8d9cf]/60 pointer-events-none" />
 
@@ -238,11 +360,11 @@ export default function DonationJourney({ onOpenDemo }) {
                     )}
 
                     <div className="flex items-center justify-between gap-2 sm:gap-4 pl-1">
-                      {/* Left: Glowing Number Badge + Name */}
+                      {/* Left: Number Badge + Name */}
                       <div className="flex items-center gap-2 sm:gap-3">
                         <span className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-bold font-mono transition-all duration-300 relative z-10 ${
                           isActive 
-                            ? 'bg-[#e95126] text-white shadow-[0_0_12px_rgba(233,81,38,0.7)] ring-2 ring-[#e95126] scale-105' 
+                            ? 'bg-[#e95126] text-white shadow-sm ring-2 ring-[#e95126]/40 scale-105' 
                             : 'bg-[#e5e5dc] text-[#66695f] group-hover:bg-[#dadad0]'
                         }`}>
                           {stg.step}
@@ -310,7 +432,7 @@ export default function DonationJourney({ onOpenDemo }) {
             </div>
 
             {/* Bottom Controls / Stepper */}
-            <div className="flex items-center justify-between pt-1 sm:pt-2 border-t border-[#d8d9cf]/80">
+            <div className="flex items-center justify-between pt-3 sm:pt-4 mt-2 sm:mt-3 border-t border-[#d8d9cf]/80">
               <div className="text-[11px] sm:text-xs text-[#66695f] font-serif italic">
                 Tap or scroll to explore stages.
               </div>
@@ -344,9 +466,7 @@ export default function DonationJourney({ onOpenDemo }) {
 
           </div>
 
-          {/* ========================================================
-              RIGHT COLUMN — 100% CRISP, GLOSSY PRESENTATION
-             ======================================================== */}
+          {/* RIGHT COLUMN — 100% CRISP, GLOSSY PRESENTATION WITH NOTICEABLE ANIMATIONS */}
           <div className="lg:col-span-6 relative w-full flex items-center justify-center">
             
             {/* The Unified Visual Stage Frame */}
@@ -357,17 +477,17 @@ export default function DonationJourney({ onOpenDemo }) {
               transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
               className="relative w-full max-w-[420px] sm:max-w-[490px] lg:max-w-[520px] mx-auto h-[260px] xs:h-[300px] sm:h-[380px] md:h-[420px] lg:h-[480px] xl:h-[500px] rounded-2xl overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.25)] border border-[#2b3327]/60 bg-[#1c201a]"
             >
-              {/* Active Stage Image & Overlays: 100% Crystal-Clear, High-Contrast & Gentle on Eyes */}
+              {/* Active Stage Image & Overlays */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={stages[activeStage].id}
-                  initial={{ opacity: 0, scale: 1.02 }}
+                  initial={{ opacity: 0, scale: 1.04 }}
                   animate={{ opacity: 1, scale: 1.0 }}
-                  exit={{ opacity: 0, scale: 0.99 }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ opacity: 0, scale: 0.98 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   className="absolute inset-0 w-full h-full flex flex-col justify-between p-5 sm:p-6 rounded-xl overflow-hidden"
                 >
-                  {/* Background Full-Bleed Photograph: Natural, Sharp & Crisp */}
+                  {/* Background Full-Bleed Photograph */}
                   <img
                     src={stages[activeStage].photo}
                     alt={stages[activeStage].alt}
@@ -376,48 +496,53 @@ export default function DonationJourney({ onOpenDemo }) {
                     decoding="async"
                   />
 
-                  {/* Refined Deep Photographic Vignette for High-Contrast Text Legibility */}
+                  {/* Refined Deep Photographic Vignette */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#151913]/95 via-[#151913]/40 to-[#151913]/25 pointer-events-none" />
 
-                  {/* Top Row: Clean Cardless Typography Only (e.g. 01 / Collect) */}
+                  {/* Top Row: Typography Only (Noticeably Animated) */}
                   <motion.div 
-                    initial={{ opacity: 0, y: -6 }}
+                    initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                     className="relative z-20 flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-white/90 drop-shadow-md"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#e95126] animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
                     <span className="text-[#ff9a6c]">{stages[activeStage].step}</span>
                     <span className="text-white/40">/</span>
                     <span className="text-white">{stages[activeStage].name}</span>
                   </motion.div>
 
-                  {/* Bottom HUD Overlay: Quote & High-Contrast Visibility */}
+                  {/* Bottom HUD Overlay with Staggered Noticeable Entrance */}
                   <div className="relative z-20 space-y-3">
                     
                     {/* Supporting Statement */}
-                    <motion.div 
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                      className="space-y-1.5 max-w-lg"
-                    >
-                      <span className="text-[10px] uppercase font-bold tracking-widest text-[#ff9a6c]">
+                    <div className="space-y-1.5 max-w-lg">
+                      <motion.span 
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.35, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-[10px] uppercase font-bold tracking-widest text-[#ff9a6c] inline-block"
+                      >
                         {stages[activeStage].stageTag}
-                      </span>
-                      <h3 className="text-lg sm:text-xl lg:text-2xl font-medium tracking-tight text-white leading-snug drop-shadow-md">
+                      </motion.span>
+                      
+                      <motion.h3 
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-lg sm:text-xl lg:text-2xl font-medium tracking-tight text-white leading-snug drop-shadow-md"
+                      >
                         "{stages[activeStage].supporting}"
-                      </h3>
-                    </motion.div>
+                      </motion.h3>
+                    </div>
 
-                    {/* Authentic Institutional Metadata Footer */}
+                    {/* Metadata Footer */}
                     <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 14 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.45, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{ duration: 0.45, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
                       className="flex flex-wrap items-center justify-between gap-3 pt-2.5 border-t border-white/20"
                     >
-                      {/* Operational Context Label */}
                       <div className="inline-flex items-center gap-2 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-lg border border-white/20 text-white shadow-sm">
                         <span className="w-2 h-2 rounded-full bg-[#e95126]" />
                         <span className="text-xs font-medium text-white/95">
@@ -425,7 +550,6 @@ export default function DonationJourney({ onOpenDemo }) {
                         </span>
                       </div>
 
-                      {/* Clean Milestone Counter */}
                       <div className="flex items-center gap-1.5 text-xs font-mono text-white/80 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md border border-white/10">
                         <span>Milestone 0{activeStage + 1} / 04</span>
                       </div>

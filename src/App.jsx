@@ -19,7 +19,7 @@ export default function App() {
   const handleCloseDemo = () => setDemoOpen(false);
 
   return (
-    <div className="min-h-screen bg-[#f5f3ed] text-[#222720] font-sans antialiased selection:bg-[#e95126] selection:text-white">
+    <div className="min-h-screen bg-[#f5f3ed] text-[#222720] font-sans antialiased selection:bg-[#e95126] selection:text-white w-full max-w-full">
       {/* Skip to Content for Accessibility */}
       <a 
         href="#main-content" 
@@ -32,7 +32,7 @@ export default function App() {
       <Header onOpenDemo={handleOpenDemo} />
 
       {/* Main Content Sections */}
-      <main id="main-content">
+      <main id="main-content" className="w-full max-w-full">
         <HeroSection onOpenDemo={handleOpenDemo} />
         <PurposeSection onOpenDemo={handleOpenDemo} />
         <PartnerLogosSection />

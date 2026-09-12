@@ -18,14 +18,14 @@ export default function PartnerLogosSection() {
   const loopLogos = [...partnerLogos, ...partnerLogos, ...partnerLogos, ...partnerLogos];
 
   return (
-    <section id="partner-organisations-section" className="py-10 sm:py-14 bg-[#e9ece2] border-y border-[#d0d6c8] relative overflow-hidden select-none">
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 mb-6 sm:mb-8">
+    <section id="partner-organisations-section" className="mt-8 sm:mt-12 mb-3 xs:mb-4 sm:mb-6 lg:mb-8 py-10 xs:py-12 sm:py-16 md:py-20 bg-[#e9ece2] border-y border-[#d0d6c8] relative overflow-hidden select-none">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 mb-8 sm:mb-12 md:mb-14">
         <div className="space-y-1 text-center sm:text-left">
-          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
+          <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#e95126]">
+            <span className="w-2 h-2 rounded-full bg-[#e95126]" />
             <span>Trusted Network</span>
           </div>
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-[#222720]">
+          <h3 className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-[#222720]">
             Organisations we have worked with
           </h3>
         </div>
@@ -34,15 +34,15 @@ export default function PartnerLogosSection() {
       {/* Infinite Scrolling Marquee Track with Side Fade Masks */}
       <div className="relative w-full overflow-hidden">
         {/* Left Gradient Fade Mask */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 md:w-36 bg-gradient-to-r from-[#e9ece2] via-[#e9ece2]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 md:w-44 bg-gradient-to-r from-[#e9ece2] via-[#e9ece2]/80 to-transparent z-10 pointer-events-none" />
 
         {/* Right Gradient Fade Mask */}
-        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 md:w-36 bg-gradient-to-l from-[#e9ece2] via-[#e9ece2]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 md:w-44 bg-gradient-to-l from-[#e9ece2] via-[#e9ece2]/80 to-transparent z-10 pointer-events-none" />
 
-        {/* Animated Marquee Row of Pure Images */}
+        {/* Animated Marquee Row of Vibrant Full-Color Logos */}
         <div className="flex items-center py-2">
           <motion.div
-            className="flex items-center gap-8 xs:gap-12 sm:gap-16 md:gap-20 shrink-0 transform-gpu"
+            className="flex items-center gap-8 xs:gap-12 sm:gap-16 md:gap-24 shrink-0 transform-gpu"
             animate={{
               x: ['0%', '-50%'],
             }}
@@ -50,7 +50,7 @@ export default function PartnerLogosSection() {
               x: {
                 repeat: Infinity,
                 repeatType: 'loop',
-                duration: 26,
+                duration: 28,
                 ease: 'linear',
               },
             }}
@@ -58,12 +58,12 @@ export default function PartnerLogosSection() {
             {loopLogos.map((logo, idx) => (
               <div
                 key={`${logo.name}-${idx}`}
-                className="flex items-center justify-center shrink-0 cursor-pointer group"
+                className="flex items-center justify-center shrink-0 cursor-pointer group px-2"
               >
                 <img
                   src={logo.src}
                   alt={logo.name}
-                  className="h-7 xs:h-8 sm:h-10 md:h-11 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 drop-shadow-xs"
+                  className="h-10 xs:h-12 sm:h-14 md:h-16 lg:h-18 max-w-[140px] sm:max-w-[180px] md:max-w-[220px] w-auto object-contain filter-none opacity-100 group-hover:scale-105 transition-transform duration-300 drop-shadow-xs"
                   loading="lazy"
                   decoding="async"
                 />
