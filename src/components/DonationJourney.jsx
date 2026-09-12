@@ -186,9 +186,8 @@ export default function DonationJourney({ onOpenDemo }) {
                 onClick={() => setIsContinuityModalOpen(true)}
                 className="text-left group cursor-pointer block focus:outline-none"
               >
-                <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold tracking-tight text-[#222720] leading-tight group-hover:text-[#e95126] transition-colors flex items-center gap-2">
+                <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold tracking-tight text-[#222720] leading-tight group-hover:text-[#e95126] transition-colors">
                   <span>Good deserves <span className="text-[#e95126]">continuity.</span></span>
-                  <ArrowUpRight className="w-4 h-4 xs:w-5 xs:h-5 text-[#e95126] shrink-0" />
                 </h2>
               </button>
             </div>

@@ -71,27 +71,27 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
 
   // Dynamic responsive horizontal & vertical offsets for a rich, visibly fanned 3D deck
   const getResponsiveXOffsets = () => {
-    if (windowWidth < 380) return [0, 20, 40, 60];
-    if (windowWidth < 500) return [0, 26, 52, 78];
-    if (windowWidth < 768) return [0, 34, 68, 102];
-    if (windowWidth < 1024) return [0, 48, 96, 144];
-    if (windowWidth < 1280) return [0, 80, 160, 240];
+    if (windowWidth < 380) return [0, 14, 28, 42];
+    if (windowWidth < 500) return [0, 18, 36, 54];
+    if (windowWidth < 768) return [0, 26, 52, 78];
+    if (windowWidth < 1024) return [0, 44, 88, 132];
+    if (windowWidth < 1280) return [0, 75, 150, 225];
     return [0, 95, 190, 280];
   };
 
   const getResponsiveYOffsets = () => {
-    if (windowWidth < 380) return [0, 10, 20, 30];
-    if (windowWidth < 500) return [0, 14, 28, 42];
-    if (windowWidth < 768) return [0, 16, 32, 48];
-    if (windowWidth < 1024) return [0, 12, 24, 36];
+    if (windowWidth < 380) return [0, 7, 14, 21];
+    if (windowWidth < 500) return [0, 9, 18, 27];
+    if (windowWidth < 768) return [0, 12, 24, 36];
+    if (windowWidth < 1024) return [0, 10, 20, 30];
     return [0, 2, 4, 6];
   };
 
   const getResponsiveRotations = () => {
-    if (windowWidth < 380) return [0, 2.8, 5.6, 8.4];
-    if (windowWidth < 500) return [0, 3.2, 6.4, 9.6];
-    if (windowWidth < 768) return [0, 2.8, 5.6, 8.4];
-    if (windowWidth < 1024) return [0, 2.2, 4.4, 6.6];
+    if (windowWidth < 380) return [0, 2.2, 4.4, 6.6];
+    if (windowWidth < 500) return [0, 2.6, 5.2, 7.8];
+    if (windowWidth < 768) return [0, 2.6, 5.2, 7.8];
+    if (windowWidth < 1024) return [0, 2.0, 4.0, 6.0];
     return [0, 0.8, 1.6, 2.4];
   };
 
@@ -100,12 +100,12 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
   const rotations = getResponsiveRotations();
 
   return (
-    <div className="relative w-full flex flex-col items-center lg:items-start justify-center overflow-visible select-none py-2">
+    <div className="relative w-full flex flex-col items-center lg:items-start justify-center overflow-visible select-none py-1 sm:py-2">
       
       {/* Photographic Glossy Glass Cards Deck */}
       <div 
         ref={containerRef}
-        className="relative w-[305px] xs:w-[355px] sm:w-[410px] md:w-[480px] lg:w-full lg:max-w-[640px] h-[415px] xs:h-[475px] sm:h-[495px] md:h-[500px] lg:h-[420px] mx-auto lg:mx-0 flex items-center justify-start z-10 will-change-transform"
+        className="relative w-[235px] xxs:w-[255px] xs:w-[285px] sm:w-[370px] md:w-[440px] lg:w-full lg:max-w-[640px] h-[260px] xxs:h-[280px] xs:h-[310px] sm:h-[390px] md:h-[450px] lg:h-[420px] mx-auto lg:mx-0 flex items-center justify-start z-10 will-change-transform"
         style={{
           transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
@@ -115,8 +115,8 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
             const order = (idx - activeStage + cards.length) % cards.length;
             const isActive = idx === activeStage;
 
-            const targetX = xOffsets[order] ?? order * 20;
-            const targetY = isActive ? -6 : (yOffsets[order] ?? order * 6);
+            const targetX = xOffsets[order] ?? order * 18;
+            const targetY = isActive ? -4 : (yOffsets[order] ?? order * 5);
             const rotate = isActive ? 0 : (rotations[order] ?? order * 1.5);
             const scale = isActive ? 1.02 : Math.max(0.85, 1 - order * 0.04);
             const zIndex = 50 - order * 10;
@@ -141,9 +141,9 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
                   mass: 0.8,
                 }}
                 onClick={() => setActiveStage && setActiveStage(idx)}
-                className={`absolute top-0 left-0 w-[245px] xs:w-[275px] sm:w-[305px] md:w-[335px] lg:w-[340px] xl:w-[365px] h-[385px] xs:h-[440px] sm:h-[460px] md:h-[470px] lg:h-[400px] xl:h-[415px] rounded-2xl sm:rounded-3xl overflow-hidden border origin-bottom-left cursor-pointer transition-shadow duration-300 select-none transform-gpu touch-manipulation ${
+                className={`absolute top-0 left-0 w-[185px] xxs:w-[200px] xs:w-[225px] sm:w-[275px] md:w-[315px] lg:w-[340px] xl:w-[365px] h-[240px] xxs:h-[260px] xs:h-[290px] sm:h-[365px] md:h-[420px] lg:h-[400px] xl:h-[415px] rounded-2xl sm:rounded-3xl overflow-hidden border origin-bottom-left cursor-pointer transition-shadow duration-300 select-none transform-gpu touch-manipulation ${
                   isActive 
-                    ? 'border-[#e95126] shadow-[0_16px_36px_rgba(34,39,32,0.22)] ring-1 ring-[#e95126]/50' 
+                    ? 'border-[#e95126] shadow-[0_12px_28px_rgba(34,39,32,0.2)] ring-1 ring-[#e95126]/50' 
                     : 'border-white/50 shadow-md'
                 }`}
                 style={{ zIndex }}

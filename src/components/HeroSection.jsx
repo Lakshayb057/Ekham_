@@ -127,19 +127,19 @@ export default function HeroSection({ onOpenDemo }) {
   return (
     <section 
       id="hero-section" 
-      className="relative min-h-[100dvh] min-h-screen px-4 sm:px-6 md:px-12 max-w-[1360px] mx-auto flex flex-col justify-between pt-16 xxs:pt-18 xs:pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-3 xs:pb-4 sm:pb-6 overflow-hidden lg:overflow-visible"
+      className="relative min-h-[100dvh] min-h-screen px-4 sm:px-6 md:px-12 max-w-[1360px] mx-auto flex flex-col justify-between pt-14 xs:pt-16 sm:pt-22 md:pt-26 lg:pt-32 pb-2 xs:pb-3 sm:pb-6 overflow-hidden lg:overflow-visible"
     >
       {/* 1. Top Section: 2-Column Split Horizontally Aligned (Text & Impact Images) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 xs:gap-6 sm:gap-8 lg:gap-12 items-center w-full my-auto pt-1 xs:pt-1.5 sm:pt-2 lg:pt-3 pb-0 flex-1">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 xs:gap-4 sm:gap-8 lg:gap-12 items-center w-full my-auto pt-1 xs:pt-1.5 sm:pt-2 lg:pt-3 pb-0 flex-1">
         
         {/* Left Side: Headline & Copy Centered Vertically - Emerging smoothly from inside the images */}
-        <div className="lg:col-span-6 space-y-3.5 xs:space-y-4 sm:space-y-6 z-10 flex flex-col justify-center pl-0 lg:pl-2 overflow-visible text-left">
+        <div className="lg:col-span-6 space-y-2.5 xs:space-y-3.5 sm:space-y-6 z-10 flex flex-col justify-center pl-0 lg:pl-2 overflow-visible text-left">
           
           <motion.h1 
             initial={{ opacity: 0, y: 24, scale: 0.95 }}
             animate={isLoaded ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 24, scale: 0.95 }}
             transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[34px] xxs:text-[36px] xs:text-[40px] sm:text-[52px] md:text-6xl lg:text-[72px] xl:text-8xl font-medium tracking-tight text-[#222720] leading-[1.08] sm:leading-[1.06] lg:leading-[1.02] transform-gpu whitespace-nowrap lg:whitespace-normal"
+            className="text-[27px] xxs:text-[30px] xs:text-[33px] sm:text-[46px] md:text-6xl lg:text-[72px] xl:text-8xl font-medium tracking-tight text-[#222720] leading-[1.1] sm:leading-[1.06] lg:leading-[1.02] transform-gpu whitespace-normal"
           >
             Good <br className="hidden lg:inline" />
             deserves <br className="hidden lg:inline" />
@@ -151,7 +151,7 @@ export default function HeroSection({ onOpenDemo }) {
               <motion.span 
                 animate={{ rotate: 360 }}
                 transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
-                className="text-[#e95126] text-[32px] xxs:text-[34px] xs:text-[38px] sm:text-[48px] lg:text-6xl inline-block ml-1.5 xs:ml-2 sm:ml-3 align-middle" 
+                className="text-[#e95126] text-[22px] xxs:text-[24px] xs:text-[27px] sm:text-[42px] lg:text-6xl inline-block ml-1 xs:ml-1.5 sm:ml-3 align-middle" 
                 aria-hidden="true"
               >
                 ✳
@@ -164,7 +164,7 @@ export default function HeroSection({ onOpenDemo }) {
             initial={{ opacity: 0, y: 16 }}
             animate={isLoaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
             transition={{ duration: 0.75, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-2 max-w-md transform-gpu"
+            className="space-y-1.5 max-w-md transform-gpu"
           >
             <p className="text-xs xs:text-sm sm:text-base lg:text-lg text-[#222720] leading-relaxed font-normal">
               Ekhum connects fundraising, verification, disbursals and outcome reporting in one platform.
@@ -176,11 +176,11 @@ export default function HeroSection({ onOpenDemo }) {
             initial={{ opacity: 0, x: 40 }}
             animate={isLoaded ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
             transition={{ duration: 0.75, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-wrap items-center gap-3 sm:gap-5 pt-0.5 relative z-20 transform-gpu"
+            className="flex flex-wrap items-center gap-2.5 sm:gap-5 pt-0.5 relative z-20 transform-gpu"
           >
             <button
               onClick={onOpenDemo}
-              className="group relative px-5 xs:px-6 sm:px-7 py-2.5 xs:py-3 sm:py-3.5 rounded-full bg-[#222720] text-white hover:bg-[#e95126] font-medium text-xs sm:text-sm transition-all duration-300 transform active:scale-95 hover:-translate-y-0.5 flex items-center justify-center gap-2.5 xs:gap-3 sm:gap-4 shadow-lg shadow-[#222720]/10 ring-2 ring-[#e95126]/30 cursor-pointer min-h-[42px]"
+              className="group relative px-4 xs:px-5 sm:px-7 py-2 xs:py-2.5 sm:py-3.5 rounded-full bg-[#222720] text-white hover:bg-[#e95126] font-medium text-xs sm:text-sm transition-all duration-300 transform active:scale-95 hover:-translate-y-0.5 flex items-center justify-center gap-2 xs:gap-2.5 sm:gap-4 shadow-lg shadow-[#222720]/10 ring-2 ring-[#e95126]/30 cursor-pointer min-h-[38px] xs:min-h-[42px]"
             >
               <span>Book a demo</span>
               <ArrowRight className="w-3.5 h-3.5 xs:w-4 xs:h-4 group-hover:translate-x-1 transition-transform" />
@@ -188,10 +188,10 @@ export default function HeroSection({ onOpenDemo }) {
 
             <a
               href="#purpose-section"
-              className="group text-xs sm:text-sm font-semibold text-[#222720] hover:text-[#e95126] flex items-center gap-2 sm:gap-2.5 transition-colors py-2"
+              className="group text-xs sm:text-sm font-semibold text-[#222720] hover:text-[#e95126] flex items-center gap-1.5 sm:gap-2.5 transition-colors py-1.5"
             >
               <span>Meet the platform</span>
-              <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#d8d9cf] flex items-center justify-center group-hover:border-[#e95126] group-hover:bg-[#e95126] group-hover:text-white transition-all">
+              <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border border-[#d8d9cf] flex items-center justify-center group-hover:border-[#e95126] group-hover:bg-[#e95126] group-hover:text-white transition-all">
                 <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               </span>
             </a>
@@ -210,11 +210,11 @@ export default function HeroSection({ onOpenDemo }) {
 
       </div>
 
-      {/* 2. Platform Journey Pipeline — Positioned at the end of Hero Section */}
-      <div className="w-full mt-auto pt-7 xs:pt-8 sm:pt-11 lg:pt-9 relative z-20 overflow-hidden sm:overflow-visible">
+      {/* 2. Platform Journey Pipeline — Positioned cleanly at the end of Hero Section */}
+      <div className="w-full mt-auto pt-3 xs:pt-4 sm:pt-8 lg:pt-9 relative z-20 overflow-hidden sm:overflow-visible">
         
         {/* SVG Flowing Wave Path with Traveling Indicator */}
-        <div className="relative w-full h-24 xs:h-26 sm:h-28 lg:h-28 overflow-hidden sm:overflow-visible">
+        <div className="relative w-full h-20 xs:h-22 sm:h-26 lg:h-28 overflow-hidden sm:overflow-visible">
           
           <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden sm:overflow-visible">
             <svg className="w-full h-full overflow-hidden sm:overflow-visible" preserveAspectRatio="none" viewBox="0 0 1200 90">
@@ -281,27 +281,26 @@ export default function HeroSection({ onOpenDemo }) {
                   style={{
                     left: `${node.leftPct}%`,
                     top: `${node.topPct}%`,
-                    transform: 'translate(-50%, -50%)',
                   }}
-                  className="absolute flex flex-col items-center group cursor-pointer touch-manipulation"
+                  className="absolute -translate-x-1/2 -translate-y-1/2 flex items-center justify-center group cursor-pointer touch-manipulation"
                   onClick={() => handleSelectStage(node.id)}
                 >
-                  {/* Icon Button Centered Directly on the Wave Line */}
+                  {/* Icon Button Centered DIRECTLY on the Wave Line */}
                   <button
-                    className={`w-7.5 h-7.5 xs:w-8.5 xs:h-8.5 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-sm ${
+                    className={`w-6.5 h-6.5 xs:w-7.5 xs:h-7.5 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-200 shadow-sm ${
                       isActiveNode 
-                        ? 'bg-[#e95126] text-white scale-105 shadow-md ring-2 ring-[#e95126]/30' 
+                        ? 'bg-[#e95126] text-white scale-110 shadow-md ring-2 ring-[#e95126]/40' 
                         : 'bg-white text-[#e95126] border border-[#d8d9cf] hover:border-[#e95126] hover:scale-105'
                     }`}
                     aria-label={`Select stage ${node.label}`}
                   >
                     {React.cloneElement(node.icon, {
-                      className: `w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4 ${isActiveNode ? 'text-white' : 'text-[#e95126]'}`,
+                      className: `w-2.5 h-2.5 xs:w-3 xs:h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 ${isActiveNode ? 'text-white' : 'text-[#e95126]'}`,
                     })}
                   </button>
 
-                  {/* Text Label Cleanly Below Button */}
-                  <span className={`mt-0.5 xs:mt-1 sm:mt-1.5 text-[9px] xs:text-[10px] sm:text-xs font-semibold tracking-wide transition-colors whitespace-nowrap ${
+                  {/* Text Label Anchored Below without moving the button off the line */}
+                  <span className={`absolute top-full mt-1 sm:mt-1.5 left-1/2 -translate-x-1/2 text-[8.5px] xs:text-[9.5px] sm:text-xs font-semibold tracking-wide transition-colors whitespace-nowrap pointer-events-none ${
                     isActiveNode ? 'text-[#e95126] font-bold' : 'text-[#66695f] group-hover:text-[#222720]'
                   }`}>
                     {node.label}

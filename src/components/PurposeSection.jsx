@@ -77,9 +77,6 @@ export default function PurposeSection({ onOpenDemo }) {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-[#222720] leading-[1.1]">
               Real progress at <span className="text-[#e95126]">human scale.</span>
             </h2>
-            <p className="text-sm sm:text-base text-[#66695f] font-normal leading-relaxed">
-              Built with purpose. Trusted by organisations that drive real impact across India.
-            </p>
           </div>
 
           {/* Interactive Scale Scene: 3 Full-Bleed Photography Metric Cards */}
@@ -325,49 +322,49 @@ export default function PurposeSection({ onOpenDemo }) {
             <div className="lg:col-span-8 space-y-6 relative">
               
               {/* Top 3 Visual Problem Cards in 1 Connected Row */}
-              <div className="grid grid-cols-3 gap-2 xs:gap-3 sm:gap-4 relative z-10">
+              <div className="grid grid-cols-3 gap-1.5 xs:gap-2.5 sm:gap-4 relative z-10">
                 
                 {/* Card 01: Scattered Donor Records */}
                 <motion.div 
                   whileHover={{ y: -3 }}
                   onClick={() => setActiveProblem(0)}
                   onMouseEnter={() => setActiveProblem(0)}
-                  className={`p-2.5 xs:p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
+                  className={`p-2 xs:p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden ${
                     activeProblem === 0 
                       ? 'bg-white shadow-xl border-[#e95126] ring-2 ring-[#e95126]/20 scale-[1.01]' 
                       : 'bg-white/80 border-white/90 shadow-sm hover:bg-white hover:border-[#e95126]/40'
                   }`}
                 >
-                  {/* Top Header: Badge + Title */}
-                  <div className="flex items-start gap-1.5 xs:gap-2">
-                    <span className="text-[10px] xs:text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 xs:px-2 py-0.5 rounded-md shrink-0">
+                  {/* Top Header: Badge + Title stacked for small screen comfort */}
+                  <div className="space-y-1 sm:space-y-1.5">
+                    <span className="inline-block text-[9px] xs:text-[10px] sm:text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 py-0.5 rounded">
                       01
                     </span>
-                    <h4 className="text-[11px] xs:text-xs sm:text-sm font-bold text-[#222720] leading-tight">
+                    <h4 className="text-[10px] xs:text-[11px] sm:text-sm font-bold text-[#222720] leading-tight break-words">
                       Scattered donor records
                     </h4>
                   </div>
 
-                  {/* Middle Visual Area: 3 Floating App / Cloud Tiles */}
-                  <div className="py-2 sm:py-3.5 flex items-center justify-center gap-1 xs:gap-1.5 sm:gap-2.5 flex-1">
+                  {/* Middle Visual Area: 3 Floating App / Cloud Tiles Snug & Fitted */}
+                  <div className="py-2 sm:py-3.5 flex items-center justify-center gap-1 xs:gap-1.5 sm:gap-2.5 flex-1 w-full overflow-hidden">
                     {/* Excel Tile */}
-                    <div className="w-7 h-7 xxs:w-8 xxs:h-8 xs:w-9 xs:h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white shadow-md border border-emerald-100 flex items-center justify-center transform -rotate-3 hover:rotate-0 transition-transform">
-                      <div className="w-5 h-5 xxs:w-6 xxs:h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-md sm:rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-[9px] xs:text-[10px] sm:text-xs shadow-inner">
+                    <div className="w-5.5 h-5.5 xxs:w-6 xxs:h-6 xs:w-7 xs:h-7 sm:w-11 sm:h-11 rounded-md sm:rounded-xl bg-white shadow-md border border-emerald-100 flex items-center justify-center transform -rotate-3 hover:rotate-0 transition-transform shrink-0">
+                      <div className="w-4 h-4 xxs:w-4.5 xxs:h-4.5 xs:w-5.5 xs:h-5.5 sm:w-7.5 sm:h-7.5 rounded sm:rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-[7.5px] xs:text-[8.5px] sm:text-xs shadow-inner">
                         X
                       </div>
                     </div>
 
                     {/* Google Sheets Tile */}
-                    <div className="w-7 h-7 xxs:w-8 xxs:h-8 xs:w-9 xs:h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white shadow-md border border-blue-100 flex items-center justify-center transform translate-y-[-2px] hover:translate-y-0 transition-transform">
-                      <div className="w-5 h-5 xxs:w-6 xxs:h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-md sm:rounded-lg bg-blue-500 flex items-center justify-center text-white text-[9px] xs:text-[10px] sm:text-xs shadow-inner">
-                        <FileSpreadsheet className="w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-5 sm:h-5" />
+                    <div className="w-5.5 h-5.5 xxs:w-6 xxs:h-6 xs:w-7 xs:h-7 sm:w-11 sm:h-11 rounded-md sm:rounded-xl bg-white shadow-md border border-blue-100 flex items-center justify-center transform translate-y-[-2px] hover:translate-y-0 transition-transform shrink-0">
+                      <div className="w-4 h-4 xxs:w-4.5 xxs:h-4.5 xs:w-5.5 xs:h-5.5 sm:w-7.5 sm:h-7.5 rounded sm:rounded-lg bg-blue-500 flex items-center justify-center text-white text-[7.5px] xs:text-[8.5px] sm:text-xs shadow-inner">
+                        <FileSpreadsheet className="w-2.5 h-2.5 xs:w-3 xs:h-3 sm:w-4.5 sm:h-4.5" />
                       </div>
                     </div>
 
                     {/* Cloud Storage Tile */}
-                    <div className="w-7 h-7 xxs:w-8 xxs:h-8 xs:w-9 xs:h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white shadow-md border border-sky-100 flex items-center justify-center transform rotate-3 hover:rotate-0 transition-transform">
-                      <div className="w-5 h-5 xxs:w-6 xxs:h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-md sm:rounded-lg bg-sky-500 flex items-center justify-center text-white text-[9px] xs:text-[10px] sm:text-xs shadow-inner">
-                        <Cloud className="w-3 h-3 xs:w-3.5 xs:h-3.5 sm:w-5 sm:h-5" />
+                    <div className="w-5.5 h-5.5 xxs:w-6 xxs:h-6 xs:w-7 xs:h-7 sm:w-11 sm:h-11 rounded-md sm:rounded-xl bg-white shadow-md border border-sky-100 flex items-center justify-center transform rotate-3 hover:rotate-0 transition-transform shrink-0">
+                      <div className="w-4 h-4 xxs:w-4.5 xxs:h-4.5 xs:w-5.5 xs:h-5.5 sm:w-7.5 sm:h-7.5 rounded sm:rounded-lg bg-sky-500 flex items-center justify-center text-white text-[7.5px] xs:text-[8.5px] sm:text-xs shadow-inner">
+                        <Cloud className="w-2.5 h-2.5 xs:w-3 xs:h-3 sm:w-4.5 sm:h-4.5" />
                       </div>
                     </div>
                   </div>
@@ -378,25 +375,25 @@ export default function PurposeSection({ onOpenDemo }) {
                   whileHover={{ y: -3 }}
                   onClick={() => setActiveProblem(1)}
                   onMouseEnter={() => setActiveProblem(1)}
-                  className={`p-2.5 xs:p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
+                  className={`p-2 xs:p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden ${
                     activeProblem === 1 
                       ? 'bg-white shadow-xl border-[#e95126] ring-2 ring-[#e95126]/20 scale-[1.01]' 
                       : 'bg-white/80 border-white/90 shadow-sm hover:bg-white hover:border-[#e95126]/40'
                   }`}
                 >
-                  {/* Top Header: Badge + Title */}
-                  <div className="flex items-start gap-1.5 xs:gap-2">
-                    <span className="text-[10px] xs:text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 xs:px-2 py-0.5 rounded-md shrink-0">
+                  {/* Top Header: Badge + Title stacked */}
+                  <div className="space-y-1 sm:space-y-1.5">
+                    <span className="inline-block text-[9px] xs:text-[10px] sm:text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 py-0.5 rounded">
                       02
                     </span>
-                    <h4 className="text-[11px] xs:text-xs sm:text-sm font-bold text-[#222720] leading-tight">
+                    <h4 className="text-[10px] xs:text-[11px] sm:text-sm font-bold text-[#222720] leading-tight break-words">
                       Compliance assembled by hand
                     </h4>
                   </div>
 
                   {/* Middle Visual Area: Paper Stack with Sticky Notes Image */}
                   <div className="py-1 xs:py-1.5 sm:py-2 flex items-center justify-center flex-1 w-full">
-                    <div className="w-full h-18 xxs:h-20 xs:h-22 sm:h-24 md:h-26 rounded-lg sm:rounded-xl overflow-hidden shadow-xs border border-[#d8d9cf]/60 bg-white">
+                    <div className="w-full h-14 xxs:h-16 xs:h-18 sm:h-24 md:h-26 rounded-lg sm:rounded-xl overflow-hidden shadow-xs border border-[#d8d9cf]/60 bg-white">
                       <img
                         src="/assets/compliance-paper-stack.jpg"
                         alt="Paper compliance documents with sticky notes"
@@ -413,25 +410,25 @@ export default function PurposeSection({ onOpenDemo }) {
                   whileHover={{ y: -3 }}
                   onClick={() => setActiveProblem(2)}
                   onMouseEnter={() => setActiveProblem(2)}
-                  className={`p-2.5 xs:p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
+                  className={`p-2 xs:p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden ${
                     activeProblem === 2 
                       ? 'bg-white shadow-xl border-[#e95126] ring-2 ring-[#e95126]/20 scale-[1.01]' 
                       : 'bg-white/80 border-white/90 shadow-sm hover:bg-white hover:border-[#e95126]/40'
                   }`}
                 >
-                  {/* Top Header: Badge + Title */}
-                  <div className="flex items-start gap-1.5 xs:gap-2">
-                    <span className="text-[10px] xs:text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 xs:px-2 py-0.5 rounded-md shrink-0">
+                  {/* Top Header: Badge + Title stacked */}
+                  <div className="space-y-1 sm:space-y-1.5">
+                    <span className="inline-block text-[9px] xs:text-[10px] sm:text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 py-0.5 rounded">
                       03
                     </span>
-                    <h4 className="text-[11px] xs:text-xs sm:text-sm font-bold text-[#222720] leading-tight">
+                    <h4 className="text-[10px] xs:text-[11px] sm:text-sm font-bold text-[#222720] leading-tight break-words">
                       Outcomes detached from funding
                     </h4>
                   </div>
 
                   {/* Middle Visual Area: Field Coordinator & Child Photo */}
                   <div className="py-1 xs:py-1.5 sm:py-2 flex items-center justify-center flex-1 w-full">
-                    <div className="w-full h-18 xxs:h-20 xs:h-22 sm:h-24 md:h-26 rounded-lg sm:rounded-xl overflow-hidden shadow-xs border border-[#d8d9cf]/60 bg-white">
+                    <div className="w-full h-14 xxs:h-16 xs:h-18 sm:h-24 md:h-26 rounded-lg sm:rounded-xl overflow-hidden shadow-xs border border-[#d8d9cf]/60 bg-white">
                       <img
                         src="/assets/outcomes-field-worker.jpg"
                         alt="Field coordinator talking with child"
