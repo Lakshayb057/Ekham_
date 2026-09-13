@@ -34,7 +34,7 @@
 html {
   scroll-padding-top: 0px;
   -webkit-text-size-adjust: 100%;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizeSpeed;
   /* Prevent scroll chaining and rubber-banding */
   overscroll-behavior-y: none;
 }
@@ -48,11 +48,18 @@ html, body {
 
 /* GPU Hardware Acceleration & Anti-Glitch subpixel smoothing */
 .transform-gpu {
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  perspective: 1000px;
+  will-change: transform;
+}
+
+/* Image rendering optimizations */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 #root {

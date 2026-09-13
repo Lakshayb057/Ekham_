@@ -183,7 +183,7 @@ export default function SystemsSection({ onOpenDemo }) {
                   }
                 }
               }}
-              style={{ transformStyle: 'preserve-3d', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
+              style={{ transformStyle: 'preserve-3d', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden', willChange: 'transform, opacity' }}
               className="grid grid-cols-3 gap-1.5 xs:gap-2.5 sm:gap-4 relative z-10"
             >
               
@@ -345,7 +345,7 @@ export default function SystemsSection({ onOpenDemo }) {
                     }
                   }
                 }}
-                style={{ transformStyle: 'preserve-3d', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
+                style={{ transformStyle: 'preserve-3d', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden', willChange: 'transform, opacity' }}
                 className="md:col-span-7 bg-white/95 backdrop-blur-md rounded-xl xs:rounded-2xl sm:rounded-3xl p-3 xs:p-4 sm:p-5 border border-[#e95126]/30 shadow-xl space-y-2.5 xs:space-y-3 sm:space-y-3.5 relative flex flex-col justify-center min-h-[145px] xs:min-h-[160px] sm:min-h-[200px]"
               >
                 
@@ -423,7 +423,7 @@ export default function SystemsSection({ onOpenDemo }) {
                     }
                   }
                 }}
-                style={{ transformStyle: 'preserve-3d', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
+                style={{ transformStyle: 'preserve-3d', WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden', willChange: 'transform, opacity' }}
                 className="md:col-span-5 relative rounded-xl xs:rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl min-h-[125px] xs:min-h-[145px] sm:min-h-[200px] group border border-white/80 flex flex-col justify-end p-2 xs:p-2.5 sm:p-3.5"
               >
                 <img

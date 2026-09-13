@@ -32,6 +32,18 @@ export default function PageSlideNavigator() {
   // Smooth scroll listener with requestAnimationFrame to track active slide accurately
   useEffect(() => {
     let ticking = false;
+    let cachedElements = null;
+
+    const getElements = () => {
+      if (!cachedElements || cachedElements.some(el => !el)) {
+        cachedElements = SLIDE_LIST.map((s) => document.getElementById(s.id));
+      }
+      return cachedElements;
+    };
+
+    const handleResize = () => {
+      cachedElements = null;
+    };
 
     const onScroll = () => {
       if (ticking) return;
@@ -55,9 +67,10 @@ export default function PageSlideNavigator() {
         }
 
         const centerY = vh * 0.45;
+        const els = getElements();
 
-        for (let i = 0; i < SLIDE_LIST.length; i++) {
-          const el = document.getElementById(SLIDE_LIST[i].id);
+        for (let i = 0; i < els.length; i++) {
+          const el = els[i];
           if (el) {
             const rect = el.getBoundingClientRect();
             if (rect.top <= centerY && rect.bottom >= centerY) {
@@ -73,9 +86,13 @@ export default function PageSlideNavigator() {
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
     onScroll();
 
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // Smoothly scroll to target slide by index with exact pixel positioning and alignment

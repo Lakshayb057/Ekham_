@@ -32,7 +32,7 @@ export default function ClosingSection({ onOpenDemo }) {
   };
 
   return (
-    <section className="bg-[#f5f3ed] pt-13 xs:pt-14 sm:pt-12 pb-2 xs:pb-3 sm:pb-12 px-3 xs:px-4 sm:px-8 lg:px-12 relative select-none w-full">
+    <section className="bg-[#f5f3ed] pt-13 xs:pt-14 sm:pt-6 md:pt-8 pb-2 xs:pb-3 sm:pb-0 px-3 xs:px-4 sm:px-8 lg:px-12 relative select-none w-full">
       <div className="max-w-[1360px] mx-auto space-y-2 xs:space-y-2.5 sm:space-y-6">
         
         {/* Mobile Inline Form (Small Screen Size) - Positioned directly above the orange box */}
@@ -141,7 +141,7 @@ export default function ClosingSection({ onOpenDemo }) {
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           style={{ perspective: '1200px' }}
-          className="relative rounded-[16px] xs:rounded-[20px] sm:rounded-[32px] overflow-hidden bg-gradient-to-br from-[#e95126] via-[#ee592e] to-[#c73910] text-white px-4 xs:px-6 sm:px-14 lg:px-18 py-3.5 xs:py-4 sm:py-20 lg:py-24 min-h-0 sm:min-h-[300px] flex flex-col justify-center shadow-[0_12px_28px_rgba(233,81,38,0.2)] ring-1 ring-white/20 transform-gpu"
+          className="relative rounded-[16px] xs:rounded-[20px] sm:rounded-[32px] overflow-hidden bg-gradient-to-br from-[#e95126] via-[#ee592e] to-[#c73910] text-white px-4 xs:px-6 sm:px-14 lg:px-18 py-3.5 xs:py-4 sm:py-16 md:py-20 lg:py-22 min-h-0 sm:min-h-[250px] flex flex-col justify-center shadow-[0_12px_28px_rgba(233,81,38,0.2)] ring-1 ring-white/20 transform-gpu"
         >
           {/* Subtle Ambient Mesh Radial Glows & Cyber Dots */}
           <div className="absolute -top-24 -left-24 w-96 h-96 bg-white/18 rounded-full blur-[90px] pointer-events-none" />

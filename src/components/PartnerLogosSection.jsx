@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export default function PartnerLogosSection() {
   const sectionRef = useRef(null);
-  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+  const glowRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
   const [hoveredLogo, setHoveredLogo] = useState(null);
   const [windowWidth, setWindowWidth] = useState(
@@ -11,9 +11,16 @@ export default function PartnerLogosSection() {
   );
 
   useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
+    let timer;
+    const handleResize = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => setWindowWidth(window.innerWidth), 100);
+    };
     window.addEventListener('resize', handleResize, { passive: true });
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timer);
+    };
   }, []);
 
   // 9 Partner Organisations arranged in orbit around fixed center "ekhum"
@@ -44,18 +51,20 @@ export default function PartnerLogosSection() {
   const cardHalfSize = windowWidth >= 768 ? 48 : 40;
   const stageSize = (radius + cardHalfSize + 12) * 2;
 
-  // Track cursor across section for soft background lighting
+  // Track cursor across section for soft background lighting directly on DOM
   const handleSectionMouseMove = (e) => {
-    if (!sectionRef.current) return;
+    if (!sectionRef.current || !glowRef.current) return;
     const rect = sectionRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    glowRef.current.style.background = `radial-gradient(650px circle at ${x}px ${y}px, rgba(233,81,38,0.07), rgba(255,255,255,0.12) 30%, transparent 70%)`;
+    glowRef.current.style.opacity = '1';
   };
 
   const handleSectionMouseLeave = () => {
-    setMousePos({ x: -1000, y: -1000 });
+    if (glowRef.current) {
+      glowRef.current.style.opacity = '0';
+    }
   };
 
   return (
@@ -77,12 +86,10 @@ export default function PartnerLogosSection() {
         }
       `}</style>
 
-      {/* Soft Dynamic Cursor Glow in Background */}
+      {/* Soft Dynamic Cursor Glow in Background - Hardware Accelerated */}
       <div 
-        className="absolute inset-0 pointer-events-none transition-opacity duration-500"
-        style={{
-          background: `radial-gradient(650px circle at ${mousePos.x}px ${mousePos.y}px, rgba(233,81,38,0.07), rgba(255,255,255,0.12) 30%, transparent 70%)`,
-        }}
+        ref={glowRef}
+        className="absolute inset-0 pointer-events-none transition-opacity duration-500 opacity-0 will-change-[opacity]"
       />
 
       {/* Ambient background blur orbs */}
@@ -204,12 +211,14 @@ export default function PartnerLogosSection() {
               </motion.div>
             </div>
 
-            {/* Revolving Orbital Ring of Partner Logos */}
+            {/* Revolving Orbital Ring of Partner Logos - GPU Hardware Promoted */}
             <div 
               className="absolute inset-0 w-full h-full pointer-events-none"
               style={{
                 animation: 'ekhum-orbit-spin 45s linear infinite',
                 animationPlayState: isPaused ? 'paused' : 'running',
+                willChange: 'transform',
+                transformStyle: 'preserve-3d',
               }}
             >
               {partnerLogos.map((logo, idx) => {
@@ -243,6 +252,8 @@ export default function PartnerLogosSection() {
                       style={{
                         animation: 'ekhum-orbit-counter 45s linear infinite',
                         animationPlayState: isPaused ? 'paused' : 'running',
+                        willChange: 'transform',
+                        transformStyle: 'preserve-3d',
                       }}
                     >
                       <OrbitalLogoCard 
@@ -270,95 +281,42 @@ export default function PartnerLogosSection() {
  * specular flashlight glare, and elevated 3D logo depth.
  */
 function OrbitalLogoCard({ logo, index = 0, isHighlighted }) {
-  const cardRef = useRef(null);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
-  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
-
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotX = ((y - centerY) / centerY) * -12;
-    const rotY = ((x - centerX) / centerX) * 12;
-
-    setCoords({ x, y });
-    setTilt({ rotateX: rotX, rotateY: rotY });
-  };
-
-  const handleMouseEnter = () => setIsHovered(true);
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    setTilt({ rotateX: 0, rotateY: 0 });
-  };
 
   return (
     <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, scale: 0.35, rotateY: 15 }}
-      whileInView={{ opacity: 1, scale: isHovered ? 1.12 : 1, rotateY: 0 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      initial={{ opacity: 0, scale: 0.35 }}
+      whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: false, amount: 0.1 }}
       transition={{ 
-        duration: 0.6, 
-        delay: index * 0.04, 
+        duration: 0.5, 
+        delay: index * 0.03, 
         ease: [0.16, 1, 0.3, 1] 
       }}
-      animate={{
-        scale: isHovered ? 1.12 : 1,
-        z: isHovered ? 30 : 0,
-      }}
-      style={{ perspective: 1000 }}
-      className="relative cursor-pointer touch-manipulation group"
+      whileHover={{ scale: 1.14, y: -3 }}
+      className="relative cursor-pointer touch-manipulation group will-change-transform"
       title={logo.name}
     >
-      <motion.div
-        animate={{
-          rotateX: isHovered ? tilt.rotateX : 0,
-          rotateY: isHovered ? tilt.rotateY : 0,
-        }}
-        transition={{ type: 'spring', stiffness: 360, damping: 24 }}
-        style={{ transformStyle: 'preserve-3d' }}
+      <div
         className={`relative w-15 h-15 xxs:w-16 xxs:h-16 xs:w-18 xs:h-18 sm:w-20 sm:h-20 md:w-22 md:h-22 lg:w-24 lg:h-24 rounded-2xl flex items-center justify-center p-2 xs:p-2.5 sm:p-3 transition-all duration-300 border ${
           isHovered || isHighlighted
-            ? 'bg-white border-[#e95126]/50 shadow-[0_20px_45px_rgba(233,81,38,0.22),0_6px_16px_rgba(0,0,0,0.06)] ring-2 ring-[#e95126]/30'
-            : 'bg-white/90 backdrop-blur-md border-white shadow-[0_8px_24px_rgba(34,39,32,0.05)] hover:border-white/80'
+            ? 'bg-white border-[#e95126] shadow-[0_16px_36px_rgba(233,81,38,0.22),0_4px_12px_rgba(0,0,0,0.06)] ring-2 ring-[#e95126]/25 -translate-y-0.5'
+            : 'bg-white/90 backdrop-blur-md border-white shadow-[0_6px_20px_rgba(34,39,32,0.05)] hover:border-white/80'
         }`}
       >
-        {/* Dynamic Specular Flashlight/Glare */}
-        {isHovered && (
-          <div
-            className="absolute inset-0 rounded-2xl sm:rounded-3xl pointer-events-none overflow-hidden transition-opacity duration-200"
-            style={{
-              background: `radial-gradient(140px circle at ${coords.x}px ${coords.y}px, rgba(255,255,255,0.95), transparent 75%)`,
-            }}
-          />
-        )}
-
-        {/* 3D Elevated Logo Image */}
-        <div
-          style={{ 
-            transform: isHovered ? 'translateZ(26px) scale(1.08)' : 'translateZ(0px)', 
-            transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)' 
-          }}
-          className="w-full h-full flex items-center justify-center pointer-events-none select-none relative z-10"
-        >
+        {/* Logo Image */}
+        <div className="w-full h-full flex items-center justify-center pointer-events-none select-none relative z-10">
           <img
             src={logo.src}
             alt={logo.name}
-            className="max-h-[78%] max-w-[82%] object-contain filter-none drop-shadow-xs transition-all duration-300"
+            className="max-h-[80%] max-w-[84%] object-contain filter-none drop-shadow-xs transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
             decoding="async"
           />
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }

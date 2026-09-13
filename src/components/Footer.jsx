@@ -3,7 +3,7 @@ import { ShieldCheck, Heart } from 'lucide-react';
 
 export default function Footer({ onOpenDemo }) {
   return (
-    <footer className="bg-[#f5f3ed] border-t border-[#d8d9cf] py-2.5 xs:py-3 sm:py-6 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] sm:pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] text-[#222720] select-none text-xs w-full mt-2 xs:mt-3 sm:mt-auto">
+    <footer className="bg-[#f5f3ed] border-t border-[#d8d9cf] py-2.5 xs:py-3 sm:py-5 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] sm:pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))] text-[#222720] select-none text-xs w-full mt-2 xs:mt-3 sm:mt-6 md:mt-8">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-12 space-y-2 sm:space-y-4">
         
         {/* Top Row: Brand & Tagline + Navigation */}
