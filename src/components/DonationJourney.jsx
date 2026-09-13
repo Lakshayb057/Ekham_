@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring, useTransform, useMotionValueEvent } from 'framer-motion';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { 
   ArrowRight, 
-  ArrowLeft,
   ShieldCheck, 
   Heart, 
   BarChart3, 
@@ -17,65 +16,8 @@ import {
 export default function DonationJourney({ onOpenDemo }) {
   const [activeStage, setActiveStage] = useState(0);
   const [isContinuityModalOpen, setIsContinuityModalOpen] = useState(false);
-  
-  const containerRef = useRef(null);
-
-  // Track raw scroll position across the optimized 380vh section for smooth, effortless movement
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end']
-  });
-
-  // Direct scroll tracking across section height for smooth 3-stage scroll progression
-  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    let stageIndex = 0;
-    if (latest < 0.25) {
-      stageIndex = 0; // 01 Collect (0 - 25%)
-    } else if (latest < 0.50) {
-      stageIndex = 1; // 02 Verify (25% - 50%)
-    } else if (latest < 0.76) {
-      stageIndex = 2; // 03 Disburse (50% - 76%) -> Held firmly so it never skips
-    } else {
-      stageIndex = 3; // 04 Prove (76% - 100%)
-    }
-    setActiveStage(stageIndex);
-  });
-
-  // Programmatically scroll the page to a specific stage checkpoint
-  const scrollToStage = (stageIdx) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const containerTop = rect.top + scrollTop;
-    const totalHeight = containerRef.current.offsetHeight - window.innerHeight;
-    
-    // Balanced checkpoints for the 4 stages
-    const checkpoints = [0.05, 0.35, 0.63, 0.88];
-    const targetScroll = containerTop + totalHeight * (checkpoints[stageIdx] ?? 0);
-    
-    window.scrollTo({
-      top: targetScroll,
-      behavior: 'smooth'
-    });
-    setActiveStage(stageIdx);
-  };
-
-  // Close modal on Escape key
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setIsContinuityModalOpen(false);
-    };
-    if (isContinuityModalOpen) {
-      document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleKeyDown);
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isContinuityModalOpen]);
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { amount: 0.15, once: false });
 
   const stages = [
     {
@@ -152,11 +94,45 @@ export default function DonationJourney({ onOpenDemo }) {
     },
   ];
 
+  // Auto-advance stages every 2 seconds (Collect -> Verify -> Disburse -> Prove)
+  useEffect(() => {
+    if (isContinuityModalOpen) return;
+
+    const interval = setInterval(() => {
+      setActiveStage((prev) => (prev + 1) % stages.length);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [isContinuityModalOpen, stages.length]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (isContinuityModalOpen) {
+        if (e.key === 'Escape') setIsContinuityModalOpen(false);
+        return;
+      }
+    };
+    if (isContinuityModalOpen) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isContinuityModalOpen]);
+
+  const goToStage = (idx) => {
+    setActiveStage(idx);
+  };
   return (
     <section 
       id="platform" 
-      ref={containerRef}
-      className="content-auto relative bg-[#f5f3ed] select-none min-h-[300vh] xs:min-h-[320vh] sm:min-h-[340vh] lg:min-h-[360vh]"
+      ref={sectionRef}
+      className="content-auto relative bg-[#f5f3ed] select-none pt-20 xs:pt-22 sm:pt-24 lg:pt-28 pb-10 sm:pb-14 min-h-[100dvh] min-h-screen flex flex-col justify-center overflow-hidden"
     >
       {/* Background Ambient Depth */}
       <div className="absolute inset-0 pointer-events-none opacity-40">
@@ -164,403 +140,191 @@ export default function DonationJourney({ onOpenDemo }) {
         <div className="absolute bottom-1/4 right-10 w-[600px] h-[600px] bg-[#eddcd2]/25 rounded-full blur-3xl" />
       </div>
 
-      {/* Sticky Viewport Container Pinned While Scrolling */}
-      <div className="sticky top-14 sm:top-16 lg:top-20 w-full max-w-[1360px] mx-auto px-5 xs:px-6 sm:px-8 md:px-12 pt-6 pb-6 xs:pt-8 xs:pb-8 sm:pt-10 sm:pb-10 lg:py-6 flex flex-col justify-center h-[calc(100svh-3.5rem)] sm:h-[calc(100vh-4rem)] lg:h-[calc(100vh-5rem)] z-10 overflow-hidden">
+      {/* Main Section Content Container */}
+      <div className="relative w-full max-w-[1240px] mx-auto px-4 xs:px-6 sm:px-8 md:px-10 z-10 my-auto flex flex-col items-center">
         
         {/* ========================================================
-            1. MOBILE & TABLET PINNED SCROLL EXPERIENCE (< lg)
-               Compact, Premium, Unified Editorial Visual Story
+            TOP: HEADING & 4 STEPS ALIGNED IN THE SAME HORIZONTAL LINE
            ======================================================== */}
-        <div className="block lg:hidden w-full max-w-[430px] mx-auto h-full flex flex-col justify-between gap-3 xs:gap-3.5">
+        <motion.div 
+          initial={{ opacity: 0, y: 25, rotateX: 15 }}
+          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+          viewport={{ once: false, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{ perspective: '1000px' }}
+          className="w-full max-w-[1280px] flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6 mb-8 sm:mb-10 px-2 sm:px-4"
+        >
           
-          {/* Top Header & Segmented Navigation Block */}
-          <div className="space-y-2.5 xs:space-y-3 shrink-0">
-            {/* Section Eyebrow & Larger Heading */}
-            <div className="space-y-1">
-              <div className="inline-flex items-center gap-1.5 text-[10px] xs:text-xs font-bold uppercase tracking-widest text-[#e95126]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
-                <span>02 / The Contribution Journey</span>
-              </div>
+          {/* Left: Heading */}
+          <button
+            onClick={() => setIsContinuityModalOpen(true)}
+            className="text-left cursor-pointer focus:outline-none group inline-block shrink-0"
+            title="Click to explore full platform architecture"
+          >
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-[40px] font-medium tracking-tight text-[#222720] leading-none whitespace-nowrap">
+              <span>Good deserves <span className="text-[#e95126]">continuity.</span></span>
+            </h2>
+          </button>
 
-              <button
-                onClick={() => setIsContinuityModalOpen(true)}
-                className="text-left group cursor-pointer block focus:outline-none"
-              >
-                <h2 className="text-2xl xs:text-3xl sm:text-4xl font-bold tracking-tight text-[#222720] leading-tight group-hover:text-[#e95126] transition-colors">
-                  <span>Good deserves <span className="text-[#e95126]">continuity.</span></span>
-                </h2>
-              </button>
-            </div>
+          {/* Right: 4 Steps Text aligned in the SAME line horizontally in front of the heading */}
+          <div className="flex items-center gap-4 xs:gap-6 sm:gap-8 lg:gap-10 overflow-x-auto no-scrollbar py-1">
+            {stages.map((stg, idx) => {
+              const isActive = activeStage === idx;
 
-            {/* Clean Horizontal 4-Stage Segmented Bar */}
-            <div className="grid grid-cols-4 p-1 bg-[#eae8de]/80 backdrop-blur-xs rounded-xl border border-[#d8d9cf]/80 gap-1">
-              {stages.map((stg, idx) => {
-                const isActive = activeStage === idx;
-
-                return (
-                  <button
-                    key={stg.id}
-                    onClick={() => scrollToStage(idx)}
-                    className={`py-1.5 px-1 rounded-lg text-center transition-all duration-300 flex flex-col items-center justify-center touch-manipulation cursor-pointer ${
-                      isActive 
-                        ? 'bg-white text-[#e95126] shadow-xs font-bold ring-1 ring-[#e95126]/20' 
-                        : 'text-[#66695f] hover:text-[#222720]'
-                    }`}
-                  >
-                    <span className="text-[9px] font-mono leading-tight">
-                      {stg.step}
-                    </span>
-                    <span className="text-[11px] font-semibold leading-tight truncate w-full">
-                      {stg.name}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Clean Animated Text Block Directly Above Image */}
-          <div className="space-y-1.5 shrink-0 px-1">
-            {/* Stage Tag and Counter */}
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] xs:text-[11px] font-mono font-bold uppercase tracking-wider text-[#e95126] bg-[#e95126]/10 px-2.5 py-0.5 rounded-full">
-                {stages[activeStage].stageTag}
-              </span>
-
-              <span className="text-[10px] xs:text-[11px] font-mono text-[#66695f] bg-[#eae8de] px-2 py-0.5 rounded">
-                0{activeStage + 1} / 04
-              </span>
-            </div>
-
-            {/* Smooth Animated Text Above Image */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`story-text-${stages[activeStage].id}`}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="pt-0.5"
-              >
-                <h3 className="text-base xs:text-lg sm:text-xl font-bold text-[#222720] tracking-tight leading-snug">
-                  "{stages[activeStage].supporting}"
-                </h3>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Enlarged Prominent Image Container */}
-          <div className="relative w-full aspect-[4/3] xs:aspect-[16/11] rounded-2xl overflow-hidden shadow-lg border border-black/10 bg-[#1c201a] shrink-0">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={`story-img-${stages[activeStage].id}`}
-                initial={{ opacity: 0, scale: 1.04 }}
-                animate={{ opacity: 1, scale: 1.0 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute inset-0 w-full h-full"
-              >
-                <img
-                  src={stages[activeStage].photo}
-                  alt={stages[activeStage].alt}
-                  className="w-full h-full object-cover object-center transform-gpu"
-                  loading="eager"
-                  decoding="async"
-                />
-
-                {/* Subtle Vignette for Overlay Contrast */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/10 pointer-events-none" />
-
-                {/* Overlay Metadata Labels */}
-                <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-[10px] xs:text-[11px]">
-                  <div className="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-xs px-2.5 py-1 rounded-md border border-white/15 font-medium truncate max-w-[210px]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
-                    <span className="truncate">{stages[activeStage].contextLabel}</span>
-                  </div>
-
-                  <span className="font-bold text-[#ff9a6c] bg-black/60 backdrop-blur-xs px-2 py-1 rounded-md border border-white/15 uppercase tracking-wider text-[9px] xs:text-[10px]">
-                    {stages[activeStage].systemRef}
+              return (
+                <button
+                  key={stg.id}
+                  onClick={() => goToStage(idx)}
+                  className={`group flex items-center gap-2 cursor-pointer transition-all duration-200 whitespace-nowrap focus:outline-none select-none ${
+                    isActive ? 'text-[#e95126]' : 'text-[#66695f] hover:text-[#222720]'
+                  }`}
+                >
+                  <span className={`font-mono text-xs sm:text-sm font-bold transition-colors ${
+                    isActive ? 'text-[#e95126]' : 'text-[#a3a699] group-hover:text-[#222720]'
+                  }`}>
+                    {stg.step}
                   </span>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+                  <span className={`text-sm sm:text-base lg:text-lg font-bold tracking-tight transition-colors ${
+                    isActive ? 'text-[#e95126]' : 'text-[#222720]'
+                  }`}>
+                    {stg.name}
+                  </span>
+                  {isActive && (
+                    <motion.span 
+                      layoutId="activeStepHeaderPip" 
+                      className="w-1.5 h-1.5 rounded-full bg-[#e95126] shadow-[0_0_6px_#e95126]" 
+                    />
+                  )}
+                </button>
+              );
+            })}
           </div>
 
-          {/* Bottom Details Footer */}
-          <div className="flex items-center justify-between pt-0.5 shrink-0 text-[11px] xs:text-xs px-1">
-            <button
-              onClick={() => setIsContinuityModalOpen(true)}
-              className="inline-flex items-center gap-1 font-bold text-[#e95126] hover:underline cursor-pointer"
-            >
-              <span>Platform architecture</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-            <span className="text-[#66695f] font-mono text-[10px] xs:text-[11px]">
-              Stage 0{activeStage + 1} of 04
-            </span>
-          </div>
-
-        </div>
+        </motion.div>
 
         {/* ========================================================
-            2. DESKTOP APPROVED 2-COLUMN STICKY SCROLL VIEW (>= lg)
+            THE HORIZONTAL HANGING LINE (NO TEXT ON THIS LINE)
            ======================================================== */}
-        <div className="hidden lg:grid lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full my-auto">
+        <div className="w-full max-w-[1280px] relative px-2 sm:px-4">
           
-          {/* LEFT COLUMN — CLEAN CARDLESS EDITORIAL LIST */}
-          <div className="lg:col-span-6 flex flex-col justify-center">
-            
-            {/* Top Heading Block with Increased Bottom Margin */}
-            <div className="space-y-2 mb-6 lg:mb-8">
-              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
-                <span className="w-2 h-2 rounded-full bg-[#e95126]" />
-                <span>02 / The Contribution Journey</span>
-              </div>
-
-              {/* Clickable Heading with Hover Arrow */}
-              <button
-                onClick={() => setIsContinuityModalOpen(true)}
-                className="text-left group cursor-pointer block focus:outline-none transition-transform active:scale-[0.99]"
-                title="Click to explore full platform architecture"
-              >
-                <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-[#222720] leading-[1.15] group-hover:text-[#e95126] transition-colors flex items-center gap-2">
-                  <span>Good deserves <span className="text-[#e95126]">continuity.</span></span>
-                  <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 text-[#e95126] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all shrink-0" />
-                </h2>
-              </button>
+          {/* Continuous Clean Hanging Rail Across the Screen */}
+          <div className="relative w-full z-20">
+            {/* The Rail Line */}
+            <div className="w-full h-[2.5px] bg-[#cfd1c7] relative rounded-full overflow-hidden shadow-xs">
+              {/* Active glowing progress fill along the line */}
+              <div
+                className="h-full bg-gradient-to-r from-[#e95126] via-[#ff7b52] to-[#e95126] shadow-[0_0_8px_rgba(233,81,38,0.7)] transition-all duration-500 ease-out"
+                style={{
+                  width: `${((activeStage + 1) / 4) * 100}%`
+                }}
+              />
             </div>
 
-            {/* Vertically Aligned Cardless Editorial Stage List */}
-            <div className="space-y-1.5 sm:space-y-2 pt-2 border-t border-[#d8d9cf]/80 relative">
-              {/* Subtle connecting vertical track */}
-              <div className="absolute left-[24px] sm:left-[26px] top-6 bottom-6 w-[1.5px] bg-[#d8d9cf]/60 pointer-events-none" />
-
+            {/* Fixed Anchor Beads on the Line for each column (hidden on small screens to prevent vertical dot stacking) */}
+            <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none z-30">
               {stages.map((stg, idx) => {
                 const isActive = activeStage === idx;
-
                 return (
-                  <div
-                    key={stg.id}
-                    onMouseEnter={() => setActiveStage(idx)}
-                    onClick={() => scrollToStage(idx)}
-                    className={`group cursor-pointer transition-all duration-300 py-2 sm:py-3 px-2 sm:px-3 rounded-xl relative z-10 touch-manipulation ${
+                  <div key={`anchor-${stg.id}`} className="flex justify-center">
+                    <div className={`w-3 h-3 rounded-full border-2 transition-all duration-300 ${
                       isActive 
-                        ? 'opacity-100 bg-[#e95126]/[0.06]' 
-                        : 'opacity-65 hover:opacity-100 hover:bg-black/[0.02]'
-                    }`}
-                  >
-                    {/* Active Left Indicator Bar */}
-                    {isActive && (
-                      <motion.div 
-                        layoutId="activeStageLine"
-                        className="absolute left-0 top-1.5 bottom-1.5 w-[3px] bg-[#e95126] rounded-full"
-                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                      />
-                    )}
-
-                    <div className="flex items-center justify-between gap-2 sm:gap-4 pl-1">
-                      {/* Left: Number Badge + Name */}
-                      <div className="flex items-center gap-2 sm:gap-3">
-                        <span className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] sm:text-xs font-bold font-mono transition-all duration-300 relative z-10 ${
-                          isActive 
-                            ? 'bg-[#e95126] text-white shadow-sm ring-2 ring-[#e95126]/40 scale-105' 
-                            : 'bg-[#e5e5dc] text-[#66695f] group-hover:bg-[#dadad0]'
-                        }`}>
-                          {stg.step}
-                        </span>
-
-                        <div className={`transition-colors duration-300 ${
-                          isActive ? 'text-[#e95126]' : 'text-[#66695f] group-hover:text-[#222720]'
-                        }`}>
-                          {stg.icon}
-                        </div>
-
-                        <span className={`text-xs xs:text-sm sm:text-base font-bold tracking-tight transition-colors duration-300 ${
-                          isActive ? 'text-[#222720]' : 'text-[#222720]/80 group-hover:text-[#222720]'
-                        }`}>
-                          {stg.name}
-                        </span>
-                      </div>
-
-                      {/* Right: Short Supporting Line with Smooth Upward Fade */}
-                      <AnimatePresence mode="wait">
-                        <motion.div 
-                          key={`${stg.id}-${isActive}`}
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
-                          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                          className={`text-[11px] xs:text-xs sm:text-sm transition-colors text-right truncate max-w-[140px] xs:max-w-[200px] sm:max-w-none ${
-                            isActive ? 'text-[#e95126] font-semibold' : 'text-[#66695f]'
-                          }`}
-                        >
-                          {stg.supporting}
-                        </motion.div>
-                      </AnimatePresence>
-                    </div>
-
-                    {/* Active Expanded Stage Statement */}
-                    <AnimatePresence>
-                      {isActive && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0, y: 4 }}
-                          animate={{ opacity: 1, height: 'auto', y: 0 }}
-                          exit={{ opacity: 0, height: 0, y: 4 }}
-                          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                          className="pt-1.5 pl-8 sm:pl-12 pr-2 overflow-hidden space-y-1"
-                        >
-                          <p className="text-[11px] sm:text-xs text-[#66695f] leading-relaxed">
-                            {stg.detailedStatement}
-                          </p>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setIsContinuityModalOpen(true);
-                            }}
-                            className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-[#e95126] hover:underline pt-0.5"
-                          >
-                            <span>Platform architecture details</span>
-                            <ArrowRight className="w-3 h-3" />
-                          </button>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                        ? 'bg-[#e95126] border-white ring-2 ring-[#e95126]/50 shadow-[0_0_10px_rgba(233,81,38,0.9)] scale-110' 
+                        : 'bg-[#4e5447] border-[#f5f3ed] shadow-xs'
+                    }`} />
                   </div>
                 );
               })}
             </div>
-
-            {/* Bottom Controls / Stepper */}
-            <div className="flex items-center justify-between pt-3 sm:pt-4 mt-2 sm:mt-3 border-t border-[#d8d9cf]/80">
-              <div className="text-[11px] sm:text-xs text-[#66695f] font-serif italic">
-                Tap or scroll to explore stages.
-              </div>
-
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                <button
-                  onClick={() => scrollToStage(Math.max(0, activeStage - 1))}
-                  disabled={activeStage === 0}
-                  className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#d8d9cf] bg-white flex items-center justify-center text-[#222720] shadow-xs transition-colors ${
-                    activeStage === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-[#222720] hover:text-white active:scale-95'
-                  }`}
-                  aria-label="Previous stage"
-                >
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                </button>
-                <span className="text-[11px] sm:text-xs font-bold text-[#222720] px-1.5 sm:px-2 font-mono">
-                  0{activeStage + 1} / 04
-                </span>
-                <button
-                  onClick={() => scrollToStage(Math.min(3, activeStage + 1))}
-                  disabled={activeStage === 3}
-                  className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#d8d9cf] bg-white flex items-center justify-center text-[#222720] shadow-xs transition-colors ${
-                    activeStage === 3 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-[#222720] hover:text-white active:scale-95'
-                  }`}
-                  aria-label="Next stage"
-                >
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-
           </div>
 
-          {/* RIGHT COLUMN — 100% CRISP, GLOSSY PRESENTATION WITH NOTICEABLE ANIMATIONS */}
-          <div className="lg:col-span-6 relative w-full flex items-center justify-center">
-            
-            {/* The Unified Visual Stage Frame */}
-            <motion.div 
-              initial={{ opacity: 0, y: 25, scale: 0.97 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-[420px] sm:max-w-[490px] lg:max-w-[520px] mx-auto h-[260px] xs:h-[300px] sm:h-[380px] md:h-[420px] lg:h-[480px] xl:h-[500px] rounded-2xl overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.25)] border border-[#2b3327]/60 bg-[#1c201a]"
-            >
-              {/* Active Stage Image & Overlays */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={stages[activeStage].id}
-                  initial={{ opacity: 0, scale: 1.04 }}
-                  animate={{ opacity: 1, scale: 1.0 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute inset-0 w-full h-full flex flex-col justify-between p-5 sm:p-6 rounded-xl overflow-hidden"
-                >
-                  {/* Background Full-Bleed Photograph */}
-                  <img
-                    src={stages[activeStage].photo}
-                    alt={stages[activeStage].alt}
-                    className="absolute inset-0 w-full h-full object-cover object-center transform-gpu"
-                    loading="lazy"
-                    decoding="async"
-                  />
+          {/* Emerging Hanging Cards Area — Strictly Clipped at the Rail Top so items emerge from INSIDE the line */}
+          <div 
+            className="relative w-full pt-0"
+            style={{
+              clipPath: 'inset(0px -40px -100px -40px)',
+            }}
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 pt-3 sm:pt-0">
+              {stages.map((stg, idx) => {
+                const isActive = activeStage === idx;
 
-                  {/* Refined Deep Photographic Vignette */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#151913]/95 via-[#151913]/40 to-[#151913]/25 pointer-events-none" />
-
-                  {/* Top Row: Typography Only (Noticeably Animated) */}
-                  <motion.div 
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                    className="relative z-20 flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-white/90 drop-shadow-md"
+                return (
+                  <motion.div
+                    key={`hanging-card-${stg.id}`}
+                    className="flex flex-col items-center"
+                    initial={{ y: -520, opacity: 0 }}
+                    animate={isInView ? { y: 0, opacity: 1 } : { y: -520, opacity: 0 }}
+                    transition={{
+                      type: 'spring',
+                      damping: 18,
+                      stiffness: 70,
+                      mass: 1.0,
+                      delay: 0.12 + idx * 0.16,
+                    }}
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
-                    <span className="text-[#ff9a6c]">{stages[activeStage].step}</span>
-                    <span className="text-white/40">/</span>
-                    <span className="text-white">{stages[activeStage].name}</span>
-                  </motion.div>
+                    {/* High-Contrast Taut Hanging Thread (hidden on small screens to prevent extra dots) */}
+                    <div className="hidden sm:flex flex-col items-center w-full">
+                      {/* The Thread String */}
+                      <div 
+                        className={`w-[2px] h-10 sm:h-12 lg:h-14 transition-all duration-300 ${
+                          isActive 
+                            ? 'bg-[#e95126] shadow-[0_0_8px_rgba(233,81,38,0.9)]' 
+                            : 'bg-[#4e5447]/85'
+                        }`} 
+                      />
 
-                  {/* Bottom HUD Overlay with Staggered Noticeable Entrance */}
-                  <div className="relative z-20 space-y-3">
-                    
-                    {/* Supporting Statement */}
-                    <div className="space-y-1.5 max-w-lg">
-                      <motion.span 
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.35, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-[10px] uppercase font-bold tracking-widest text-[#ff9a6c] inline-block"
-                      >
-                        {stages[activeStage].stageTag}
-                      </motion.span>
-                      
-                      <motion.h3 
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-lg sm:text-xl lg:text-2xl font-medium tracking-tight text-white leading-snug drop-shadow-md"
-                      >
-                        "{stages[activeStage].supporting}"
-                      </motion.h3>
+                      {/* Top Eyelet / Fastener Ring attaching thread to card */}
+                      <div className={`w-3 h-3 rounded-full border-2 transition-all duration-300 -mb-1.5 z-20 ${
+                        isActive 
+                          ? 'bg-white border-[#e95126] shadow-[0_0_6px_rgba(233,81,38,0.6)]' 
+                          : 'bg-white border-[#4e5447]'
+                      }`} />
                     </div>
 
-                    {/* Metadata Footer */}
-                    <motion.div 
-                      initial={{ opacity: 0, y: 14 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.45, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
-                      className="flex flex-wrap items-center justify-between gap-3 pt-2.5 border-t border-white/20"
+                    {/* The Image Card — Clean Visual Hanging Card (Click to open architecture details modal) */}
+                    <div
+                      onClick={() => {
+                        goToStage(idx);
+                        setIsContinuityModalOpen(true);
+                      }}
+                      className={`group relative w-full h-[290px] xs:h-[320px] sm:h-[350px] lg:h-[370px] rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 select-none transform-gpu touch-manipulation ${
+                        isActive
+                          ? 'ring-2 ring-[#e95126] shadow-[0_20px_45px_rgba(233,81,38,0.24)] scale-[1.02] border-transparent'
+                          : 'border border-white/60 shadow-md opacity-85 hover:opacity-100 hover:scale-[1.01]'
+                      }`}
+                      title={`Click to view platform architecture details for ${stg.name}`}
                     >
-                      <div className="inline-flex items-center gap-2 bg-black/60 backdrop-blur-md px-3.5 py-1.5 rounded-lg border border-white/20 text-white shadow-sm">
-                        <span className="w-2 h-2 rounded-full bg-[#e95126]" />
-                        <span className="text-xs font-medium text-white/95">
-                          {stages[activeStage].contextLabel}
-                        </span>
+                      {/* Background Photograph */}
+                      <img
+                        src={stg.photo}
+                        alt={stg.alt}
+                        className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                        loading="lazy"
+                        decoding="async"
+                      />
+
+                      {/* Subtle Vignette for clean photographic depth */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+
+                      {/* Top Edge Specular Sheen for Active Card */}
+                      {isActive && (
+                        <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-white/70 to-transparent pointer-events-none z-20" />
+                      )}
+
+                      {/* Hover Overlay: Clean prompt to open architecture modal */}
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center pointer-events-none z-20">
+                        <div className="px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md text-[#222720] text-xs font-semibold shadow-lg flex items-center gap-1.5 transform scale-95 group-hover:scale-100 transition-transform duration-200">
+                          <span>View Architecture</span>
+                          <ArrowUpRight className="w-3.5 h-3.5 text-[#e95126]" />
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-1.5 text-xs font-mono text-white/80 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md border border-white/10">
-                        <span>Milestone 0{activeStage + 1} / 04</span>
-                      </div>
-                    </motion.div>
+                    </div>
 
-                  </div>
-
-                </motion.div>
-              </AnimatePresence>
-
-            </motion.div>
-
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
 
         </div>
@@ -615,18 +379,31 @@ export default function DonationJourney({ onOpenDemo }) {
 
               {/* 4 Stages Detailed Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
-                {stages.map((stg) => (
-                  <div 
-                    key={stg.id}
-                    className="bg-white rounded-2xl p-5 sm:p-6 border border-[#d8d9cf] shadow-sm space-y-3 relative overflow-hidden hover:border-[#e95126]/40 transition-colors"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-full bg-[#e95126] text-white flex items-center justify-center text-xs font-bold">
-                          {stg.step}
-                        </span>
-                        <span className="font-bold text-base text-[#222720]">{stg.name}</span>
-                      </div>
+                {stages.map((stg, sIdx) => {
+                  const isSelected = activeStage === sIdx;
+                  return (
+                    <div 
+                      key={stg.id}
+                      className={`rounded-2xl p-5 sm:p-6 border shadow-sm space-y-3 relative overflow-hidden transition-all duration-300 ${
+                        isSelected 
+                          ? 'bg-[#fffaf7] border-[#e95126] ring-2 ring-[#e95126]/30 shadow-md' 
+                          : 'bg-white border-[#d8d9cf] hover:border-[#e95126]/40'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className={`w-6 h-6 rounded-full text-white flex items-center justify-center text-xs font-bold ${
+                            isSelected ? 'bg-[#e95126] ring-2 ring-[#e95126]/40' : 'bg-[#e95126]'
+                          }`}>
+                            {stg.step}
+                          </span>
+                          <span className="font-bold text-base text-[#222720]">{stg.name}</span>
+                          {isSelected && (
+                            <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-[#e95126]/10 text-[#e95126] font-bold">
+                              Selected
+                            </span>
+                          )}
+                        </div>
                       <div className="text-[#e95126]">
                         {stg.icon}
                       </div>
@@ -649,7 +426,8 @@ export default function DonationJourney({ onOpenDemo }) {
                       ))}
                     </ul>
                   </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Footer CTA */}

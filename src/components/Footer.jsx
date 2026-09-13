@@ -3,11 +3,11 @@ import { ShieldCheck, Heart } from 'lucide-react';
 
 export default function Footer({ onOpenDemo }) {
   return (
-    <footer className="bg-[#f5f3ed] border-t border-[#d8d9cf] py-6 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] text-[#222720] select-none text-xs">
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-12 space-y-4">
+    <footer className="bg-[#f5f3ed] border-t border-[#d8d9cf] py-2.5 xs:py-3 sm:py-6 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))] sm:pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] text-[#222720] select-none text-xs w-full mt-2 xs:mt-3 sm:mt-auto">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-12 space-y-2 sm:space-y-4">
         
         {/* Top Row: Brand & Tagline + Navigation */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2.5 sm:gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <a href="#" className="text-xl font-black tracking-tight text-[#222720] hover:opacity-85 transition-opacity">
               ekhum<span className="text-[#e95126]">.</span>
@@ -21,14 +21,14 @@ export default function Footer({ onOpenDemo }) {
             </p>
           </div>
 
-          <nav className="flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-6 font-semibold text-[#44483e] shrink-0">
-            <a href="#platform" className="hover:text-[#e95126] transition-colors py-1">How it works</a>
-            <a href="#technology" className="hover:text-[#e95126] transition-colors py-1">Technology</a>
-            <a href="#trust" className="hover:text-[#e95126] transition-colors py-1">Trust</a>
-            <a href="#calculator" className="hover:text-[#e95126] transition-colors py-1">Calculator</a>
+          <nav className="flex flex-wrap items-center gap-x-3.5 gap-y-1.5 sm:gap-6 font-semibold text-[#44483e] shrink-0 text-[11px] sm:text-xs">
+            <a href="#platform" className="hover:text-[#e95126] transition-colors py-0.5 sm:py-1">How it works</a>
+            <a href="#technology" className="hover:text-[#e95126] transition-colors py-0.5 sm:py-1">Technology</a>
+            <a href="#trust" className="hover:text-[#e95126] transition-colors py-0.5 sm:py-1">Trust</a>
+            <a href="#calculator" className="hover:text-[#e95126] transition-colors py-0.5 sm:py-1">Calculator</a>
             <button 
               onClick={onOpenDemo}
-              className="hover:text-[#e95126] font-bold text-[#222720] transition-colors cursor-pointer py-1"
+              className="hover:text-[#e95126] font-bold text-[#222720] transition-colors cursor-pointer py-0.5 sm:py-1"
             >
               Contact
             </button>

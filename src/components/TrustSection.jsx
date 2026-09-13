@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { 
   FileText, 
   ShieldCheck, 
@@ -12,24 +12,22 @@ import {
   ArrowRight, 
   X, 
   CheckCircle2, 
-  ArrowUpRight,
-  Play,
-  Pause
+  ArrowUpRight
 } from 'lucide-react';
 
 export default function TrustSection({ onOpenDemo }) {
   const [activeIndex, setActiveIndex] = useState(1); // Default to FCRA-aware flows (02 / 06)
-  const [isPaused, setIsPaused] = useState(false);
   const [selectedExplainer, setSelectedExplainer] = useState(null);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== 'undefined' ? window.innerWidth : 1200
   );
   
   const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { amount: 0.18, once: false });
   const isVisibleRef = useRef(true);
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
-  const SLIDE_INTERVAL = 4200;
+  const SLIDE_INTERVAL = 1500; // Exact 1.5s interval to rotate cards smoothly and continuously
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -44,7 +42,7 @@ export default function TrustSection({ onOpenDemo }) {
       ([entry]) => {
         isVisibleRef.current = entry.isIntersecting;
       },
-      { threshold: 0.2 }
+      { threshold: 0.05 }
     );
     observer.observe(containerRef.current);
     return () => observer.disconnect();
@@ -201,9 +199,9 @@ export default function TrustSection({ onOpenDemo }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedExplainer]);
 
-  // Efficient automatic slideshow timer (zero high-frequency state thrashing)
+  // Automatic slideshow timer moving every 1.5s properly forever
   useEffect(() => {
-    if (isPaused || selectedExplainer) return;
+    if (selectedExplainer) return;
 
     const timer = setInterval(() => {
       if (isVisibleRef.current) {
@@ -212,7 +210,7 @@ export default function TrustSection({ onOpenDemo }) {
     }, SLIDE_INTERVAL);
 
     return () => clearInterval(timer);
-  }, [isPaused, selectedExplainer, total]);
+  }, [selectedExplainer, total]);
 
   // Touch swipe handling for phones and tablets
   const handleTouchStart = (e) => {
@@ -246,21 +244,22 @@ export default function TrustSection({ onOpenDemo }) {
       ref={containerRef}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className="content-auto py-12 sm:py-16 lg:py-20 bg-[#f5f3ed] text-[#222720] relative overflow-hidden select-none flex flex-col justify-center"
+      className="content-auto min-h-[100dvh] min-h-screen pt-20 xs:pt-22 sm:pt-24 lg:pt-28 pb-10 sm:pb-14 lg:pb-16 bg-[#f5f3ed] text-[#222720] relative overflow-hidden select-none flex flex-col justify-center"
     >
       {/* Background Soft Sage and Warm Highlights */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[450px] sm:w-[650px] h-[350px] sm:h-[450px] bg-[#dce4d3]/30 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-[#e95126]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 w-full space-y-6 sm:space-y-10 relative z-10">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-10 w-full space-y-6 sm:space-y-8 relative z-10">
         
         {/* Top Header Section */}
-        <div className="border-b border-[#d8d9cf] pb-4 sm:pb-6">
+        <motion.div 
+          animate={{ opacity: isInView ? 1 : 0, x: isInView ? 0 : -60 }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          className="border-b border-[#d8d9cf] pb-4 sm:pb-6 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-3"
+        >
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
-              <span>04 / BUILT FOR ACCOUNTABILITY</span>
-            </div>
+
             
             {/* Clickable Heading with Hover-Only Arrow */}
             <div className="flex items-center">
@@ -278,17 +277,22 @@ export default function TrustSection({ onOpenDemo }) {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* 3D Revolving Trust Deck Stage */}
-        <div className="relative w-full min-h-[360px] xs:min-h-[380px] sm:min-h-[405px] pt-2 sm:pt-5 flex items-center justify-center overflow-visible">
-          
+        <motion.div 
+          animate={{ 
+            opacity: isInView ? 1 : 0, 
+            y: isInView ? 0 : 70, 
+            scale: isInView ? 1 : 0.9 
+          }}
+          transition={{ duration: 0.85, ease: [0.19, 1, 0.22, 1] }}
+          className="relative w-full min-h-[360px] xs:min-h-[380px] sm:min-h-[405px] pt-2 sm:pt-5 flex items-center justify-center overflow-visible"
+        >
           {/* Deck Carousel Cards */}
           <div 
             className="relative w-full max-w-[290px] xs:max-w-[340px] sm:max-w-[380px] md:max-w-[400px] h-[360px] xs:h-[380px] sm:h-[405px] flex items-center justify-center" 
             style={{ perspective: '1400px' }}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
           >
             {trustNodes.map((node, idx) => {
               // Calculate relative circular offset (-2, -1, 0, 1, 2)
@@ -309,88 +313,102 @@ export default function TrustSection({ onOpenDemo }) {
               const opacity = isActive ? 1 : Math.abs(diff) === 1 ? 0.75 : 0.35;
               const zIndex = 30 - Math.abs(diff) * 10;
 
+              const targetX = isInView ? xOffset : (diff === 0 ? 0 : diff < 0 ? -180 : 180);
+              const targetY = isInView ? yOffset : (yOffset + 140);
+              const targetRotateY = isInView ? rotateY : (diff * -32);
+              const targetScale = isInView ? scale : (scale * 0.65);
+              const targetOpacity = isInView ? opacity : 0;
+
               return (
                 <motion.div
                   key={node.id}
                   onClick={() => {
-                    handleSelect(idx);
-                    setIsPaused(true);
+                    if (isActive) {
+                      setSelectedExplainer(node);
+                    } else {
+                      handleSelect(idx);
+                    }
                   }}
-                  onMouseEnter={() => setIsPaused(true)}
-                  onMouseLeave={() => setIsPaused(false)}
                   animate={{
-                    x: xOffset,
-                    y: yOffset,
-                    rotateY: rotateY,
-                    scale: scale,
-                    opacity: opacity,
+                    x: targetX,
+                    y: targetY,
+                    rotateY: targetRotateY,
+                    scale: targetScale,
+                    opacity: targetOpacity,
                   }}
                   transition={{
-                    duration: 0.45,
-                    ease: [0.16, 1, 0.3, 1],
+                    duration: isInView ? 0.85 : 0.4,
+                    delay: isInView ? Math.abs(diff) * 0.08 : 0,
+                    ease: [0.19, 1, 0.22, 1],
                   }}
                   style={{
                     zIndex: zIndex,
                     transformStyle: 'preserve-3d',
                   }}
-                  className={`absolute w-full rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer transition-shadow duration-300 touch-manipulation transform-gpu ${
+                  className={`group absolute w-full rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer transition-shadow duration-300 touch-manipulation transform-gpu ${
                     isActive
-                      ? 'shadow-[0_16px_36px_rgba(34,39,32,0.12)] border border-[#d8d9cf] bg-white h-[355px] xs:h-[375px] sm:h-[405px] flex flex-col'
+                      ? 'shadow-[0_18px_40px_rgba(233,81,38,0.18)] border border-[#e95126]/50 bg-white h-[355px] xs:h-[375px] sm:h-[405px] flex flex-col ring-1 ring-[#e95126]/30'
                       : 'shadow-sm bg-white/95 hover:bg-white hover:opacity-95 border border-[#d8d9cf]/80 h-[335px] xs:h-[355px] sm:h-[385px] p-4 sm:p-5 flex flex-col justify-between'
                   }`}
+                  title={isActive ? `Click to open description for ${node.title}` : `Click to select ${node.title}`}
                 >
                   {isActive ? (
                     /* Active Center Large Card with Clean Photo */
                     <>
-                      <div className="relative h-44 xs:h-48 sm:h-56 w-full overflow-hidden bg-[#222720] shrink-0">
-                        <img
+                      <div 
+                        className="relative h-48 xs:h-52 sm:h-60 w-full overflow-hidden bg-[#222720] shrink-0 cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedExplainer(node);
+                        }}
+                      >
+                        <motion.img
+                          animate={{
+                            scale: isInView ? 1 : 1.35,
+                            y: isInView ? 0 : 25,
+                            opacity: isInView ? 1 : 0.35,
+                          }}
+                          transition={{
+                            duration: 1.1,
+                            ease: [0.19, 1, 0.22, 1],
+                          }}
                           src={node.image}
                           alt={node.title}
                           className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                           loading="lazy"
                           decoding="async"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                        
+                        {/* Hover Overlay: Clean prompt to open description modal */}
+                        <div className="absolute inset-0 bg-black/15 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none z-10">
+                          <div className="px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md text-[#222720] text-xs font-semibold shadow-md flex items-center gap-1.5 transform scale-95 group-hover:scale-100 transition-transform duration-200">
+                            <span>Open description</span>
+                            <ArrowUpRight className="w-3.5 h-3.5 text-[#e95126]" />
+                          </div>
+                        </div>
                       </div>
 
                       {/* Active Card Content */}
-                      <div className="p-3 sm:p-4 bg-white space-y-1.5 sm:space-y-2 flex-1 flex flex-col justify-between">
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#f5f3ed] border border-[#d8d9cf] flex items-center justify-center shrink-0">
-                              {node.icon}
-                            </div>
-                            <h3 className="text-sm xs:text-base sm:text-lg font-bold text-[#222720] tracking-tight">
-                              {node.title}
-                            </h3>
+                      <div 
+                        className="p-3.5 sm:p-4.5 bg-white space-y-1.5 sm:space-y-2 flex-1 flex flex-col justify-center cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedExplainer(node);
+                        }}
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#f5f3ed] border border-[#d8d9cf] flex items-center justify-center shrink-0">
+                            {node.icon}
                           </div>
-
-                          <p className="mt-1 text-[11px] sm:text-xs text-[#66695f] leading-relaxed line-clamp-2">
-                            {node.copy}
-                          </p>
+                          <h3 className="text-sm xs:text-base sm:text-lg font-bold text-[#222720] tracking-tight group-hover:text-[#e95126] transition-colors">
+                            {node.title}
+                          </h3>
                         </div>
 
-                        <div className="pt-1.5 sm:pt-2 flex items-center justify-between border-t border-[#f0eee6]">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedExplainer(node);
-                            }}
-                            className="text-xs font-bold text-[#222720] hover:text-[#e95126] transition-colors flex items-center gap-1.5 group/btn"
-                          >
-                            <span>Explore how</span>
-                            <ArrowRight className="w-3.5 h-3.5 transform group-hover/btn:translate-x-1 transition-transform" />
-                          </button>
-
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedExplainer(node);
-                            }}
-                            className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#f5f3ed] hover:bg-[#e95126] text-[#222720] hover:text-white transition-all flex items-center justify-center shadow-xs"
-                          >
-                            <ArrowRight className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
-                          </button>
-                        </div>
+                        <p className="mt-0.5 text-[11px] sm:text-xs text-[#66695f] leading-relaxed line-clamp-2">
+                          {node.copy}
+                        </p>
                       </div>
                     </>
                   ) : (
@@ -416,11 +434,7 @@ export default function TrustSection({ onOpenDemo }) {
                         </div>
                       </div>
 
-                      <div className="pt-2 sm:pt-3 border-t border-[#f0eee6] flex items-center justify-between text-[10px] sm:text-[11px] font-semibold text-[#8c9285]">
-                        <span className="flex items-center gap-1">
-                          <Lock className="w-3 h-3 text-[#e95126]/60" />
-                          <span>Tap to inspect</span>
-                        </span>
+                      <div className="pt-2 sm:pt-3 border-t border-[#f0eee6] flex items-center justify-end text-[10px] sm:text-[11px] font-semibold text-[#8c9285]">
                         <span className="text-[10px] font-mono text-[#66695f]">
                           {node.step.split(' ')[0]}
                         </span>
@@ -433,26 +447,33 @@ export default function TrustSection({ onOpenDemo }) {
           </div>
 
           {/* Left / Right Carousel Navigation Controls */}
-          <button
+          <motion.button
+            animate={{ x: isInView ? 0 : -35, opacity: isInView ? 1 : 0 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             onClick={handlePrev}
             aria-label="Previous trust card"
             className="absolute left-1 xs:left-2 sm:left-6 lg:left-12 z-40 w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-md border border-[#d8d9cf] shadow-sm hover:shadow-md text-[#222720] hover:text-[#e95126] active:scale-95 hover:scale-105 transition-all flex items-center justify-center cursor-pointer"
           >
             <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            animate={{ x: isInView ? 0 : 35, opacity: isInView ? 1 : 0 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             onClick={handleNext}
             aria-label="Next trust card"
             className="absolute right-1 xs:right-2 sm:right-6 lg:right-12 z-40 w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-md border border-[#d8d9cf] shadow-sm hover:shadow-md text-[#222720] hover:text-[#e95126] active:scale-95 hover:scale-105 transition-all flex items-center justify-center cursor-pointer"
           >
             <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-          </button>
-
-        </div>
+          </motion.button>
+        </motion.div>
 
         {/* Clean Step Progress Dot Selectors */}
-        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 pt-3 sm:pt-6">
+        <motion.div 
+          animate={{ y: isInView ? 0 : 30, opacity: isInView ? 1 : 0 }}
+          transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 pt-3 sm:pt-6"
+        >
           {trustNodes.map((node, i) => (
             <button
               key={node.id}
@@ -471,21 +492,7 @@ export default function TrustSection({ onOpenDemo }) {
               )}
             </button>
           ))}
-
-          {/* Play / Pause Auto-Slideshow Button */}
-          <button
-            onClick={() => setIsPaused((prev) => !prev)}
-            aria-label={isPaused ? "Play slideshow" : "Pause slideshow"}
-            title={isPaused ? "Resume slideshow" : "Pause slideshow"}
-            className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#e7e5dc] hover:bg-[#dedcd2] text-[#222720] flex items-center justify-center transition-all ml-1 shadow-2xs cursor-pointer"
-          >
-            {isPaused ? (
-              <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
-            ) : (
-              <Pause className="w-2.5 h-2.5 fill-current" />
-            )}
-          </button>
-        </div>
+        </motion.div>
 
       </div>
 

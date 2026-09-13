@@ -10,7 +10,6 @@ import {
   X, 
   CheckCircle2, 
   Layers, 
-  RefreshCw, 
   Lock, 
   Database,
   Cpu,
@@ -21,6 +20,17 @@ import {
 
 export default function TechnologySection({ onOpenDemo }) {
   const [activeModalModule, setActiveModalModule] = useState(null);
+  const [offscreenY, setOffscreenY] = useState(800);
+
+  // Dynamically calculate bottom offscreen position based on viewport height
+  useEffect(() => {
+    const updateOffscreenY = () => {
+      setOffscreenY(Math.max(window.innerHeight * 0.9, 750));
+    };
+    updateOffscreenY();
+    window.addEventListener('resize', updateOffscreenY);
+    return () => window.removeEventListener('resize', updateOffscreenY);
+  }, []);
 
   // Close modal on Escape key
   useEffect(() => {
@@ -163,20 +173,23 @@ export default function TechnologySection({ onOpenDemo }) {
   ];
 
   return (
-    <section id="technology" className="content-auto min-h-screen py-12 sm:py-18 lg:py-24 bg-[#222720] text-[#f5f3ed] relative overflow-hidden select-none flex flex-col justify-center">
+    <section id="technology" className="content-auto min-h-[100dvh] min-h-screen pt-16 xs:pt-20 sm:pt-24 lg:pt-28 pb-8 sm:pb-14 lg:pb-16 bg-[#222720] text-[#f5f3ed] relative overflow-hidden select-none flex flex-col justify-center bg-tech-grid-dark">
       
       {/* Background Subtle Ambient Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] sm:w-[700px] h-[500px] sm:h-[700px] bg-[#e95126]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] sm:w-[700px] h-[500px] sm:h-[700px] bg-[#e95126]/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 space-y-8 sm:space-y-12 lg:space-y-14 relative z-10 w-full">
+      <div className="max-w-[1240px] mx-auto px-3.5 xs:px-4 sm:px-6 md:px-10 space-y-6 sm:space-y-10 lg:space-y-12 relative z-10 w-full">
         
         {/* Sleek Minimal Single-Line Header with Clickable Heading & Hover Arrow */}
-        <div className="border-b border-[#3b4337] pb-4 sm:pb-6">
+        <motion.div 
+          initial={{ opacity: 0, x: -60 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          className="border-b border-[#3b4337] pb-4 sm:pb-6 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-3"
+        >
           <div className="space-y-1.5 sm:space-y-2">
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#dce4d3]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
-              <span>03 / The Technology</span>
-            </div>
+
             <div className="flex items-center">
               <button
                 onClick={() => setActiveModalModule(modules[0])}
@@ -192,15 +205,36 @@ export default function TechnologySection({ onOpenDemo }) {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Compact, Clean Visual Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-5">
-          {modules.map((mod) => (
-            <div
+        {/* Dynamic Cards Grid: Silky Smooth Glide-In Animation */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.15 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-5"
+        >
+          {modules.map((mod, idx) => (
+            <motion.div
               key={mod.id}
+              variants={{
+                hidden: { 
+                  opacity: 0, 
+                  y: offscreenY
+                },
+                visible: { 
+                  opacity: 1, 
+                  y: 0, 
+                  transition: {
+                    duration: 0.85,
+                    delay: 0.06 + idx * 0.09,
+                    ease: [0.16, 1, 0.3, 1] // Apple fluid curve: fast initial entrance from offscreen bottom, velvet deceleration into resting position
+                  }
+                }
+              }}
+              whileHover={{ y: -8, transition: { duration: 0.25 } }}
               onClick={() => setActiveModalModule(mod)}
-              className="group bg-[#1a1f18] border border-[#343d31] hover:border-[#e95126]/60 rounded-xl sm:rounded-2xl overflow-hidden transition-all duration-300 active:scale-98 hover:-translate-y-0.5 hover:shadow-lg cursor-pointer flex flex-col justify-between touch-manipulation transform-gpu"
+              className="group relative bg-[#1a1f18] border border-[#343d31] hover:border-[#e95126] rounded-xl sm:rounded-2xl overflow-hidden transition-colors duration-300 active:scale-98 hover:shadow-[0_24px_50px_rgba(233,81,38,0.25)] cursor-pointer flex flex-col justify-between touch-manipulation transform-gpu ring-0 hover:ring-1 hover:ring-[#e95126]/60 shadow-[0_20px_45px_rgba(0,0,0,0.35)]"
             >
               {/* Proportional Compact Photographic Window */}
               <div className="relative h-32 xs:h-36 sm:h-44 lg:h-48 xl:h-52 w-full overflow-hidden bg-[#141913]">
@@ -212,29 +246,33 @@ export default function TechnologySection({ onOpenDemo }) {
                   decoding="async"
                 />
                 
-                {/* Subtle Top-Left Step Index */}
-                <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 bg-[#1a1f18]/85 backdrop-blur-md px-2 py-0.5 rounded-md border border-white/10 text-[9.5px] xs:text-[10px] font-mono font-bold text-[#dce4d3]">
-                  {mod.step}
-                </div>
+                {/* Vignette Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#1a1f18] via-transparent to-black/30 pointer-events-none" />
 
-                {/* Subtle Hover Action Icon */}
-                <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 group-hover:text-white group-hover:bg-[#e95126] transition-all">
-                  <ArrowUpRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                {/* Top-Left Step Index */}
+                <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 bg-[#1a1f18]/90 backdrop-blur-md px-2 py-0.5 rounded-md border border-white/10 text-[9.5px] xs:text-[10px] font-mono font-bold text-[#dce4d3] flex items-center gap-1 z-20">
+                  <span className="w-1 h-1 rounded-full bg-[#e95126] animate-pulse"></span>
+                  <span>{mod.step}</span>
                 </div>
               </div>
 
               {/* Minimal Clean Details Footer */}
-              <div className="p-3 xs:p-3.5 sm:p-4 space-y-0.5">
-                <h3 className="text-xs xs:text-sm sm:text-base font-bold text-white group-hover:text-[#dce4d3] transition-colors leading-tight">
-                  {mod.title}
-                </h3>
+              <div className="p-3 xs:p-3.5 sm:p-4 space-y-1 relative z-10">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs xs:text-sm sm:text-base font-bold text-white group-hover:text-[#e95126] transition-colors leading-tight">
+                    {mod.title}
+                  </h3>
+                  <div className="w-5 h-5 rounded-full bg-white/5 group-hover:bg-[#e95126] text-white flex items-center justify-center transition-colors">
+                    <ArrowUpRight className="w-3 h-3" />
+                  </div>
+                </div>
                 <p className="text-[10px] xs:text-[11px] sm:text-xs text-[#a9b0a1] font-normal truncate">
                   {mod.subtitle}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
       </div>
 

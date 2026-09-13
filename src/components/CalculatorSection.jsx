@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView, animate } from 'framer-motion';
-import { IndianRupee, Percent, ShieldCheck, Sparkles, Zap } from 'lucide-react';
+import { IndianRupee, Percent, ShieldCheck, Zap } from 'lucide-react';
 
 export default function CalculatorSection() {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+  const isInView = useInView(sectionRef, { once: false, amount: 0.2 });
 
   // State for volume and commission percentage
   const [volume, setVolume] = useState(10000000); // starts at 10L for entrance animation
   const [commission, setCommission] = useState(1.0); // starts at 1.0% for entrance animation
   const [barProgress, setBarProgress] = useState(0); // 0% to animated value
-  const [hasAnimated, setHasAnimated] = useState(false);
   const [userInteracted, setUserInteracted] = useState(false);
 
   // Formatter for Indian Rupees
@@ -34,9 +33,7 @@ export default function CalculatorSection() {
 
   // Automatic live animation when the user scrolls into Section 6
   useEffect(() => {
-    if (isInView && !hasAnimated && !userInteracted) {
-      setHasAnimated(true);
-
+    if (isInView && !userInteracted) {
       // 1. Animate Funds Raised from 10 Lakh up to 5 Crore
       const volumeAnimation = animate(10000000, 50000000, {
         duration: 1.8,
@@ -69,8 +66,13 @@ export default function CalculatorSection() {
         commissionAnimation.stop();
         barAnimation.stop();
       };
+    } else if (!isInView && !userInteracted) {
+      // Reset so that next time it enters the viewport, it runs the 0 to N animation again
+      setVolume(10000000);
+      setCommission(1.0);
+      setBarProgress(0);
     }
-  }, [isInView, hasAnimated, userInteracted]);
+  }, [isInView, userInteracted]);
 
   const handleVolumeChange = (newVal) => {
     setUserInteracted(true);
@@ -98,44 +100,49 @@ export default function CalculatorSection() {
     { label: '₹25 Crore', value: 250000000 },
   ];
 
+
   return (
     <section 
       id="calculator" 
       ref={sectionRef}
-      className="content-auto py-7 xs:py-8 sm:py-14 lg:py-20 bg-[#f5f3ed] text-[#222720] relative overflow-hidden select-none flex flex-col justify-center"
+      className="content-auto min-h-0 sm:min-h-[100dvh] sm:min-h-screen pt-14 xs:pt-16 sm:pt-24 lg:pt-28 pb-6 xs:pb-8 sm:pb-14 bg-[#f5f3ed] text-[#222720] relative overflow-hidden select-none flex flex-col justify-center"
     >
       {/* Soft Ambient Background Glows */}
       <div className="absolute top-1/4 right-1/4 w-[500px] h-[350px] bg-[#dce4d3]/30 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 left-10 w-[350px] h-[350px] bg-[#e95126]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-[1140px] mx-auto px-4 sm:px-6 md:px-10 w-full space-y-5 sm:space-y-10 lg:space-y-12 relative z-10">
+      <div className="max-w-[1140px] mx-auto px-4 sm:px-6 md:px-10 w-full space-y-2 xs:space-y-3 sm:space-y-10 lg:space-y-12 relative z-10">
         
-        {/* Adjusted Single-Line Clean Heading */}
-        <div className="border-b border-[#d8d9cf] pb-3 sm:pb-5">
+        {/* Adjusted Single-Line Clean Heading with Tech Status */}
+        <motion.div 
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+          className="border-b border-[#d8d9cf] pb-1.5 sm:pb-5 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 sm:gap-3"
+        >
           <div className="space-y-0.5 sm:space-y-1.5">
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 text-[9.5px] xs:text-[10.5px] sm:text-xs font-bold uppercase tracking-widest text-[#e95126]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
-              <span>06 / SAVINGS CALCULATOR</span>
-            </div>
+
             <h2 className="text-xl xs:text-2xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-[#222720]">
               Good deserves <span className="text-[#e95126]">more.</span>
             </h2>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Snug, Breathable & Animated Dashboard Card */}
+        {/* Snug, Breathable & Animated Dashboard Card with 3D Edge Entry */}
         <motion.div 
-          initial={{ opacity: 0, y: 20, scale: 0.98 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true, amount: 0.15 }}
+          initial={{ opacity: 0, y: 60, rotateX: 12, scale: 0.96 }}
+          whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
+          viewport={{ once: false, amount: 0.15 }}
           whileHover={{ y: -2 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-white rounded-2xl sm:rounded-[28px] border border-[#d8d9cf] shadow-[0_12px_40px_rgba(34,39,32,0.06)] hover:shadow-[0_20px_50px_rgba(34,39,32,0.09)] transition-all duration-300 overflow-hidden grid grid-cols-1 lg:grid-cols-12"
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          style={{ perspective: '1200px' }}
+          className="relative bg-white rounded-2xl sm:rounded-[28px] border border-[#d8d9cf] shadow-[0_12px_40px_rgba(34,39,32,0.06)] hover:shadow-[0_20px_50px_rgba(34,39,32,0.09)] transition-all duration-300 overflow-hidden grid grid-cols-1 lg:grid-cols-12 ring-1 ring-[#e95126]/20 transform-gpu"
         >
-          
           {/* Left Column: Interactive Sliders & Quick Controls */}
           <div className="lg:col-span-6 p-3 xs:p-4.5 sm:p-7 lg:p-9 space-y-3.5 sm:space-y-6 border-b lg:border-b-0 lg:border-r border-[#d8d9cf]/80 flex flex-col justify-center">
             
+
             {/* Slider 1: Annual Funds Raised */}
             <div className="space-y-1.5 xs:space-y-2 sm:space-y-2.5">
               <div className="flex justify-between items-center gap-1.5 xs:gap-2">
@@ -265,7 +272,6 @@ export default function CalculatorSection() {
             <div className="space-y-1 sm:space-y-2">
               <div className="flex items-center justify-between">
                 <div className="inline-flex items-center gap-1.5 text-[9.5px] xs:text-[10.5px] sm:text-xs font-bold uppercase tracking-wider text-[#4d5946]">
-                  <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#358a4d] animate-ping" />
                   <span>Live Annual Savings</span>
                 </div>
                 <span className="px-2 py-0.5 rounded-full bg-[#222720] text-[#dce4d3] text-[8.5px] xs:text-[9.5px] sm:text-[10.5px] font-bold shadow-2xs">

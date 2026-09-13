@@ -32,10 +32,11 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 0px;
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
+  /* Prevent scroll chaining and rubber-banding */
+  overscroll-behavior-y: none;
 }
 
 html, body {
@@ -43,6 +44,15 @@ html, body {
   max-width: 100vw;
   width: 100%;
   background-color: var(--paper);
+}
+
+/* GPU Hardware Acceleration & Anti-Glitch subpixel smoothing */
+.transform-gpu {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 #root {
@@ -67,10 +77,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Optimize rendering performance for long pages */
+/* Smooth animation performance helpers */
 .content-auto {
-  content-visibility: auto;
-  contain-intrinsic-size: 800px;
+  /* content-visibility: auto disabled to prevent recalculation layout shifts and scrollbar jumping during smooth motion */
+  contain: paint;
 }
 
 /* Touch Device Ergonomics */
@@ -120,12 +130,109 @@ body {
   to { transform: rotate(360deg); }
 }
 
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
+
+@keyframes tech-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes radar-pulse {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(0.9); opacity: 0; }
+}
+
+@keyframes circuit-flow {
+  0% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
 .animate-pulse-gentle {
   animation: pulse-gentle 3s ease-in-out infinite;
 }
 
 .animate-spin-slow {
   animation: spin-slow 24s linear infinite;
+}
+
+.animate-scanline {
+  animation: scanline 8s linear infinite;
+}
+
+.animate-radar {
+  animation: radar-pulse 2.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+/* Tech Patterns & Visual Accents */
+.bg-tech-grid {
+  background-image: 
+    linear-gradient(to right, rgba(233, 81, 38, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(233, 81, 38, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.bg-tech-grid-dark {
+  background-image: 
+    linear-gradient(to right, rgba(220, 228, 211, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(220, 228, 211, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.bg-tech-dots {
+  background-image: radial-gradient(rgba(34, 39, 32, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-tech-dots-dark {
+  background-image: radial-gradient(rgba(220, 228, 211, 0.12) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.glow-orange {
+  box-shadow: 0 0 25px -5px rgba(233, 81, 38, 0.35);
+}
+
+.glow-orange-sm {
+  box-shadow: 0 0 12px -2px rgba(233, 81, 38, 0.4);
+}
+
+.glow-green-sm {
+  box-shadow: 0 0 12px -2px rgba(16, 185, 129, 0.45);
+}
+
+.tech-border-corner {
+  position: relative;
+}
+.tech-border-corner::before,
+.tech-border-corner::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  border-color: #e95126;
+}
+.tech-border-corner::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+.tech-border-corner::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+/* Monospace Micro-Telemetry Badge */
+.font-mono-tech {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing: -0.02em;
 }
 
 /* Accessibility: Respect Reduced Motion */

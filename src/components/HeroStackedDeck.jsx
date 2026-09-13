@@ -126,24 +126,22 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
               <motion.div
                 key={card.id}
                 initial={{ x: -20, scale: 0.88, opacity: 0 }}
-                animate={isLoaded ? {
+                animate={{
                   x: targetX,
                   y: targetY,
                   scale,
                   opacity,
                   zIndex,
                   rotate,
-                } : { x: -20, scale: 0.88, opacity: 0 }}
+                }}
                 transition={{
-                  type: 'spring',
-                  stiffness: 280,
-                  damping: 24,
-                  mass: 0.8,
+                  duration: 0.9,
+                  ease: [0.16, 1, 0.3, 1],
                 }}
                 onClick={() => setActiveStage && setActiveStage(idx)}
                 className={`absolute top-0 left-0 w-[185px] xxs:w-[200px] xs:w-[225px] sm:w-[275px] md:w-[315px] lg:w-[340px] xl:w-[365px] h-[240px] xxs:h-[260px] xs:h-[290px] sm:h-[365px] md:h-[420px] lg:h-[400px] xl:h-[415px] rounded-2xl sm:rounded-3xl overflow-hidden border origin-bottom-left cursor-pointer transition-shadow duration-300 select-none transform-gpu touch-manipulation ${
                   isActive 
-                    ? 'border-[#e95126] shadow-[0_12px_28px_rgba(34,39,32,0.2)] ring-1 ring-[#e95126]/50' 
+                    ? 'border-[#e95126] shadow-[0_12px_36px_rgba(233,81,38,0.25)] ring-2 ring-[#e95126]/60' 
                     : 'border-white/50 shadow-md'
                 }`}
                 style={{ zIndex }}
@@ -157,31 +155,14 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
                   decoding="async"
                 />
 
-                {/* Stage Badge inside active card frame */}
-                {isActive && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: -6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, delay: 0.1 }}
-                    className="absolute top-3 xs:top-3.5 sm:top-4 left-3.5 xs:left-4.5 sm:left-6 z-40"
-                  >
-                    <div className="inline-flex items-center gap-1.5 xs:gap-2 px-2.5 xs:px-3.5 py-1 xs:py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-[#e95126]/30 shadow-md text-[10px] xs:text-[11px] font-bold uppercase tracking-widest text-[#222720]">
-                      <span className="w-1.5 h-1.5 xs:w-2 xs:h-2 rounded-full bg-[#e95126] animate-pulse" />
-                      <span className="text-[#e95126] font-extrabold">{currentCard.number}</span>
-                      <span className="text-[#66695f]/50">/</span>
-                      <span className="tracking-wider xs:tracking-widest text-[#222720]">{currentCard.stageName}</span>
-                    </div>
-                  </motion.div>
-                )}
-
                 {/* Ultra-Glossy Glass Overlay & Reflections */}
-                <div className={`absolute inset-0 bg-gradient-to-t from-[#222720]/90 via-[#222720]/30 to-black/15 pointer-events-none transition-opacity duration-500 ${
+                <div className={`absolute inset-0 bg-gradient-to-t from-[#222720]/95 via-[#222720]/35 to-black/20 pointer-events-none transition-opacity duration-500 ${
                   isActive ? 'opacity-90' : 'opacity-75'
                 }`} />
                 
                 {/* Background Dimming for non-active cards */}
                 {!isActive && (
-                  <div className="absolute inset-0 bg-[#222720]/25 pointer-events-none" />
+                  <div className="absolute inset-0 bg-[#222720]/30 pointer-events-none" />
                 )}
 
                 {/* Specular Diagonal Glass Sheen */}
@@ -201,16 +182,13 @@ export default function HeroStackedDeck({ isLoaded = true, activeStage = 0, setA
                     transition={{ duration: 0.4, delay: 0.12 }}
                     className="absolute bottom-3.5 xs:bottom-4.5 sm:bottom-7 left-3.5 xs:left-4.5 sm:left-6 right-3.5 xs:right-4.5 sm:right-6 z-30 flex items-end justify-between gap-1.5 xs:gap-2"
                   >
-                    <h3 className="text-sm xs:text-base sm:text-lg lg:text-xl font-medium tracking-tight text-white leading-snug drop-shadow-lg max-w-[195px] xs:max-w-[240px] sm:max-w-[270px]">
-                      {card.title}
-                    </h3>
-                    
-                    {/* Arrow Action Badge */}
-                    <div className="w-7 h-7 xs:w-8 xs:h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-[#222720] shadow-lg shrink-0">
-                      <motion.span animate={{ x: [0, 2, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-                        →
-                      </motion.span>
+                    <div className="space-y-1 max-w-[195px] xs:max-w-[240px] sm:max-w-[270px]">
+                      <h3 className="text-sm xs:text-base sm:text-lg lg:text-xl font-medium tracking-tight text-white leading-snug drop-shadow-lg">
+                        {card.title}
+                      </h3>
                     </div>
+                    
+
                   </motion.div>
                 )}
 

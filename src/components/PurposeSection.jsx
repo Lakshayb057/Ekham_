@@ -24,6 +24,8 @@ import {
   TrendingUp,
   AlertCircle
 } from 'lucide-react';
+import AnimatedCounter from './AnimatedCounter';
+import AnimatedText from './AnimatedText';
 
 export default function PurposeSection({ onOpenDemo }) {
   const [activeProblem, setActiveProblem] = useState(0);
@@ -69,27 +71,48 @@ export default function PurposeSection({ onOpenDemo }) {
         <div id="scale-section" className="relative space-y-6 sm:space-y-8">
           
           {/* Section Header */}
-          <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
-              <span className="w-2 h-2 rounded-full bg-[#e95126]" />
-              <span>The Scale of Good</span>
-            </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-2 max-w-2xl"
+          >
+
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-[#222720] leading-[1.1]">
               Real progress at <span className="text-[#e95126]">human scale.</span>
             </h2>
-          </div>
+          </motion.div>
 
-          {/* Interactive Scale Scene: 3 Full-Bleed Photography Metric Cards */}
+          {/* Interactive Scale Scene: 3 Full-Bleed Photography Metric Cards with coordinated stagger */}
           <div className="relative pt-1 sm:pt-2 pb-2">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 xs:gap-4 sm:gap-5 md:gap-4 lg:gap-6 relative z-20">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.15 }}
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.14,
+                  }
+                }
+              }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-3.5 xs:gap-4 sm:gap-5 md:gap-4 lg:gap-6 relative z-20"
+            >
               
               {/* Station 1: 40 Organisations with Logo Collage Mosaic Background */}
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.6 }}
-                className="group relative rounded-2xl overflow-hidden shadow-md border border-white/80 h-[165px] xxs:h-[175px] xs:h-[190px] sm:h-[220px] md:h-[230px] lg:h-[250px] flex flex-col justify-between p-3.5 xs:p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl bg-[#222720]"
+                variants={{
+                  hidden: { opacity: 0, y: 45, scale: 0.94 },
+                  visible: { 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1,
+                    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
+                  }
+                }}
+                className="group relative rounded-2xl overflow-hidden shadow-md border border-white/80 h-[165px] xxs:h-[175px] xs:h-[190px] sm:h-[220px] md:h-[230px] lg:h-[250px] flex flex-col justify-between p-3.5 xs:p-4 sm:p-5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl bg-[#222720] transform-gpu"
               >
                 {/* Full Card Background: Aesthetic Mosaic Collage of Partner Logos */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#1b1f1a] to-[#282e25] overflow-hidden">
@@ -114,20 +137,12 @@ export default function PurposeSection({ onOpenDemo }) {
                 {/* Vignette Overlay for High Typography Legibility */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#222720]/95 via-[#222720]/75 to-[#222720]/50 pointer-events-none" />
 
-                {/* Top Pill Badges */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <span className="px-2 xs:px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[10px] xs:text-[11px] font-bold border border-white/30 shadow-xs">
-                    01 / Network
-                  </span>
-                  <span className="px-2 xs:px-2.5 py-0.5 rounded-full bg-[#e95126] text-white text-[9px] xs:text-[10px] font-bold uppercase tracking-wider shadow-xs">
-                    Pan-India
-                  </span>
-                </div>
-
-                {/* Bottom Overlay Metric */}
+                {/* Bottom Overlay Metric with Dynamic Count-Up */}
                 <div className="relative z-10 space-y-0.5 text-white">
                   <div className="flex items-baseline gap-1.5 xs:gap-2 drop-shadow-sm">
-                    <span className="text-2xl xs:text-3xl sm:text-3xl lg:text-4xl font-medium tracking-tight">40</span>
+                    <span className="text-2xl xs:text-3xl sm:text-3xl lg:text-4xl font-medium tracking-tight">
+                      <AnimatedCounter to={40} duration={1.6} />
+                    </span>
                     <span className="text-base xs:text-lg sm:text-lg lg:text-xl font-normal text-white/90">organisations</span>
                   </div>
                   <p className="text-[11px] xs:text-xs text-white/80 font-normal leading-snug">
@@ -138,11 +153,16 @@ export default function PurposeSection({ onOpenDemo }) {
 
               {/* Station 2: Rs. 1 Billion with Real Impact Sapling & Disbursal Photo */}
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="group relative rounded-2xl overflow-hidden shadow-md border border-white/80 h-[165px] xxs:h-[175px] xs:h-[190px] sm:h-[220px] md:h-[230px] lg:h-[250px] flex flex-col justify-between p-3.5 xs:p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                variants={{
+                  hidden: { opacity: 0, y: 45, scale: 0.94 },
+                  visible: { 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1, 
+                    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } 
+                  }
+                }}
+                className="group relative rounded-2xl overflow-hidden shadow-md border border-white/80 h-[165px] xxs:h-[175px] xs:h-[190px] sm:h-[220px] md:h-[230px] lg:h-[250px] flex flex-col justify-end p-3.5 xs:p-4 sm:p-5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl transform-gpu"
               >
                 {/* Full Card Background Image */}
                 <img
@@ -156,20 +176,12 @@ export default function PurposeSection({ onOpenDemo }) {
                 {/* Vignette Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#222720]/90 via-[#222720]/45 to-[#222720]/30 pointer-events-none" />
 
-                {/* Top Pill Badges */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <span className="px-2 xs:px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[10px] xs:text-[11px] font-bold border border-white/30 shadow-xs">
-                    02 / Disbursals
-                  </span>
-                  <span className="px-2 xs:px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[9px] xs:text-[10px] font-bold uppercase tracking-wider shadow-xs">
-                    18 States
-                  </span>
-                </div>
-
-                {/* Bottom Overlay Metric */}
+                {/* Bottom Overlay Metric with Dynamic Count-Up */}
                 <div className="relative z-10 space-y-0.5 text-white">
                   <div className="flex items-baseline gap-1.5 xs:gap-2 drop-shadow-sm">
-                    <span className="text-2xl xs:text-3xl sm:text-3xl lg:text-4xl font-medium tracking-tight">Rs. 1</span>
+                    <span className="text-2xl xs:text-3xl sm:text-3xl lg:text-4xl font-medium tracking-tight">
+                      Rs. <AnimatedCounter to={1} duration={1.2} />
+                    </span>
                     <span className="text-base xs:text-lg sm:text-lg lg:text-xl font-normal text-white/90">billion</span>
                   </div>
                   <p className="text-[11px] xs:text-xs text-white/80 font-normal leading-snug">
@@ -180,11 +192,16 @@ export default function PurposeSection({ onOpenDemo }) {
 
               {/* Station 3: One Ledger with Real Mother & Child Impact Photo */}
               <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="group relative rounded-2xl overflow-hidden shadow-md border border-white/80 h-[165px] xxs:h-[175px] xs:h-[190px] sm:h-[220px] md:h-[230px] lg:h-[250px] flex flex-col justify-between p-3.5 xs:p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                variants={{
+                  hidden: { opacity: 0, y: 45, scale: 0.94 },
+                  visible: { 
+                    opacity: 1, 
+                    y: 0, 
+                    scale: 1, 
+                    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } 
+                  }
+                }}
+                className="group relative rounded-2xl overflow-hidden shadow-md border border-white/80 h-[165px] xxs:h-[175px] xs:h-[190px] sm:h-[220px] md:h-[230px] lg:h-[250px] flex flex-col justify-end p-3.5 xs:p-4 sm:p-5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl transform-gpu"
               >
                 {/* Full Card Background Image */}
                 <img
@@ -198,16 +215,6 @@ export default function PurposeSection({ onOpenDemo }) {
                 {/* Vignette Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#222720]/90 via-[#222720]/45 to-[#222720]/30 pointer-events-none" />
 
-                {/* Top Pill Badges */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <span className="px-2 xs:px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-white text-[10px] xs:text-[11px] font-bold border border-white/30 shadow-xs">
-                    03 / Verified
-                  </span>
-                  <span className="px-2 xs:px-2.5 py-0.5 rounded-full bg-[#e95126] text-white text-[9px] xs:text-[10px] font-bold uppercase tracking-wider shadow-xs">
-                    100% Reconciled
-                  </span>
-                </div>
-
                 {/* Bottom Overlay Metric */}
                 <div className="relative z-10 space-y-0.5 text-white">
                   <div className="flex items-baseline gap-1.5 xs:gap-2 drop-shadow-sm">
@@ -220,7 +227,7 @@ export default function PurposeSection({ onOpenDemo }) {
                 </div>
               </motion.div>
 
-            </div>
+            </motion.div>
           </div>
 
         </div>
@@ -235,13 +242,15 @@ export default function PurposeSection({ onOpenDemo }) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
             
             {/* Left Column: Interactive Clickable Heading & Quick Stage Switcher */}
-            <div className="lg:col-span-4 space-y-6">
-              
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-4 space-y-6"
+            >
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
-                  <span className="w-2 h-2 rounded-full bg-[#e95126]" />
-                  <span>01 / A Better Foundation</span>
-                </div>
+
                 
                 {/* Clickable Heading with Hover Glow & Explainer Trigger */}
                 <button
@@ -282,7 +291,7 @@ export default function PurposeSection({ onOpenDemo }) {
                           : 'hover:bg-white/50 text-[#66695f]'
                       }`}
                     >
-                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0 transition-all ${
+                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-mono-tech font-bold shrink-0 transition-all ${
                         isActive ? 'bg-[#e95126] text-white' : 'bg-[#e5e5dc] text-[#66695f]'
                       }`}>
                         {item.num}
@@ -301,7 +310,7 @@ export default function PurposeSection({ onOpenDemo }) {
               <div className="pt-2 flex flex-wrap items-center gap-3">
                 <button
                   onClick={onOpenDemo}
-                  className="group px-6 py-3 rounded-full bg-[#222720] text-white hover:bg-[#e95126] font-medium text-xs sm:text-sm transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-2.5 shadow-md"
+                  className="group px-6 py-3 rounded-full bg-[#222720] text-white hover:bg-[#e95126] font-medium text-xs sm:text-sm transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-2.5 shadow-md glow-orange-sm"
                 >
                   <span>See how it works</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -316,11 +325,16 @@ export default function PurposeSection({ onOpenDemo }) {
                 </button>
               </div>
 
-            </div>
+            </motion.div>
 
-            {/* Right Column: Visual Architecture (Matching Reference Mockup Exactly) */}
-            <div className="lg:col-span-8 space-y-6 relative">
-              
+            {/* Right Column: Visual Architecture */}
+            <motion.div 
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.15 }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-8 space-y-6 relative"
+            >
               {/* Top 3 Visual Problem Cards in 1 Connected Row */}
               <div className="grid grid-cols-3 gap-1.5 xs:gap-2.5 sm:gap-4 relative z-10">
                 
@@ -329,16 +343,16 @@ export default function PurposeSection({ onOpenDemo }) {
                   whileHover={{ y: -3 }}
                   onClick={() => setActiveProblem(0)}
                   onMouseEnter={() => setActiveProblem(0)}
-                  className={`p-2 xs:p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden ${
+                  className={`p-2 xs:p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden relative ${
                     activeProblem === 0 
                       ? 'bg-white shadow-xl border-[#e95126] ring-2 ring-[#e95126]/20 scale-[1.01]' 
                       : 'bg-white/80 border-white/90 shadow-sm hover:bg-white hover:border-[#e95126]/40'
                   }`}
                 >
-                  {/* Top Header: Badge + Title stacked for small screen comfort */}
+                  {/* Top Header: Badge + Title stacked */}
                   <div className="space-y-1 sm:space-y-1.5">
-                    <span className="inline-block text-[9px] xs:text-[10px] sm:text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 py-0.5 rounded">
-                      01
+                    <span className="inline-block text-[9px] xs:text-[10px] sm:text-[11px] font-mono-tech font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 py-0.5 rounded">
+                      01_SILO
                     </span>
                     <h4 className="text-[10px] xs:text-[11px] sm:text-sm font-bold text-[#222720] leading-tight break-words">
                       Scattered donor records
@@ -375,7 +389,7 @@ export default function PurposeSection({ onOpenDemo }) {
                   whileHover={{ y: -3 }}
                   onClick={() => setActiveProblem(1)}
                   onMouseEnter={() => setActiveProblem(1)}
-                  className={`p-2 xs:p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden ${
+                  className={`p-2 xs:p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden relative ${
                     activeProblem === 1 
                       ? 'bg-white shadow-xl border-[#e95126] ring-2 ring-[#e95126]/20 scale-[1.01]' 
                       : 'bg-white/80 border-white/90 shadow-sm hover:bg-white hover:border-[#e95126]/40'
@@ -383,8 +397,8 @@ export default function PurposeSection({ onOpenDemo }) {
                 >
                   {/* Top Header: Badge + Title stacked */}
                   <div className="space-y-1 sm:space-y-1.5">
-                    <span className="inline-block text-[9px] xs:text-[10px] sm:text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 py-0.5 rounded">
-                      02
+                    <span className="inline-block text-[9px] xs:text-[10px] sm:text-[11px] font-mono-tech font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 py-0.5 rounded">
+                      02_MANUAL
                     </span>
                     <h4 className="text-[10px] xs:text-[11px] sm:text-sm font-bold text-[#222720] leading-tight break-words">
                       Compliance assembled by hand
@@ -410,7 +424,7 @@ export default function PurposeSection({ onOpenDemo }) {
                   whileHover={{ y: -3 }}
                   onClick={() => setActiveProblem(2)}
                   onMouseEnter={() => setActiveProblem(2)}
-                  className={`p-2 xs:p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden ${
+                  className={`p-2 xs:p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden relative ${
                     activeProblem === 2 
                       ? 'bg-white shadow-xl border-[#e95126] ring-2 ring-[#e95126]/20 scale-[1.01]' 
                       : 'bg-white/80 border-white/90 shadow-sm hover:bg-white hover:border-[#e95126]/40'
@@ -418,8 +432,8 @@ export default function PurposeSection({ onOpenDemo }) {
                 >
                   {/* Top Header: Badge + Title stacked */}
                   <div className="space-y-1 sm:space-y-1.5">
-                    <span className="inline-block text-[9px] xs:text-[10px] sm:text-[11px] font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 py-0.5 rounded">
-                      03
+                    <span className="inline-block text-[9px] xs:text-[10px] sm:text-[11px] font-mono-tech font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 py-0.5 rounded">
+                      03_DISJOINT
                     </span>
                     <h4 className="text-[10px] xs:text-[11px] sm:text-sm font-bold text-[#222720] leading-tight break-words">
                       Outcomes detached from funding
@@ -442,7 +456,7 @@ export default function PurposeSection({ onOpenDemo }) {
 
               </div>
 
-              {/* Dotted Stream Convergence Funnel SVG (Visible across ALL devices including phones) */}
+              {/* Dotted Stream Convergence Funnel SVG */}
               <div className="w-full h-8 sm:h-10 relative overflow-visible pointer-events-none -my-1 block">
                 <svg className="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 600 50">
                   {/* Left Stream */}
@@ -452,7 +466,7 @@ export default function PurposeSection({ onOpenDemo }) {
                   {/* Right Stream */}
                   <path d="M 500 0 C 500 25, 330 30, 310 50" fill="none" stroke="#e95126" strokeWidth="2" strokeDasharray="4 4" strokeOpacity="0.75" />
                   
-                  {/* Top Origin Points from bottom center of the 3 cards */}
+                  {/* Top Origin Points */}
                   <circle cx="100" cy="2" r="3" fill="#e95126" />
                   <circle cx="300" cy="2" r="3.5" fill="#e95126" />
                   <circle cx="500" cy="2" r="3" fill="#e95126" />
@@ -463,15 +477,21 @@ export default function PurposeSection({ onOpenDemo }) {
               </div>
 
               {/* Bottom Unified Block: One Connected Record Card + Full-Bleed Mother & Daughter Photo */}
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch pt-2 sm:pt-0">
+              <motion.div 
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.15 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch pt-2 sm:pt-0"
+              >
                 
                 {/* Connected Record Card (7 cols) */}
                 <div className="md:col-span-7 bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-[#e95126]/30 shadow-xl space-y-3.5 relative flex flex-col justify-center min-h-[180px] sm:min-h-[210px]">
                   
                   {/* Top Pill Badge */}
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#e95126] text-white px-3.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest shadow-sm flex items-center gap-1.5 whitespace-nowrap">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white" />
-                    <span>One Connected Record</span>
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#e95126] text-white px-3.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono-tech font-bold uppercase tracking-widest shadow-sm flex items-center gap-1.5 whitespace-nowrap glow-orange-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                    <span>ONE CONNECTED RECORD // v2.4</span>
                   </div>
 
                   <p className="text-[11px] sm:text-xs font-semibold text-[#66695f] text-center pt-1">
@@ -527,9 +547,8 @@ export default function PurposeSection({ onOpenDemo }) {
                   </div>
                 </div>
 
-              </div>
-
-            </div>
+              </motion.div>
+            </motion.div>
 
           </div>
 

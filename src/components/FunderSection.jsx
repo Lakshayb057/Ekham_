@@ -110,16 +110,19 @@ export default function FunderSection({ onOpenDemo }) {
   const currentItem = featurePoints[hoveredPointIndex] || featurePoints[0];
 
   return (
-    <section id="funders" className="content-auto bg-[#e7eadf] py-12 sm:py-16 lg:py-20 text-[#222720] select-none">
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 md:px-12 space-y-8 sm:space-y-10">
+    <section id="funders" className="content-auto bg-[#e7eadf] min-h-[100dvh] min-h-screen pt-20 xs:pt-22 sm:pt-24 lg:pt-28 pb-10 sm:pb-14 text-[#222720] select-none bg-tech-grid flex flex-col justify-center">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 md:px-10 space-y-6 sm:space-y-8 my-auto w-full">
         
         {/* Header Divided by Line */}
-        <div className="border-b border-[#c9cebf] pb-4 sm:pb-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+          className="border-b border-[#c9cebf] pb-4 sm:pb-6 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-3"
+        >
           <div className="space-y-1.5 sm:space-y-2">
-            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
-              <span>05 / For Funders</span>
-            </div>
+
             
             {/* Clickable Heading with Hover-Only Arrow */}
             <div className="flex items-center">
@@ -137,15 +140,21 @@ export default function FunderSection({ onOpenDemo }) {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Two-Column Section Content */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-14 items-center">
           
           {/* Left Column: Proportional Dynamic Image with Animated Typography Overlay */}
-          <div className="lg:col-span-6">
-            <div className="relative w-full rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-[#d5dacb] bg-[#1a1f18] aspect-[16/9] xs:aspect-[16/10] sm:aspect-[16/10] lg:aspect-[4/3] max-h-[220px] xs:max-h-[260px] sm:max-h-[320px] lg:max-h-[440px] group">
-              
+          <motion.div 
+            initial={{ opacity: 0, x: -60, rotateY: -15 }}
+            whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+            viewport={{ once: false, amount: 0.15 }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            style={{ perspective: '1000px' }}
+            className="lg:col-span-6 transform-gpu"
+          >
+            <div className="relative w-full rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-[#d5dacb] bg-[#1a1f18] aspect-[16/9] xs:aspect-[16/10] sm:aspect-[16/10] lg:aspect-[4/3] max-h-[220px] xs:max-h-[260px] sm:max-h-[320px] lg:max-h-[440px] group ring-1 ring-[#e95126]/20">
               {/* Dynamic Image Crossfade */}
               <AnimatePresence mode="wait">
                 <motion.img
@@ -174,7 +183,7 @@ export default function FunderSection({ onOpenDemo }) {
                     transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     className="space-y-0.5 xs:space-y-1 sm:space-y-1.5"
                   >
-                    <span className="text-[9.5px] xs:text-[10.5px] font-bold uppercase tracking-widest text-[#ff8059]">
+                    <span className="text-[9.5px] xs:text-[10.5px] font-mono-tech font-bold uppercase tracking-widest text-[#ff8059]">
                       {currentItem.badge}
                     </span>
                     <h4 className="text-base xs:text-lg sm:text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight">
@@ -188,10 +197,17 @@ export default function FunderSection({ onOpenDemo }) {
               </div>
 
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right Column: Heading + Interactive Lines + Explore Action */}
-          <div className="lg:col-span-6 space-y-3 sm:space-y-5">
+          {/* Right Column: Heading + Interactive Lines + Explore Action with 3D edge entry */}
+          <motion.div 
+            initial={{ opacity: 0, x: 60, rotateY: 15 }}
+            whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+            viewport={{ once: false, amount: 0.15 }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            style={{ perspective: '1000px' }}
+            className="lg:col-span-6 space-y-3 sm:space-y-5 transform-gpu"
+          >
             
             {/* Heading on the Points */}
             <div className="space-y-0.5 sm:space-y-1">
@@ -275,7 +291,7 @@ export default function FunderSection({ onOpenDemo }) {
               </button>
             </div>
 
-          </div>
+          </motion.div>
 
         </div>
 
