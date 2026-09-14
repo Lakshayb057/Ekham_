@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   CreditCard, 
@@ -6,6 +7,7 @@ import {
   FileSpreadsheet, 
   ShieldCheck, 
   ArrowRight, 
+  ArrowLeft,
   ArrowUpRight, 
   X, 
   CheckCircle2, 
@@ -32,14 +34,33 @@ export default function TechnologySection({ onOpenDemo }) {
     return () => window.removeEventListener('resize', updateOffscreenY);
   }, []);
 
-  // Close modal on Escape key
+  const closeModal = () => {
+    if (window.history.state?.modal === 'technology') {
+      window.history.back();
+    } else {
+      setActiveModalModule(null);
+    }
+  };
+
+  // Close modal on Escape key & browser back button
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setActiveModalModule(null);
+      if (activeModalModule) {
+        if (e.key === 'Escape') closeModal();
+        return;
+      }
     };
     if (activeModalModule) {
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
+      window.history.pushState({ modal: 'technology' }, '');
+      const handlePopState = () => setActiveModalModule(null);
+      window.addEventListener('popstate', handlePopState);
+      return () => {
+        document.body.style.overflow = 'unset';
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('popstate', handlePopState);
+      };
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -248,12 +269,6 @@ export default function TechnologySection({ onOpenDemo }) {
                 
                 {/* Vignette Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1a1f18] via-transparent to-black/30 pointer-events-none" />
-
-                {/* Top-Left Step Index */}
-                <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 bg-[#1a1f18]/90 backdrop-blur-md px-2 py-0.5 rounded-md border border-white/10 text-[9.5px] xs:text-[10px] font-mono font-bold text-[#dce4d3] flex items-center gap-1 z-20">
-                  <span className="w-1 h-1 rounded-full bg-[#e95126] animate-pulse"></span>
-                  <span>{mod.step}</span>
-                </div>
               </div>
 
               {/* Minimal Clean Details Footer */}
@@ -276,177 +291,207 @@ export default function TechnologySection({ onOpenDemo }) {
 
       </div>
 
-      {/* Detailed Technical Architecture Modal Page */}
-      <AnimatePresence>
-        {activeModalModule && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 xs:p-4 sm:p-6 overflow-y-auto">
-            {/* Backdrop Blur */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setActiveModalModule(null)}
-              className="fixed inset-0 bg-[#121611]/85 backdrop-blur-md"
-            />
+      {/* ========================================================
+          DETAILED TECHNICAL ARCHITECTURE MODAL (TELEPORTED TO BODY)
+         ======================================================== */}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {activeModalModule && (
+            <div className="fixed inset-0 z-[99999] flex flex-col sm:items-center sm:justify-center sm:p-6 overflow-y-auto">
+              {/* Backdrop Blur */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={closeModal}
+                className="fixed inset-0 bg-[#121611]/85 backdrop-blur-md"
+              />
 
-            {/* Modal Dialog Body */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: 15 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="relative w-full max-w-4xl max-h-[90dvh] overflow-y-auto bg-[#1a1f18] text-[#f5f3ed] rounded-2xl sm:rounded-3xl shadow-2xl border border-[#3b4337] p-5 sm:p-8 md:p-10 z-10 space-y-6 sm:space-y-8 safe-p-bottom"
-            >
-              {/* Modal Top Bar */}
-              <div className="flex items-start justify-between gap-4 border-b border-[#2e372b] pb-6">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#e95126]">
-                    {activeModalModule.icon}
-                  </div>
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#dce4d3]">
-                      {activeModalModule.category}
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-bold text-white">
-                      {activeModalModule.title}
-                    </h3>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => setActiveModalModule(null)}
-                  className="p-2 rounded-full text-[#a9b0a1] hover:text-white hover:bg-white/10 transition-colors"
-                  aria-label="Close modal"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Module Navigation Tabs Inside Modal */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-[#2e372b]">
-                {modules.map((m) => (
+              {/* Modal Dialog Body */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: 15 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="relative w-full h-[100dvh] sm:h-auto sm:max-w-4xl sm:max-h-[90dvh] bg-[#1a1f18] text-[#f5f3ed] rounded-none sm:rounded-3xl shadow-2xl sm:border sm:border-[#3b4337] z-10 flex flex-col overflow-hidden"
+              >
+                {/* Mobile Top Bar with Back Tab and Close Button */}
+                <div className="sm:hidden flex items-center justify-between px-4 py-3 bg-[#1a1f18]/95 backdrop-blur-md border-b border-[#2e372b] shrink-0 z-30">
                   <button
-                    key={m.id}
-                    onClick={() => setActiveModalModule(m)}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 ${
-                      activeModalModule.id === m.id
-                        ? 'bg-[#dce4d3] text-[#222720]'
-                        : 'text-[#a9b0a1] hover:text-white hover:bg-white/5'
-                    }`}
+                    onClick={closeModal}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 shadow-xs text-xs font-semibold text-white active:scale-95 transition-transform cursor-pointer"
+                    aria-label="Back to overview"
                   >
-                    {m.title}
+                    <ArrowLeft className="w-3.5 h-3.5 text-[#e95126]" />
+                    <span>Back</span>
                   </button>
-                ))}
-              </div>
-
-              {/* Main Modal Content */}
-              <div className="space-y-6">
-                
-                {/* Headline & Overview */}
-                <div className="space-y-2">
-                  <h4 className="text-lg font-bold text-white">
-                    {activeModalModule.modal.headline}
-                  </h4>
-                  <p className="text-sm text-[#bec3b7] leading-relaxed">
-                    {activeModalModule.modal.overview}
-                  </p>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#e95126]">
+                    Architecture
+                  </span>
+                  <button
+                    onClick={closeModal}
+                    className="w-8 h-8 rounded-full bg-white/10 border border-white/15 shadow-xs flex items-center justify-center text-white active:scale-95 transition-transform cursor-pointer"
+                    aria-label="Close modal"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
                 </div>
 
-                {/* Performance Metrics Cards */}
-                <div className="grid grid-cols-3 gap-3 sm:gap-4">
-                  {activeModalModule.modal.metrics.map((metric, i) => (
-                    <div
-                      key={i}
-                      className="bg-white/5 border border-[#343d31] rounded-xl p-3.5 sm:p-4 text-center space-y-1"
-                    >
-                      <div className="text-xl sm:text-2xl font-bold text-[#e95126]">
-                        {metric.value}
+                {/* Scrollable Content */}
+                <div className="flex-1 overflow-y-auto overscroll-contain p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8 safe-p-bottom">
+                  {/* Modal Top Bar (Desktop) */}
+                  <div className="hidden sm:flex items-start justify-between gap-4 border-b border-[#2e372b] pb-6">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#e95126]">
+                        {activeModalModule.icon}
                       </div>
-                      <div className="text-[11px] font-medium text-[#a9b0a1]">
-                        {metric.label}
+                      <div>
+                        <span className="text-xs font-bold uppercase tracking-widest text-[#dce4d3]">
+                          {activeModalModule.category}
+                        </span>
+                        <h3 className="text-xl sm:text-2xl font-bold text-white">
+                          {activeModalModule.title}
+                        </h3>
                       </div>
                     </div>
-                  ))}
-                </div>
 
-                {/* Key Technical Capabilities */}
-                <div className="space-y-3">
-                  <h5 className="text-xs font-bold uppercase tracking-widest text-[#dce4d3]">
-                    Key Capabilities & Specifications
-                  </h5>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {activeModalModule.modal.capabilities.map((cap, i) => (
-                      <div
-                        key={i}
-                        className="bg-[#222920] border border-[#343d31] rounded-xl p-4 flex items-start gap-3"
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-[#e95126] shrink-0 mt-0.5" />
-                        <p className="text-xs text-[#d8ded0] leading-relaxed">
-                          {cap}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Live Data Pipeline Flow */}
-                <div className="space-y-3">
-                  <h5 className="text-xs font-bold uppercase tracking-widest text-[#dce4d3]">
-                    Operational Execution Pipeline
-                  </h5>
-                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
-                    {activeModalModule.modal.pipeline.map((step, i) => (
-                      <div
-                        key={i}
-                        className="bg-white/5 border border-[#343d31] rounded-xl p-3.5 space-y-1.5"
-                      >
-                        <div className="text-xs font-mono font-bold text-[#e95126]">
-                          {step.step}
-                        </div>
-                        <div className="text-xs font-bold text-white">
-                          {step.title}
-                        </div>
-                        <div className="text-[11px] text-[#a9b0a1] leading-relaxed">
-                          {step.desc}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Modal Footer CTAs */}
-              <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-[#2e372b]">
-                <div className="text-xs text-[#a9b0a1]">
-                  Press <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono">Esc</kbd> or click outside to dismiss.
-                </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setActiveModalModule(null)}
-                    className="px-5 py-2 rounded-full border border-[#3b4337] text-xs font-semibold text-[#dce4d3] hover:bg-white/5 transition-colors"
-                  >
-                    Close
-                  </button>
-                  {onOpenDemo && (
                     <button
-                      onClick={() => {
-                        setActiveModalModule(null);
-                        onOpenDemo();
-                      }}
-                      className="px-6 py-2 rounded-full bg-[#e95126] text-white hover:bg-[#d4431a] text-xs font-bold transition-all shadow-md flex items-center gap-2"
+                      onClick={closeModal}
+                      className="p-2 rounded-full text-[#a9b0a1] hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                      aria-label="Close modal"
                     >
-                      <span>Book a live demo</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <X className="w-5 h-5" />
                     </button>
-                  )}
-                </div>
-              </div>
+                  </div>
 
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+                  {/* Module Navigation Tabs Inside Modal */}
+                  <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-[#2e372b]">
+                    {modules.map((m) => (
+                      <button
+                        key={m.id}
+                        onClick={() => setActiveModalModule(m)}
+                        className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                          activeModalModule.id === m.id
+                            ? 'bg-[#dce4d3] text-[#222720]'
+                            : 'text-[#a9b0a1] hover:text-white hover:bg-white/5'
+                        }`}
+                      >
+                        {m.title}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Main Modal Content */}
+                  <div className="space-y-6">
+                    
+                    {/* Headline & Overview */}
+                    <div className="space-y-2">
+                      <h4 className="text-lg font-bold text-white">
+                        {activeModalModule.modal.headline}
+                      </h4>
+                      <p className="text-sm text-[#bec3b7] leading-relaxed">
+                        {activeModalModule.modal.overview}
+                      </p>
+                    </div>
+
+                    {/* Performance Metrics Cards */}
+                    <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
+                      {activeModalModule.modal.metrics.map((metric, i) => (
+                        <div
+                          key={i}
+                          className="bg-white/5 border border-[#343d31] rounded-xl p-3 sm:p-4 text-center space-y-1"
+                        >
+                          <div className="text-lg sm:text-2xl font-bold text-[#e95126]">
+                            {metric.value}
+                          </div>
+                          <div className="text-[10px] sm:text-[11px] font-medium text-[#a9b0a1]">
+                            {metric.label}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Key Technical Capabilities */}
+                    <div className="space-y-3">
+                      <h5 className="text-xs font-bold uppercase tracking-widest text-[#dce4d3]">
+                        Key Capabilities & Specifications
+                      </h5>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {activeModalModule.modal.capabilities.map((cap, i) => (
+                          <div
+                            key={i}
+                            className="bg-[#222920] border border-[#343d31] rounded-xl p-3.5 sm:p-4 flex items-start gap-3"
+                          >
+                            <CheckCircle2 className="w-4 h-4 text-[#e95126] shrink-0 mt-0.5" />
+                            <p className="text-xs text-[#d8ded0] leading-relaxed">
+                              {cap}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Live Data Pipeline Flow */}
+                    <div className="space-y-3">
+                      <h5 className="text-xs font-bold uppercase tracking-widest text-[#dce4d3]">
+                        Operational Execution Pipeline
+                      </h5>
+                      <div className="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
+                        {activeModalModule.modal.pipeline.map((step, i) => (
+                          <div
+                            key={i}
+                            className="bg-white/5 border border-[#343d31] rounded-xl p-3.5 space-y-1.5"
+                          >
+                            <div className="text-xs font-mono font-bold text-[#e95126]">
+                              {step.step}
+                            </div>
+                            <div className="text-xs font-bold text-white">
+                              {step.title}
+                            </div>
+                            <div className="text-[11px] text-[#a9b0a1] leading-relaxed">
+                              {step.desc}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Modal Footer CTAs */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-6 border-t border-[#2e372b]">
+                    <div className="hidden sm:block text-xs text-[#a9b0a1]">
+                      Press <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono">Esc</kbd> or click outside to dismiss.
+                    </div>
+                    <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto">
+                      <button
+                        onClick={closeModal}
+                        className="px-5 py-2 rounded-full border border-[#3b4337] text-xs font-semibold text-[#dce4d3] hover:bg-white/5 active:scale-95 transition-all cursor-pointer"
+                      >
+                        Back
+                      </button>
+                      {onOpenDemo && (
+                        <button
+                          onClick={() => {
+                            closeModal();
+                            onOpenDemo();
+                          }}
+                          className="px-6 py-2 rounded-full bg-[#e95126] text-white hover:bg-[#d4431a] active:scale-95 text-xs font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer"
+                        >
+                          <span>Book a live demo</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
     </section>
   );

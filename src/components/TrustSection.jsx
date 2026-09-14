@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { 
   FileText, 
@@ -10,6 +11,7 @@ import {
   ChevronLeft, 
   ChevronRight, 
   ArrowRight, 
+  ArrowLeft,
   X, 
   CheckCircle2, 
   ArrowUpRight
@@ -185,18 +187,42 @@ export default function TrustSection({ onOpenDemo }) {
     setActiveIndex(idx);
   };
 
-  // Keyboard navigation
+  const closeModal = () => {
+    if (window.history.state?.modal === 'trust') {
+      window.history.back();
+    } else {
+      setSelectedExplainer(null);
+    }
+  };
+
+  // Keyboard navigation & browser back button
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (selectedExplainer) {
-        if (e.key === 'Escape') setSelectedExplainer(null);
+        if (e.key === 'Escape') closeModal();
         return;
       }
       if (e.key === 'ArrowRight') handleNext();
       if (e.key === 'ArrowLeft') handlePrev();
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    if (selectedExplainer) {
+      document.body.style.overflow = 'hidden';
+      window.history.pushState({ modal: 'trust' }, '');
+      const handlePopState = () => setSelectedExplainer(null);
+      window.addEventListener('popstate', handlePopState);
+      return () => {
+        document.body.style.overflow = 'unset';
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('popstate', handlePopState);
+      };
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [selectedExplainer]);
 
   // Automatic slideshow timer moving every 1.5s properly forever
@@ -496,145 +522,176 @@ export default function TrustSection({ onOpenDemo }) {
 
       </div>
 
-      {/* Deep-Dive Trust Feature Explainer Modal */}
-      <AnimatePresence>
-        {selectedExplainer && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 xs:p-4 sm:p-6 overflow-y-auto">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedExplainer(null)}
-              className="fixed inset-0 bg-[#142013]/70 backdrop-blur-sm"
-            />
+      {/* ========================================================
+          DEEP-DIVE TRUST EXPLAINER MODAL (TELEPORTED TO BODY)
+         ======================================================== */}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {selectedExplainer && (
+            <div className="fixed inset-0 z-[99999] flex flex-col sm:items-center sm:justify-center sm:p-6 overflow-y-auto">
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={closeModal}
+                className="fixed inset-0 bg-[#142013]/70 backdrop-blur-sm"
+              />
 
-            {/* Modal Dialog Body */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: 12 }}
-              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-2xl max-h-[90dvh] overflow-y-auto bg-[#f5f3ed] text-[#222720] rounded-2xl sm:rounded-3xl shadow-xl border border-white/80 p-5 sm:p-8 z-10 space-y-4 sm:space-y-5 safe-p-bottom"
-            >
-              {/* Modal Top Bar */}
-              <div className="flex items-start justify-between gap-3 sm:gap-4 border-b border-[#d8d9cf] pb-3 sm:pb-4">
-                <div className="flex items-center gap-2.5 sm:gap-3">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white border border-[#d8d9cf] shadow-xs flex items-center justify-center text-[#e95126] shrink-0">
-                    {selectedExplainer.icon}
-                  </div>
-                  <div>
-                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#e95126]">
-                      {selectedExplainer.category} · {selectedExplainer.step}
-                    </span>
-                    <h3 className="text-lg sm:text-2xl font-bold text-[#222720]">
-                      {selectedExplainer.title}
-                    </h3>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => setSelectedExplainer(null)}
-                  className="p-1.5 rounded-full text-[#66695f] hover:text-[#e95126] hover:bg-white active:scale-95 transition-colors cursor-pointer shrink-0"
-                  aria-label="Close modal"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Navigation Tabs for All 6 Compliance Nodes */}
-              <div className="flex flex-wrap gap-1.5 border-b border-[#d8d9cf] pb-3">
-                {trustNodes.map((node) => (
+              {/* Modal Dialog Body */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96, y: 12 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: 12 }}
+                transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                className="relative w-full h-[100dvh] sm:h-auto sm:max-w-2xl sm:max-h-[90dvh] bg-[#f5f3ed] text-[#222720] rounded-none sm:rounded-3xl shadow-xl sm:border sm:border-white/80 z-10 flex flex-col overflow-hidden"
+              >
+                {/* Mobile Top Bar with Back Tab and Close Button */}
+                <div className="sm:hidden flex items-center justify-between px-4 py-3 bg-[#f5f3ed]/95 backdrop-blur-md border-b border-[#d8d9cf] shrink-0 z-30">
                   <button
-                    key={node.id}
-                    onClick={() => setSelectedExplainer(node)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                      selectedExplainer.id === node.id
-                        ? 'bg-[#222720] text-white shadow-xs'
-                        : 'bg-white/80 text-[#66695f] hover:text-[#222720] hover:bg-white border border-[#d8d9cf]/60'
-                    }`}
+                    onClick={closeModal}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#d8d9cf] shadow-xs text-xs font-semibold text-[#222720] active:scale-95 transition-transform cursor-pointer"
+                    aria-label="Back to overview"
                   >
-                    {node.title}
+                    <ArrowLeft className="w-3.5 h-3.5 text-[#e95126]" />
+                    <span>Back</span>
                   </button>
-                ))}
-              </div>
-
-              {/* Main Modal Details */}
-              <div className="space-y-4">
-                
-                {/* Visual Banner Preview */}
-                <div className="relative h-40 rounded-2xl overflow-hidden shadow-sm border border-[#d8d9cf]">
-                  <img
-                    src={selectedExplainer.image}
-                    alt={selectedExplainer.title}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-2.5 left-3 text-white text-xs font-semibold flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#e95126]" />
-                    <span>{selectedExplainer.explainer.headline}</span>
-                  </div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#e95126]">
+                    Trust & Compliance
+                  </span>
+                  <button
+                    onClick={closeModal}
+                    className="w-8 h-8 rounded-full bg-white border border-[#d8d9cf] shadow-xs flex items-center justify-center text-[#222720] active:scale-95 transition-transform cursor-pointer"
+                    aria-label="Close modal"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
                 </div>
 
-                <p className="text-xs sm:text-sm text-[#4b5145] leading-relaxed">
-                  {selectedExplainer.explainer.summary}
-                </p>
-
-                {/* Key Technical Highlights */}
-                <div className="space-y-2">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#222720]">
-                    Statutory & Operational Highlights
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {selectedExplainer.explainer.highlights.map((point, i) => (
-                      <div
-                        key={i}
-                        className="bg-white/90 border border-[#d8d9cf] rounded-xl p-2.5 flex items-start gap-2 shadow-2xs"
-                      >
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#e95126] shrink-0 mt-0.5" />
-                        <p className="text-xs text-[#222720] leading-snug font-medium">
-                          {point}
-                        </p>
+                {/* Scrollable Content */}
+                <div className="flex-1 overflow-y-auto overscroll-contain p-5 sm:p-8 space-y-4 sm:space-y-5 safe-p-bottom">
+                  {/* Modal Top Bar (Desktop) */}
+                  <div className="hidden sm:flex items-start justify-between gap-3 sm:gap-4 border-b border-[#d8d9cf] pb-3 sm:pb-4">
+                    <div className="flex items-center gap-2.5 sm:gap-3">
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white border border-[#d8d9cf] shadow-xs flex items-center justify-center text-[#e95126] shrink-0">
+                        {selectedExplainer.icon}
                       </div>
+                      <div>
+                        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#e95126]">
+                          {selectedExplainer.category} · {selectedExplainer.step}
+                        </span>
+                        <h3 className="text-lg sm:text-2xl font-bold text-[#222720]">
+                          {selectedExplainer.title}
+                        </h3>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={closeModal}
+                      className="p-1.5 rounded-full text-[#66695f] hover:text-[#e95126] hover:bg-white active:scale-95 transition-colors cursor-pointer shrink-0"
+                      aria-label="Close modal"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Navigation Tabs for All 6 Compliance Nodes */}
+                  <div className="flex flex-wrap gap-1.5 border-b border-[#d8d9cf] pb-3">
+                    {trustNodes.map((node) => (
+                      <button
+                        key={node.id}
+                        onClick={() => setSelectedExplainer(node)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                          selectedExplainer.id === node.id
+                            ? 'bg-[#222720] text-white shadow-xs'
+                            : 'bg-white/80 text-[#66695f] hover:text-[#222720] hover:bg-white border border-[#d8d9cf]/60'
+                        }`}
+                      >
+                        {node.title}
+                      </button>
                     ))}
                   </div>
+
+                  {/* Main Modal Details */}
+                  <div className="space-y-4">
+                    
+                    {/* Visual Banner Preview */}
+                    <div className="relative h-40 rounded-2xl overflow-hidden shadow-sm border border-[#d8d9cf]">
+                      <img
+                        src={selectedExplainer.image}
+                        alt={selectedExplainer.title}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                      <div className="absolute bottom-2.5 left-3 text-white text-xs font-semibold flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#e95126]" />
+                        <span>{selectedExplainer.explainer.headline}</span>
+                      </div>
+                    </div>
+
+                    <p className="text-xs sm:text-sm text-[#4b5145] leading-relaxed">
+                      {selectedExplainer.explainer.summary}
+                    </p>
+
+                    {/* Key Technical Highlights */}
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-[#222720]">
+                        Statutory & Operational Highlights
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {selectedExplainer.explainer.highlights.map((point, i) => (
+                          <div
+                            key={i}
+                            className="bg-white/90 border border-[#d8d9cf] rounded-xl p-2.5 flex items-start gap-2 shadow-2xs"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#e95126] shrink-0 mt-0.5" />
+                            <p className="text-xs text-[#222720] leading-snug font-medium">
+                              {point}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* Modal Footer CTAs */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-3 border-t border-[#d8d9cf]">
+                    <div className="hidden sm:block text-xs text-[#66695f]">
+                      Press <kbd className="px-1.5 py-0.5 rounded bg-white text-[#222720] font-mono border border-[#d8d9cf]">Esc</kbd> to close.
+                    </div>
+                    <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto">
+                      <button
+                        onClick={closeModal}
+                        className="px-4 py-2 rounded-full border border-[#d8d9cf] text-xs font-semibold text-[#222720] hover:bg-white active:scale-95 transition-all cursor-pointer"
+                      >
+                        Back
+                      </button>
+                      {onOpenDemo && (
+                        <button
+                          onClick={() => {
+                            closeModal();
+                            onOpenDemo();
+                          }}
+                          className="px-5 py-2 rounded-full bg-[#e95126] text-white hover:bg-[#d4431a] active:scale-95 text-xs font-bold transition-all shadow-sm flex items-center gap-2 cursor-pointer"
+                        >
+                          <span>Book a live demo</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
                 </div>
 
-              </div>
-
-              {/* Modal Footer CTAs */}
-              <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-[#d8d9cf]">
-                <div className="text-xs text-[#66695f]">
-                  Press <kbd className="px-1.5 py-0.5 rounded bg-white text-[#222720] font-mono border border-[#d8d9cf]">Esc</kbd> to close.
-                </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setSelectedExplainer(null)}
-                    className="px-4 py-2 rounded-full border border-[#d8d9cf] text-xs font-semibold text-[#222720] hover:bg-white transition-colors"
-                  >
-                    Close
-                  </button>
-                  {onOpenDemo && (
-                    <button
-                      onClick={() => {
-                        setSelectedExplainer(null);
-                        onOpenDemo();
-                      }}
-                      className="px-5 py-2 rounded-full bg-[#e95126] text-white hover:bg-[#d4431a] text-xs font-bold transition-all shadow-sm flex items-center gap-2"
-                    >
-                      <span>Book a live demo</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
-                  )}
-                </div>
-              </div>
-
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
     </section>
   );

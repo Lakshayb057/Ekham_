@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { createPortal } from 'react-dom';
+import { X, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function DemoModal({ isOpen, onClose }) {
@@ -11,14 +12,36 @@ export default function DemoModal({ isOpen, onClose }) {
   });
   const [submitted, setSubmitted] = useState(false);
 
+  const closeModal = () => {
+    if (window.history.state?.modal === 'demo') {
+      window.history.back();
+    } else {
+      onClose();
+    }
+  };
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isOpen) {
-        onClose();
+        closeModal();
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+      window.history.pushState({ modal: 'demo' }, '');
+      const handlePopState = () => onClose();
+      window.addEventListener('popstate', handlePopState);
+      return () => {
+        document.body.style.overflow = 'unset';
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('popstate', handlePopState);
+      };
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
@@ -42,20 +65,45 @@ export default function DemoModal({ isOpen, onClose }) {
     confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 xs:p-4 sm:p-6 bg-[#142013]/70 backdrop-blur-md animate-fadeIn">
+  return typeof document !== 'undefined' ? createPortal(
+    <div className="fixed inset-0 z-[99999] flex flex-col sm:items-center sm:justify-center sm:p-6 bg-[#142013]/70 backdrop-blur-md animate-fadeIn">
       <div 
-        className="bg-[#f5f3ed] text-[#222720] rounded-2xl p-5 xs:p-7 sm:p-8 md:p-10 w-full max-w-lg max-h-[92dvh] overflow-y-auto shadow-2xl relative border border-[#d8d9cf] space-y-5 xs:space-y-6"
+        className="relative w-full h-[100dvh] sm:h-auto sm:max-w-lg sm:max-h-[92dvh] bg-[#f5f3ed] text-[#222720] rounded-none sm:rounded-2xl shadow-2xl sm:border sm:border-[#d8d9cf] z-10 flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
+        {/* Mobile Top Bar with Back Tab and Close Button */}
+        <div className="sm:hidden flex items-center justify-between px-4 py-3 bg-[#f5f3ed]/95 backdrop-blur-md border-b border-[#d8d9cf] shrink-0 z-30">
+          <button
+            onClick={closeModal}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#d8d9cf] shadow-xs text-xs font-semibold text-[#222720] active:scale-95 transition-transform cursor-pointer"
+            aria-label="Back to overview"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-[#e95126]" />
+            <span>Back</span>
+          </button>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#e95126]">
+            Get in Touch
+          </span>
+          <button
+            onClick={closeModal}
+            className="w-8 h-8 rounded-full bg-white border border-[#d8d9cf] shadow-xs flex items-center justify-center text-[#222720] active:scale-95 transition-transform cursor-pointer"
+            aria-label="Close modal"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Desktop Close Button (hidden on mobile) */}
         <button
-          onClick={onClose}
-          className="absolute top-3 right-3 xs:top-4 xs:right-4 p-2 rounded-full text-[#66695f] hover:text-[#e95126] hover:bg-[#d8d9cf]/40 transition-colors cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
+          onClick={closeModal}
+          className="hidden sm:flex absolute top-4 right-4 p-2 rounded-full text-[#66695f] hover:text-[#e95126] hover:bg-[#d8d9cf]/40 transition-colors cursor-pointer min-w-[40px] min-h-[40px] items-center justify-center z-20"
           aria-label="Close dialog"
         >
           <X className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
+
+        {/* Scrollable Modal Content */}
+        <div className="flex-1 overflow-y-auto overscroll-contain p-5 xs:p-7 sm:p-8 md:p-10 space-y-5 xs:space-y-6 safe-p-bottom">
 
         <div className="space-y-1.5 xs:space-y-2 pr-8">
           <span className="text-[11px] xs:text-xs uppercase font-bold tracking-widest text-[#e95126]">
@@ -148,8 +196,9 @@ export default function DemoModal({ isOpen, onClose }) {
             </button>
           </form>
         )}
-
+        </div>
       </div>
-    </div>
-  );
+    </div>,
+    document.body
+  ) : null;
 }

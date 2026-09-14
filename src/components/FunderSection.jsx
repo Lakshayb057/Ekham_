@@ -1,6 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, ArrowRight, X, Check, ShieldCheck } from 'lucide-react';
+import { 
+  Building2, 
+  Landmark, 
+  Sparkles, 
+  ArrowRight, 
+  ArrowLeft,
+  CheckCircle2, 
+  FileCheck2, 
+  BarChart3, 
+  ShieldCheck, 
+  ExternalLink,
+  Layers,
+  FileSpreadsheet,
+  Globe2,
+  Check,
+  X,
+  ArrowUpRight
+} from 'lucide-react';
 
 const funderCapabilities = [
   {
@@ -89,14 +107,33 @@ export default function FunderSection({ onOpenDemo }) {
   const [activeTab, setActiveTab] = useState(funderCapabilities[0].id);
   const [hoveredPointIndex, setHoveredPointIndex] = useState(0);
 
-  // Close modal on Escape key and lock body scroll
+  const closeModal = () => {
+    if (window.history.state?.modal === 'funder') {
+      window.history.back();
+    } else {
+      setIsModalOpen(false);
+    }
+  };
+
+  // Close modal on Escape key, lock body scroll & browser back button
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setIsModalOpen(false);
+      if (isModalOpen) {
+        if (e.key === 'Escape') closeModal();
+        return;
+      }
     };
     if (isModalOpen) {
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
+      window.history.pushState({ modal: 'funder' }, '');
+      const handlePopState = () => setIsModalOpen(false);
+      window.addEventListener('popstate', handlePopState);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('popstate', handlePopState);
+      };
     } else {
       document.body.style.overflow = '';
     }
@@ -297,143 +334,173 @@ export default function FunderSection({ onOpenDemo }) {
 
       </div>
 
-      {/* Detailed Funder Intelligence Modal Dialog */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 xs:p-4 sm:p-6 overflow-y-auto">
-            {/* Backdrop Blur */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsModalOpen(false)}
-              className="fixed inset-0 bg-[#121611]/80 backdrop-blur-md"
-            />
+      {/* ========================================================
+          DETAILED FUNDER INTELLIGENCE MODAL (TELEPORTED TO BODY)
+         ======================================================== */}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {isModalOpen && (
+            <div className="fixed inset-0 z-[99999] flex flex-col sm:items-center sm:justify-center sm:p-6 overflow-y-auto">
+              {/* Backdrop Blur */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={closeModal}
+                className="fixed inset-0 bg-[#121611]/80 backdrop-blur-md"
+              />
 
-            {/* Modal Dialog Body */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: 15 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="relative w-full max-w-4xl max-h-[90dvh] overflow-y-auto bg-[#f5f3ed] text-[#222720] rounded-2xl sm:rounded-3xl shadow-2xl border border-[#d8d9cf] p-5 sm:p-8 md:p-10 z-10 space-y-5 sm:space-y-6 safe-p-bottom"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Modal Top Bar */}
-              <div className="flex items-start justify-between gap-4 border-b border-[#d8d9cf] pb-6">
-                <div className="space-y-1.5">
-                  <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#e7eadf] border border-[#c6cebe] text-[10px] font-bold uppercase tracking-wider text-[#46503e]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
-                    <span>05 / For Funders</span>
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-medium tracking-tight text-[#222720]">
-                    Good Deserves Recognition
-                  </h3>
-                  <p className="text-xs sm:text-sm text-[#46503e] font-medium">
-                    See where funding moves, what it enables, and what it achieves.
-                  </p>
-                </div>
-
-                {/* Close Button */}
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="p-2.5 rounded-full bg-[#e7eadf] text-[#66695f] hover:text-[#e95126] hover:bg-[#d8d9cf] transition-colors shrink-0 cursor-pointer"
-                  aria-label="Close dialog"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Comprehensive Context Box */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-[#e7eadf]/70 border border-[#d4dacd] space-y-1">
-                <p className="text-xs sm:text-sm text-[#44483e] leading-relaxed">
-                  Ekhum gives foundations, corporate giving programmes and philanthropists a live view of allocation, utilisation and recorded outcomes against their funding terms.
-                </p>
-              </div>
-
-              {/* Navigation Tabs Inside Modal */}
-              <div className="flex flex-wrap gap-2 border-b border-[#d8d9cf] pb-4">
-                {funderCapabilities.map((cap) => (
+              {/* Modal Dialog Body */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: 15 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="relative w-full h-[100dvh] sm:h-auto sm:max-w-4xl sm:max-h-[90dvh] bg-[#f5f3ed] text-[#222720] rounded-none sm:rounded-3xl shadow-2xl sm:border sm:border-[#d8d9cf] z-10 flex flex-col overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Mobile Top Bar with Back Tab and Close Button */}
+                <div className="sm:hidden flex items-center justify-between px-4 py-3 bg-[#f5f3ed]/95 backdrop-blur-md border-b border-[#d8d9cf] shrink-0 z-30">
                   <button
-                    key={cap.id}
-                    onClick={() => setActiveTab(cap.id)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                      activeTab === cap.id
-                        ? 'bg-[#222720] text-white shadow-xs'
-                        : 'bg-[#e7eadf] text-[#66695f] hover:text-[#222720] hover:bg-[#dce4d3]'
-                    }`}
+                    onClick={closeModal}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#d8d9cf] shadow-xs text-xs font-semibold text-[#222720] active:scale-95 transition-transform cursor-pointer"
+                    aria-label="Back to overview"
                   >
-                    {cap.title}
+                    <ArrowLeft className="w-3.5 h-3.5 text-[#e95126]" />
+                    <span>Back</span>
                   </button>
-                ))}
-              </div>
-
-              {/* Active Tab Detailed View */}
-              <div className="space-y-5">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-xs border border-[#c9cebf] shrink-0 bg-white">
-                    <img
-                      src={activeCapability.image}
-                      alt={activeCapability.title}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-[#e95126]">
-                      {activeCapability.badge}
-                    </span>
-                    <h4 className="text-xl sm:text-2xl font-bold text-[#222720]">
-                      {activeCapability.title}
-                    </h4>
-                    <p className="text-sm text-[#66695f] leading-relaxed">
-                      {activeCapability.summary}
-                    </p>
-                  </div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#e95126]">
+                    For Funders
+                  </span>
+                  <button
+                    onClick={closeModal}
+                    className="w-8 h-8 rounded-full bg-white border border-[#d8d9cf] shadow-xs flex items-center justify-center text-[#222720] active:scale-95 transition-transform cursor-pointer"
+                    aria-label="Close modal"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
                 </div>
 
-                {/* Detailed Capabilities Points */}
-                <div className="space-y-3 bg-[#e7eadf]/60 rounded-2xl p-5 sm:p-6 border border-[#d8d9cf]">
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-[#46503e]">
-                    Key Technical Highlights
-                  </h5>
-                  <div className="space-y-2.5">
-                    {activeCapability.bullets.map((bullet, idx) => (
-                      <div key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-[#222720]">
-                        <Check className="w-4 h-4 text-[#e95126] shrink-0 mt-0.5" />
-                        <span className="leading-relaxed">{bullet}</span>
+                {/* Scrollable Content */}
+                <div className="flex-1 overflow-y-auto overscroll-contain p-5 sm:p-8 md:p-10 space-y-5 sm:space-y-6 safe-p-bottom">
+                  {/* Modal Top Bar (Desktop) */}
+                  <div className="hidden sm:flex items-start justify-between gap-4 border-b border-[#d8d9cf] pb-6">
+                    <div className="space-y-1.5">
+                      <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#e7eadf] border border-[#c6cebe] text-[10px] font-bold uppercase tracking-wider text-[#46503e]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#e95126]" />
+                        <span>05 / For Funders</span>
                       </div>
-                    ))}
-                  </div>
-                </div>
+                      <h3 className="text-2xl sm:text-3xl font-medium tracking-tight text-[#222720]">
+                        Good Deserves Recognition
+                      </h3>
+                      <p className="text-xs sm:text-sm text-[#46503e] font-medium">
+                        See where funding moves, what it enables, and what it achieves.
+                      </p>
+                    </div>
 
-                {/* Compliance & Sovereignty Callout */}
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white border border-[#d8d9cf] text-xs">
-                  <div className="flex items-center gap-2 text-[#46503e] font-medium">
-                    <ShieldCheck className="w-4 h-4 text-[#1b7a43]" />
-                    <span>DPDP Act 2023 Compliant · Ministry of Corporate Affairs Form CSR-2 Ready</span>
-                  </div>
-
-                  <div className="flex items-center gap-3 shrink-0">
+                    {/* Close Button */}
                     <button
-                      onClick={() => {
-                        setIsModalOpen(false);
-                        if (onOpenDemo) onOpenDemo();
-                      }}
-                      className="px-5 py-2.5 rounded-full bg-[#e95126] hover:bg-[#d04218] text-white font-bold transition-all shadow-xs cursor-pointer"
+                      onClick={closeModal}
+                      className="p-2.5 rounded-full bg-[#e7eadf] text-[#66695f] hover:text-[#e95126] hover:bg-[#d8d9cf] transition-colors shrink-0 cursor-pointer"
+                      aria-label="Close dialog"
                     >
-                      Book Funder Consultation
+                      <X className="w-5 h-5" />
                     </button>
                   </div>
+
+                  {/* Comprehensive Context Box */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-[#e7eadf]/70 border border-[#d4dacd] space-y-1">
+                    <p className="text-xs sm:text-sm text-[#44483e] leading-relaxed">
+                      Ekhum gives foundations, corporate giving programmes and philanthropists a live view of allocation, utilisation and recorded outcomes against their funding terms.
+                    </p>
+                  </div>
+
+                  {/* Navigation Tabs Inside Modal */}
+                  <div className="flex flex-wrap gap-2 border-b border-[#d8d9cf] pb-4">
+                    {funderCapabilities.map((cap) => (
+                      <button
+                        key={cap.id}
+                        onClick={() => setActiveTab(cap.id)}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                          activeTab === cap.id
+                            ? 'bg-[#222720] text-white shadow-xs'
+                            : 'bg-[#e7eadf] text-[#66695f] hover:text-[#222720] hover:bg-[#dce4d3]'
+                        }`}
+                      >
+                        {cap.title}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Active Tab Detailed View */}
+                  <div className="space-y-5">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                      <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-xs border border-[#c9cebf] shrink-0 bg-white">
+                        <img
+                          src={activeCapability.image}
+                          alt={activeCapability.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[11px] font-bold uppercase tracking-widest text-[#e95126]">
+                          {activeCapability.badge}
+                        </span>
+                        <h4 className="text-xl sm:text-2xl font-bold text-[#222720]">
+                          {activeCapability.title}
+                        </h4>
+                        <p className="text-sm text-[#66695f] leading-relaxed">
+                          {activeCapability.summary}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Detailed Capabilities Points */}
+                    <div className="space-y-3 bg-[#e7eadf]/60 rounded-2xl p-5 sm:p-6 border border-[#d8d9cf]">
+                      <h5 className="text-xs font-bold uppercase tracking-wider text-[#46503e]">
+                        Key Technical Highlights
+                      </h5>
+                      <div className="space-y-2.5">
+                        {activeCapability.bullets.map((bullet, idx) => (
+                          <div key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-[#222720]">
+                            <Check className="w-4 h-4 text-[#e95126] shrink-0 mt-0.5" />
+                            <span className="leading-relaxed">{bullet}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Compliance & Sovereignty Callout */}
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white border border-[#d8d9cf] text-xs">
+                      <div className="flex items-center gap-2 text-[#46503e] font-medium">
+                        <ShieldCheck className="w-4 h-4 text-[#1b7a43]" />
+                        <span>DPDP Act 2023 Compliant · Ministry of Corporate Affairs Form CSR-2 Ready</span>
+                      </div>
+
+                      <div className="flex items-center gap-3 shrink-0">
+                        <button
+                          onClick={() => {
+                            closeModal();
+                            if (onOpenDemo) onOpenDemo();
+                          }}
+                          className="px-5 py-2.5 rounded-full bg-[#e95126] hover:bg-[#d04218] text-white font-bold transition-all shadow-xs cursor-pointer"
+                        >
+                          Book Funder Consultation
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
 
-              </div>
-
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
     </section>
   );

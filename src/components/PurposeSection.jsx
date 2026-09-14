@@ -44,7 +44,7 @@ export default function PurposeSection({ onOpenDemo }) {
     { name: 'Ethan & The Bean', src: '/assets/reference-11.webp' },
   ];
 
-  // Close explainer modal on Escape key
+  // Close explainer modal on Escape key & browser back button
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') setIsExplainerOpen(false);
@@ -52,6 +52,14 @@ export default function PurposeSection({ onOpenDemo }) {
     if (isExplainerOpen) {
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
+      window.history.pushState({ modal: 'explainer' }, '');
+      const handlePopState = () => setIsExplainerOpen(false);
+      window.addEventListener('popstate', handlePopState);
+      return () => {
+        document.body.style.overflow = 'unset';
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('popstate', handlePopState);
+      };
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -351,9 +359,6 @@ export default function PurposeSection({ onOpenDemo }) {
                 >
                   {/* Top Header: Badge + Title stacked */}
                   <div className="space-y-1 sm:space-y-1.5">
-                    <span className="inline-block text-[9px] xs:text-[10px] sm:text-[11px] font-mono-tech font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 py-0.5 rounded">
-                      01_SILO
-                    </span>
                     <h4 className="text-[10px] xs:text-[11px] sm:text-sm font-bold text-[#222720] leading-tight break-words">
                       Scattered donor records
                     </h4>
@@ -397,9 +402,6 @@ export default function PurposeSection({ onOpenDemo }) {
                 >
                   {/* Top Header: Badge + Title stacked */}
                   <div className="space-y-1 sm:space-y-1.5">
-                    <span className="inline-block text-[9px] xs:text-[10px] sm:text-[11px] font-mono-tech font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 py-0.5 rounded">
-                      02_MANUAL
-                    </span>
                     <h4 className="text-[10px] xs:text-[11px] sm:text-sm font-bold text-[#222720] leading-tight break-words">
                       Compliance assembled by hand
                     </h4>
@@ -432,9 +434,6 @@ export default function PurposeSection({ onOpenDemo }) {
                 >
                   {/* Top Header: Badge + Title stacked */}
                   <div className="space-y-1 sm:space-y-1.5">
-                    <span className="inline-block text-[9px] xs:text-[10px] sm:text-[11px] font-mono-tech font-bold text-[#e95126] bg-[#e95126]/10 px-1.5 py-0.5 rounded">
-                      03_DISJOINT
-                    </span>
                     <h4 className="text-[10px] xs:text-[11px] sm:text-sm font-bold text-[#222720] leading-tight break-words">
                       Outcomes detached from funding
                     </h4>
@@ -560,7 +559,7 @@ export default function PurposeSection({ onOpenDemo }) {
            ======================================================== */}
         <AnimatePresence>
           {isExplainerOpen && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-3 xs:p-4 sm:p-6 md:p-10">
+            <div className="fixed inset-0 z-50 sm:flex sm:items-center sm:justify-center sm:p-6 md:p-10">
               {/* Backdrop */}
               <motion.div
                 initial={{ opacity: 0 }}
@@ -576,7 +575,7 @@ export default function PurposeSection({ onOpenDemo }) {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
-                className="relative w-full max-w-4xl max-h-[90dvh] overflow-y-auto bg-[#f5f3ed] rounded-2xl sm:rounded-3xl shadow-2xl border border-white/80 p-5 sm:p-8 md:p-10 z-10 space-y-6 sm:space-y-8 safe-p-bottom"
+                className="absolute inset-0 sm:relative sm:inset-auto w-full sm:max-w-4xl sm:max-h-[90dvh] overflow-y-auto bg-[#f5f3ed] rounded-none sm:rounded-3xl shadow-2xl sm:border sm:border-white/80 p-5 pt-14 sm:p-8 md:p-10 z-10 space-y-6 sm:space-y-8 safe-p-bottom"
               >
                 {/* Close Button */}
                 <button

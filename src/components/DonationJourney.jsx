@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { 
   ArrowRight, 
+  ArrowLeft,
   ShieldCheck, 
   Heart, 
   BarChart3, 
@@ -105,17 +107,34 @@ export default function DonationJourney({ onOpenDemo }) {
     return () => clearInterval(interval);
   }, [isContinuityModalOpen, stages.length]);
 
-  // Keyboard navigation
+  const closeModal = () => {
+    if (window.history.state?.modal === 'continuity') {
+      window.history.back();
+    } else {
+      setIsContinuityModalOpen(false);
+    }
+  };
+
+  // Keyboard navigation & browser back button support
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (isContinuityModalOpen) {
-        if (e.key === 'Escape') setIsContinuityModalOpen(false);
+        if (e.key === 'Escape') closeModal();
         return;
       }
     };
     if (isContinuityModalOpen) {
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
+      // Push history state so hardware/browser back button closes modal
+      window.history.pushState({ modal: 'continuity' }, '');
+      const handlePopState = () => setIsContinuityModalOpen(false);
+      window.addEventListener('popstate', handlePopState);
+      return () => {
+        document.body.style.overflow = 'unset';
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('popstate', handlePopState);
+      };
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -332,133 +351,161 @@ export default function DonationJourney({ onOpenDemo }) {
       </div>
 
       {/* ========================================================
-          DEDICATED ARCHITECTURE DEEP-DIVE MODAL
+          DEDICATED ARCHITECTURE DEEP-DIVE MODAL (TELEPORTED TO BODY)
          ======================================================== */}
-      <AnimatePresence>
-        {isContinuityModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 xs:p-4 sm:p-6 md:p-10">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsContinuityModalOpen(false)}
-              className="absolute inset-0 bg-[#222720]/80 backdrop-blur-md"
-            />
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {isContinuityModalOpen && (
+            <div className="fixed inset-0 z-[99999] flex flex-col sm:items-center sm:justify-center sm:p-6 md:p-10">
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={closeModal}
+                className="fixed inset-0 bg-[#222720]/80 backdrop-blur-md"
+              />
 
-            {/* Modal Container */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="relative w-full max-w-4xl max-h-[90dvh] overflow-y-auto bg-[#f5f3ed] rounded-2xl sm:rounded-3xl shadow-2xl border border-white/80 p-5 sm:p-8 md:p-10 z-10 space-y-6 sm:space-y-8 safe-p-bottom"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setIsContinuityModalOpen(false)}
-                className="absolute top-4 right-4 sm:top-6 sm:right-6 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-white text-[#222720] flex items-center justify-center shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer z-20"
-                aria-label="Close modal"
+              {/* Modal Container */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: 15 }}
+                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                className="relative w-full h-[100dvh] sm:h-auto sm:max-w-4xl sm:max-h-[90dvh] bg-[#f5f3ed] rounded-none sm:rounded-3xl shadow-2xl sm:border sm:border-white/80 z-10 flex flex-col overflow-hidden"
               >
-                <X className="w-5 h-5" />
-              </button>
-
-              {/* Modal Header */}
-              <div className="space-y-3 max-w-2xl">
-                <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
-                  <Sparkles className="w-4 h-4 text-[#e95126]" />
-                  <span>The Platform Architecture</span>
+                {/* Mobile Top Bar with Back Tab and Close Button */}
+                <div className="sm:hidden flex items-center justify-between px-4 py-3 bg-[#f5f3ed]/95 backdrop-blur-md border-b border-[#d8d9cf] shrink-0 z-30">
+                  <button
+                    onClick={closeModal}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#d8d9cf] shadow-xs text-xs font-semibold text-[#222720] active:scale-95 transition-transform cursor-pointer"
+                    aria-label="Back to overview"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5 text-[#e95126]" />
+                    <span>Back</span>
+                  </button>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#e95126]">
+                    Architecture
+                  </span>
+                  <button
+                    onClick={closeModal}
+                    className="w-8 h-8 rounded-full bg-white border border-[#d8d9cf] shadow-xs flex items-center justify-center text-[#222720] active:scale-95 transition-transform cursor-pointer"
+                    aria-label="Close modal"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
                 </div>
-                <h3 className="text-3xl sm:text-4xl font-medium tracking-tight text-[#222720]">
-                  How Ekhum Preserves Continuity
-                </h3>
-                <p className="text-sm sm:text-base text-[#66695f] leading-relaxed">
-                  Every contribution moves through a continuous 4-stage lifecycle where context, compliance documents, and fund allocation are never lost or separated.
-                </p>
-              </div>
 
-              {/* 4 Stages Detailed Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
-                {stages.map((stg, sIdx) => {
-                  const isSelected = activeStage === sIdx;
-                  return (
-                    <div 
-                      key={stg.id}
-                      className={`rounded-2xl p-5 sm:p-6 border shadow-sm space-y-3 relative overflow-hidden transition-all duration-300 ${
-                        isSelected 
-                          ? 'bg-[#fffaf7] border-[#e95126] ring-2 ring-[#e95126]/30 shadow-md' 
-                          : 'bg-white border-[#d8d9cf] hover:border-[#e95126]/40'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className={`w-6 h-6 rounded-full text-white flex items-center justify-center text-xs font-bold ${
-                            isSelected ? 'bg-[#e95126] ring-2 ring-[#e95126]/40' : 'bg-[#e95126]'
-                          }`}>
-                            {stg.step}
-                          </span>
-                          <span className="font-bold text-base text-[#222720]">{stg.name}</span>
-                          {isSelected && (
-                            <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-[#e95126]/10 text-[#e95126] font-bold">
-                              Selected
-                            </span>
-                          )}
-                        </div>
-                      <div className="text-[#e95126]">
-                        {stg.icon}
-                      </div>
+                {/* Desktop Close Button (hidden on mobile) */}
+                <button
+                  onClick={closeModal}
+                  className="hidden sm:flex absolute top-6 right-6 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-[#222720] items-center justify-center shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer z-20"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                {/* Scrollable Content */}
+                <div className="flex-1 overflow-y-auto overscroll-contain p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8 safe-p-bottom">
+                  {/* Modal Header */}
+                  <div className="space-y-3 max-w-2xl">
+                    <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
+                      <Sparkles className="w-4 h-4 text-[#e95126]" />
+                      <span>The Platform Architecture</span>
                     </div>
-
-                    <h4 className="text-sm font-bold text-[#e95126]">
-                      {stg.supporting}
-                    </h4>
-
-                    <p className="text-xs text-[#66695f]">
-                      {stg.detailedStatement}
+                    <h3 className="text-2xl sm:text-4xl font-medium tracking-tight text-[#222720]">
+                      How Ekhum Preserves Continuity
+                    </h3>
+                    <p className="text-xs sm:text-base text-[#66695f] leading-relaxed">
+                      Every contribution moves through a continuous 4-stage lifecycle where context, compliance documents, and fund allocation are never lost or separated.
                     </p>
-
-                    <ul className="space-y-2 text-xs sm:text-sm text-[#66695f] pt-1">
-                      {stg.modalBullets.map((bullet, bIdx) => (
-                        <li key={bIdx} className="flex items-start gap-2">
-                          <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
                   </div>
-                  );
-                })}
-              </div>
 
-              {/* Footer CTA */}
-              <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#d8d9cf]">
-                <div className="font-serif italic text-sm text-[#8c523f]">
-                  Preserving context from donor pledge to verified outcome.
-                </div>
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setIsContinuityModalOpen(false)}
-                    className="px-5 py-2.5 rounded-full border border-[#d8d9cf] text-[#222720] text-xs font-semibold hover:bg-white transition-colors"
-                  >
-                    Close
-                  </button>
-                  <button
-                    onClick={() => {
-                      setIsContinuityModalOpen(false);
-                      if (onOpenDemo) onOpenDemo();
-                    }}
-                    className="px-6 py-2.5 rounded-full bg-[#e95126] text-white hover:bg-[#d4431a] text-xs font-bold transition-all shadow-md flex items-center gap-2"
-                  >
-                    <span>Book a live walkthrough</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
+                  {/* 4 Stages Detailed Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 pt-2">
+                    {stages.map((stg, sIdx) => {
+                      const isSelected = activeStage === sIdx;
+                      return (
+                        <div 
+                          key={stg.id}
+                          className={`rounded-2xl p-4 sm:p-6 border shadow-sm space-y-3 relative overflow-hidden transition-all duration-300 ${
+                            isSelected 
+                              ? 'bg-[#fffaf7] border-[#e95126] ring-2 ring-[#e95126]/30 shadow-md' 
+                              : 'bg-white border-[#d8d9cf] hover:border-[#e95126]/40'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className={`w-6 h-6 rounded-full text-white flex items-center justify-center text-xs font-bold ${
+                                isSelected ? 'bg-[#e95126] ring-2 ring-[#e95126]/40' : 'bg-[#e95126]'
+                              }`}>
+                                {stg.step}
+                              </span>
+                              <span className="font-bold text-sm sm:text-base text-[#222720]">{stg.name}</span>
+                              {isSelected && (
+                                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-[#e95126]/10 text-[#e95126] font-bold">
+                                  Selected
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-[#e95126]">
+                              {stg.icon}
+                            </div>
+                          </div>
 
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+                          <h4 className="text-xs sm:text-sm font-bold text-[#e95126]">
+                            {stg.supporting}
+                          </h4>
+
+                          <p className="text-xs text-[#66695f]">
+                            {stg.detailedStatement}
+                          </p>
+
+                          <ul className="space-y-2 text-xs sm:text-sm text-[#66695f] pt-1">
+                            {stg.modalBullets.map((bullet, bIdx) => (
+                              <li key={bIdx} className="flex items-start gap-2">
+                                <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                                <span>{bullet}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Footer CTA */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4 border-t border-[#d8d9cf]">
+                    <div className="font-serif italic text-xs sm:text-sm text-[#8c523f]">
+                      Preserving context from donor pledge to verified outcome.
+                    </div>
+                    <div className="flex items-center justify-between sm:justify-end gap-3">
+                      <button
+                        onClick={closeModal}
+                        className="px-4 sm:px-5 py-2.5 rounded-full border border-[#d8d9cf] text-[#222720] text-xs font-semibold hover:bg-white active:scale-95 transition-all cursor-pointer"
+                      >
+                        Back
+                      </button>
+                      <button
+                        onClick={() => {
+                          closeModal();
+                          if (onOpenDemo) onOpenDemo();
+                        }}
+                        className="px-5 sm:px-6 py-2.5 rounded-full bg-[#e95126] text-white hover:bg-[#d4431a] active:scale-95 text-xs font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer"
+                      >
+                        <span>Book a walkthrough</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
     </section>
   );

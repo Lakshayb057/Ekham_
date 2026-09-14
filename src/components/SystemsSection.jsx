@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users, 
@@ -6,6 +7,7 @@ import {
   FileCheck, 
   ShieldCheck, 
   ArrowRight, 
+  ArrowLeft,
   FileSpreadsheet, 
   Cloud, 
   Sparkles, 
@@ -41,14 +43,33 @@ export default function SystemsSection({ onOpenDemo }) {
   const rotateYAngle = isMobile ? -10 : -22;
   const rotateZAngle = isMobile ? 1 : 2;
 
-  // Close explainer modal on Escape key
+  const closeModal = () => {
+    if (window.history.state?.modal === 'systems') {
+      window.history.back();
+    } else {
+      setIsExplainerOpen(false);
+    }
+  };
+
+  // Close explainer modal on Escape key & browser back button
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setIsExplainerOpen(false);
+      if (isExplainerOpen) {
+        if (e.key === 'Escape') closeModal();
+        return;
+      }
     };
     if (isExplainerOpen) {
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', handleKeyDown);
+      window.history.pushState({ modal: 'systems' }, '');
+      const handlePopState = () => setIsExplainerOpen(false);
+      window.addEventListener('popstate', handlePopState);
+      return () => {
+        document.body.style.overflow = 'unset';
+        window.removeEventListener('keydown', handleKeyDown);
+        window.removeEventListener('popstate', handlePopState);
+      };
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -199,9 +220,6 @@ export default function SystemsSection({ onOpenDemo }) {
                 }`}
               >
                 <div className="space-y-0.5 xs:space-y-1 sm:space-y-1.5">
-                  <span className="inline-block text-[7.5px] xxs:text-[8.5px] xs:text-[9.5px] sm:text-[11px] font-mono-tech font-bold text-[#e95126] bg-[#e95126]/10 px-1 xs:px-1.5 py-0.5 rounded">
-                    01_SILO
-                  </span>
                   <h4 className="text-[8.5px] xxs:text-[9.5px] xs:text-[11px] sm:text-sm font-bold text-[#222720] leading-[1.15] sm:leading-tight break-words">
                     Scattered donor records
                   </h4>
@@ -240,9 +258,6 @@ export default function SystemsSection({ onOpenDemo }) {
                 }`}
               >
                 <div className="space-y-0.5 xs:space-y-1 sm:space-y-1.5">
-                  <span className="inline-block text-[7.5px] xxs:text-[8.5px] xs:text-[9.5px] sm:text-[11px] font-mono-tech font-bold text-[#e95126] bg-[#e95126]/10 px-1 xs:px-1.5 py-0.5 rounded">
-                    02_MANUAL
-                  </span>
                   <h4 className="text-[8.5px] xxs:text-[9.5px] xs:text-[11px] sm:text-sm font-bold text-[#222720] leading-[1.15] sm:leading-tight break-words">
                     Compliance assembled by hand
                   </h4>
@@ -273,9 +288,6 @@ export default function SystemsSection({ onOpenDemo }) {
                 }`}
               >
                 <div className="space-y-0.5 xs:space-y-1 sm:space-y-1.5">
-                  <span className="inline-block text-[7.5px] xxs:text-[8.5px] xs:text-[9.5px] sm:text-[11px] font-mono-tech font-bold text-[#e95126] bg-[#e95126]/10 px-1 xs:px-1.5 py-0.5 rounded">
-                    03_DISJOINT
-                  </span>
                   <h4 className="text-[8.5px] xxs:text-[9.5px] xs:text-[11px] sm:text-sm font-bold text-[#222720] leading-[1.15] sm:leading-tight break-words">
                     Outcomes detached from funding
                   </h4>
@@ -452,160 +464,194 @@ export default function SystemsSection({ onOpenDemo }) {
 
       </div>
 
-      {/* Explainer Modal */}
-      <AnimatePresence>
-        {isExplainerOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 xs:p-4 sm:p-6 md:p-10">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsExplainerOpen(false)}
-              className="absolute inset-0 bg-[#222720]/80 backdrop-blur-md"
-            />
+      {/* ========================================================
+          EXPLAINER MODAL (TELEPORTED TO BODY)
+         ======================================================== */}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {isExplainerOpen && (
+            <div className="fixed inset-0 z-[99999] flex flex-col sm:items-center sm:justify-center sm:p-6 md:p-10">
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={closeModal}
+                className="fixed inset-0 bg-[#222720]/80 backdrop-blur-md"
+              />
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="relative w-full max-w-4xl max-h-[90dvh] overflow-y-auto bg-[#f5f3ed] rounded-2xl sm:rounded-3xl shadow-2xl border border-white/80 p-5 sm:p-8 md:p-10 z-10 space-y-6 sm:space-y-8 safe-p-bottom"
-            >
-              <button
-                onClick={() => setIsExplainerOpen(false)}
-                className="absolute top-4 right-4 sm:top-6 sm:right-6 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-white text-[#222720] flex items-center justify-center shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer z-20"
-                aria-label="Close modal"
+              {/* Modal Container */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: 15 }}
+                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                className="relative w-full h-[100dvh] sm:h-auto sm:max-w-4xl sm:max-h-[90dvh] bg-[#f5f3ed] rounded-none sm:rounded-3xl shadow-2xl sm:border sm:border-white/80 z-10 flex flex-col overflow-hidden"
               >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="space-y-3 max-w-2xl">
-                <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
-                  <Sparkles className="w-4 h-4" />
-                  <span>Deep Dive — The Connected Architecture</span>
-                </div>
-                <h3 className="text-3xl sm:text-4xl font-medium tracking-tight text-[#222720]">
-                  Why Connected Systems Matter
-                </h3>
-                <p className="text-sm sm:text-base text-[#66695f] leading-relaxed">
-                  Donor information, financial records and programme data belong together. When systems sit apart, teams spend weeks manually reconciling spreadsheets instead of driving impact. Ekhum connects them into one immutable, verified lifecycle.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                <div className="bg-white/80 rounded-2xl p-6 border border-red-200 shadow-sm space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-red-700 font-bold text-sm">
-                      <AlertCircle className="w-4 h-4" />
-                      <span>The Disconnected Reality</span>
-                    </div>
-                    <span className="text-[10px] uppercase tracking-wider font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded">High Friction</span>
-                  </div>
-
-                  <ul className="space-y-3 text-xs sm:text-sm text-[#66695f]">
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-red-500 font-bold">✕</span>
-                      <span><strong>Fragmented Silos:</strong> Donor CRM in one tool, bank accounts in another, Excel spreadsheets for field receipts.</span>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-red-500 font-bold">✕</span>
-                      <span><strong>Manual Compliance:</strong> 80G tax receipts and FCRA audit trails compiled by hand over weeks.</span>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-red-500 font-bold">✕</span>
-                      <span><strong>Delayed Proof:</strong> Donors wait months for anecdotal reports disconnected from specific funds.</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 border border-[#e95126]/40 shadow-md space-y-4 relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-[#e95126]/10 rounded-full blur-xl pointer-events-none" />
-                  
-                  <div className="flex items-center justify-between relative z-10">
-                    <div className="flex items-center gap-2 text-[#e95126] font-bold text-sm">
-                      <CheckCircle2 className="w-4 h-4" />
-                      <span>The Ekhum Unified Flow</span>
-                    </div>
-                    <span className="text-[10px] uppercase tracking-wider font-bold text-[#e95126] bg-[#e95126]/10 px-2 py-0.5 rounded">Verified Ledger</span>
-                  </div>
-
-                  <ul className="space-y-3 text-xs sm:text-sm text-[#222720] relative z-10">
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-emerald-600 font-bold">✓</span>
-                      <span><strong>One Live Pipeline:</strong> Donor pledges automatically trigger verified accounting entries and disbursal tracks.</span>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-emerald-600 font-bold">✓</span>
-                      <span><strong>Instant Compliance:</strong> Automated 80G certificates, digital receipts, and statutory audit exports.</span>
-                    </li>
-                    <li className="flex items-start gap-2.5">
-                      <span className="text-emerald-600 font-bold">✓</span>
-                      <span><strong>Verified Human Outcomes:</strong> Every beneficiary milestone tied directly back to the supporting rupee.</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                <div className="bg-white/90 p-4 rounded-xl border border-[#d8d9cf] flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#e95126]/10 text-[#e95126] flex items-center justify-center shrink-0">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-base font-bold text-[#222720]">70% Time Saved</div>
-                    <div className="text-[11px] text-[#66695f]">in annual compliance & audit prep</div>
-                  </div>
-                </div>
-
-                <div className="bg-white/90 p-4 rounded-xl border border-[#d8d9cf] flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
-                    <ShieldCheck className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-base font-bold text-[#222720]">100% Audit-Proof</div>
-                    <div className="text-[11px] text-[#66695f]">cryptographically verified entries</div>
-                  </div>
-                </div>
-
-                <div className="bg-white/90 p-4 rounded-xl border border-[#d8d9cf] flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0">
-                    <TrendingUp className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-base font-bold text-[#222720]">Instant Reporting</div>
-                    <div className="text-[11px] text-[#66695f]">real-time transparency for donors</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#d8d9cf]">
-                <div className="font-serif italic text-sm text-[#8c523f]">
-                  Empowering teams to do more good.
-                </div>
-                <div className="flex items-center gap-3">
+                {/* Mobile Top Bar with Back Tab and Close Button */}
+                <div className="sm:hidden flex items-center justify-between px-4 py-3 bg-[#f5f3ed]/95 backdrop-blur-md border-b border-[#d8d9cf] shrink-0 z-30">
                   <button
-                    onClick={() => setIsExplainerOpen(false)}
-                    className="px-5 py-2.5 rounded-full border border-[#d8d9cf] text-[#222720] text-xs font-semibold hover:bg-white transition-colors cursor-pointer"
+                    onClick={closeModal}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#d8d9cf] shadow-xs text-xs font-semibold text-[#222720] active:scale-95 transition-transform cursor-pointer"
+                    aria-label="Back to overview"
                   >
-                    Close
+                    <ArrowLeft className="w-3.5 h-3.5 text-[#e95126]" />
+                    <span>Back</span>
                   </button>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#e95126]">
+                    Architecture
+                  </span>
                   <button
-                    onClick={() => {
-                      setIsExplainerOpen(false);
-                      if (onOpenDemo) onOpenDemo();
-                    }}
-                    className="px-6 py-2.5 rounded-full bg-[#e95126] text-white hover:bg-[#d4431a] text-xs font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer"
+                    onClick={closeModal}
+                    className="w-8 h-8 rounded-full bg-white border border-[#d8d9cf] shadow-xs flex items-center justify-center text-[#222720] active:scale-95 transition-transform cursor-pointer"
+                    aria-label="Close modal"
                   >
-                    <span>Book a live demo</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
-              </div>
 
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+                {/* Desktop Close Button (hidden on mobile) */}
+                <button
+                  onClick={closeModal}
+                  className="hidden sm:flex absolute top-6 right-6 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-[#222720] items-center justify-center shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer z-20"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                {/* Scrollable Content */}
+                <div className="flex-1 overflow-y-auto overscroll-contain p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8 safe-p-bottom">
+                  {/* Modal Header */}
+                  <div className="space-y-3 max-w-2xl">
+                    <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#e95126]">
+                      <Sparkles className="w-4 h-4" />
+                      <span>Deep Dive — The Connected Architecture</span>
+                    </div>
+                    <h3 className="text-2xl sm:text-4xl font-medium tracking-tight text-[#222720]">
+                      Why Connected Systems Matter
+                    </h3>
+                    <p className="text-xs sm:text-base text-[#66695f] leading-relaxed">
+                      Donor information, financial records and programme data belong together. When systems sit apart, teams spend weeks manually reconciling spreadsheets instead of driving impact. Ekhum connects them into one immutable, verified lifecycle.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 pt-2">
+                    <div className="bg-white/80 rounded-2xl p-4 sm:p-6 border border-red-200 shadow-sm space-y-3 sm:space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-red-700 font-bold text-sm">
+                          <AlertCircle className="w-4 h-4" />
+                          <span>The Disconnected Reality</span>
+                        </div>
+                        <span className="text-[10px] uppercase tracking-wider font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded">High Friction</span>
+                      </div>
+
+                      <ul className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm text-[#66695f]">
+                        <li className="flex items-start gap-2.5">
+                          <span className="text-red-500 font-bold">✕</span>
+                          <span><strong>Fragmented Silos:</strong> Donor CRM in one tool, bank accounts in another, Excel spreadsheets for field receipts.</span>
+                        </li>
+                        <li className="flex items-start gap-2.5">
+                          <span className="text-red-500 font-bold">✕</span>
+                          <span><strong>Manual Compliance:</strong> 80G tax receipts and FCRA audit trails compiled by hand over weeks.</span>
+                        </li>
+                        <li className="flex items-start gap-2.5">
+                          <span className="text-red-500 font-bold">✕</span>
+                          <span><strong>Delayed Proof:</strong> Donors wait months for anecdotal reports disconnected from specific funds.</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="bg-white rounded-2xl p-4 sm:p-6 border border-[#e95126]/40 shadow-md space-y-3 sm:space-y-4 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-[#e95126]/10 rounded-full blur-xl pointer-events-none" />
+                      
+                      <div className="flex items-center justify-between relative z-10">
+                        <div className="flex items-center gap-2 text-[#e95126] font-bold text-sm">
+                          <CheckCircle2 className="w-4 h-4" />
+                          <span>The Ekhum Unified Flow</span>
+                        </div>
+                        <span className="text-[10px] uppercase tracking-wider font-bold text-[#e95126] bg-[#e95126]/10 px-2 py-0.5 rounded">Verified Ledger</span>
+                      </div>
+
+                      <ul className="space-y-2.5 sm:space-y-3 text-xs sm:text-sm text-[#222720] relative z-10">
+                        <li className="flex items-start gap-2.5">
+                          <span className="text-emerald-600 font-bold">✓</span>
+                          <span><strong>One Live Pipeline:</strong> Donor pledges automatically trigger verified accounting entries and disbursal tracks.</span>
+                        </li>
+                        <li className="flex items-start gap-2.5">
+                          <span className="text-emerald-600 font-bold">✓</span>
+                          <span><strong>Instant Compliance:</strong> Automated 80G certificates, digital receipts, and statutory audit exports.</span>
+                        </li>
+                        <li className="flex items-start gap-2.5">
+                          <span className="text-emerald-600 font-bold">✓</span>
+                          <span><strong>Verified Human Outcomes:</strong> Every beneficiary milestone tied directly back to the supporting rupee.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-2">
+                    <div className="bg-white/90 p-4 rounded-xl border border-[#d8d9cf] flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-[#e95126]/10 text-[#e95126] flex items-center justify-center shrink-0">
+                        <Clock className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-sm sm:text-base font-bold text-[#222720]">70% Time Saved</div>
+                        <div className="text-[11px] text-[#66695f]">in annual compliance & audit prep</div>
+                      </div>
+                    </div>
+
+                    <div className="bg-white/90 p-4 rounded-xl border border-[#d8d9cf] flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
+                        <ShieldCheck className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-sm sm:text-base font-bold text-[#222720]">100% Audit-Proof</div>
+                        <div className="text-[11px] text-[#66695f]">cryptographically verified entries</div>
+                      </div>
+                    </div>
+
+                    <div className="bg-white/90 p-4 rounded-xl border border-[#d8d9cf] flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0">
+                        <TrendingUp className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-sm sm:text-base font-bold text-[#222720]">Instant Reporting</div>
+                        <div className="text-[11px] text-[#66695f]">real-time transparency for donors</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4 border-t border-[#d8d9cf]">
+                    <div className="font-serif italic text-xs sm:text-sm text-[#8c523f]">
+                      Empowering teams to do more good.
+                    </div>
+                    <div className="flex items-center justify-between sm:justify-end gap-3">
+                      <button
+                        onClick={closeModal}
+                        className="px-4 sm:px-5 py-2.5 rounded-full border border-[#d8d9cf] text-[#222720] text-xs font-semibold hover:bg-white active:scale-95 transition-all cursor-pointer"
+                      >
+                        Back
+                      </button>
+                      <button
+                        onClick={() => {
+                          closeModal();
+                          if (onOpenDemo) onOpenDemo();
+                        }}
+                        className="px-5 sm:px-6 py-2.5 rounded-full bg-[#e95126] text-white hover:bg-[#d4431a] active:scale-95 text-xs font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer"
+                      >
+                        <span>Book a live demo</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
     </section>
   );
