@@ -24,6 +24,9 @@ export default function PageSlideNavigator() {
   const isInternalScrollingRef = useRef(false);
   const internalScrollEndTimerRef = useRef(null);
   const touchStartYRef = useRef(null);
+  const gestureActiveRef = useRef(false);
+  const wheelEndTimerRef = useRef(null);
+  const lastTransitionTimeRef = useRef(0);
 
   useEffect(() => {
     activeSlideRef.current = activeSlide;
@@ -103,6 +106,7 @@ export default function PageSlideNavigator() {
 
     if (targetEl) {
       isTransitioningRef.current = true;
+      lastTransitionTimeRef.current = Date.now();
       setActiveSlide(clampedIndex);
       activeSlideRef.current = clampedIndex;
 
@@ -130,27 +134,58 @@ export default function PageSlideNavigator() {
       }
       transitionTimerRef.current = setTimeout(() => {
         isTransitioningRef.current = false;
-      }, 550);
+      }, 850);
     }
   };
 
-  // Wheel listener with intra-section scroll detection
+  // Wheel listener with intra-section scroll detection and strict single-section transition lock
   useEffect(() => {
     const handleWheel = (e) => {
       // Don't intercept if a modal is open
       if (document.body.style.overflow === 'hidden') return;
 
-      // If slide transition is currently animating, absorb incoming momentum
-      if (isTransitioningRef.current) {
-        e.preventDefault();
-        return;
-      }
-
       const deltaY = e.deltaY;
       const absDelta = Math.abs(deltaY);
 
-      // Filter resting tremors
+      // Filter resting tremors / trackpad noise
       if (absDelta < 6) return;
+
+      const now = Date.now();
+
+      // Clear existing wheel end quiet timer
+      if (wheelEndTimerRef.current) {
+        clearTimeout(wheelEndTimerRef.current);
+      }
+
+      // If slide transition is currently animating OR the current wheel gesture already triggered a slide:
+      // Completely absorb all incoming momentum events so multiple sections are never skipped!
+      if (isTransitioningRef.current || gestureActiveRef.current) {
+        e.preventDefault();
+        wheelEndTimerRef.current = setTimeout(() => {
+          gestureActiveRef.current = false;
+          isTransitioningRef.current = false;
+          isInternalScrollingRef.current = false;
+        }, 280);
+        return;
+      }
+
+      // Enforce minimum transition cooldown (850ms)
+      if (now - lastTransitionTimeRef.current < 850) {
+        e.preventDefault();
+        wheelEndTimerRef.current = setTimeout(() => {
+          gestureActiveRef.current = false;
+          isTransitioningRef.current = false;
+          isInternalScrollingRef.current = false;
+        }, 280);
+        return;
+      }
+
+      // Schedule reset when wheel stops emitting events
+      wheelEndTimerRef.current = setTimeout(() => {
+        gestureActiveRef.current = false;
+        isTransitioningRef.current = false;
+        isInternalScrollingRef.current = false;
+      }, 280);
 
       const currentSlideId = SLIDE_LIST[activeSlideRef.current]?.id;
       const currentEl = document.getElementById(currentSlideId);
@@ -172,7 +207,7 @@ export default function PageSlideNavigator() {
           }
           internalScrollEndTimerRef.current = setTimeout(() => {
             isInternalScrollingRef.current = false;
-          }, 160);
+          }, 200);
 
           return; // Do NOT preventDefault! Let content scroll into view!
         }
@@ -190,7 +225,11 @@ export default function PageSlideNavigator() {
         }
 
         // Intentional stroke: transition to next section with deck effect!
+        // Lock this gesture so all subsequent momentum events are absorbed
         e.preventDefault();
+        gestureActiveRef.current = true;
+        isTransitioningRef.current = true;
+        lastTransitionTimeRef.current = now;
         goToSlide(activeSlideRef.current + 1, 'top');
       } else {
         // Scrolling UP
@@ -203,7 +242,7 @@ export default function PageSlideNavigator() {
           }
           internalScrollEndTimerRef.current = setTimeout(() => {
             isInternalScrollingRef.current = false;
-          }, 160);
+          }, 200);
 
           return; // Do NOT preventDefault! Let content scroll into view!
         }
@@ -221,7 +260,11 @@ export default function PageSlideNavigator() {
         }
 
         // Intentional stroke: transition to previous section!
+        // Lock this gesture so all subsequent momentum events are absorbed
         e.preventDefault();
+        gestureActiveRef.current = true;
+        isTransitioningRef.current = true;
+        lastTransitionTimeRef.current = now;
         goToSlide(activeSlideRef.current - 1, 'bottom');
       }
     };
@@ -231,6 +274,7 @@ export default function PageSlideNavigator() {
       window.removeEventListener('wheel', handleWheel);
       if (transitionTimerRef.current) clearTimeout(transitionTimerRef.current);
       if (internalScrollEndTimerRef.current) clearTimeout(internalScrollEndTimerRef.current);
+      if (wheelEndTimerRef.current) clearTimeout(wheelEndTimerRef.current);
     };
   }, []);
 
