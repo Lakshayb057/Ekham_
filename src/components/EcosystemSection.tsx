@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cloud, Server, ShieldCheck, Zap, CheckCircle2, ArrowRight, MousePointer2, FileText, CalendarDays, Bell, RefreshCw, Download, Check, LayoutDashboard, Megaphone, Users, MessageSquare, Shield, PieChart, Leaf, BarChart3 } from 'lucide-react';
+import { ShieldCheck, CheckCircle2, MousePointer2, FileText, CalendarDays, Bell, RefreshCw, Download, LayoutDashboard, Megaphone, Users, MessageSquare, Shield, Leaf, BarChart3 } from 'lucide-react';
 import { Logo } from './Logo';
 
 export const EcosystemSection: React.FC = () => {

@@ -4,15 +4,10 @@ import {
   CreditCard, 
   Users, 
   BarChart3, 
-  ArrowRight,
   CheckCircle2
 } from 'lucide-react';
 
-interface PillarsSectionProps {
-  onOpenDemoModal: () => void;
-}
-
-export const PillarsSection: React.FC<PillarsSectionProps> = ({ onOpenDemoModal }) => {
+export const PillarsSection: React.FC = () => {
   const pillars = [
     {
       title: 'Fundraising',

@@ -1,7 +1,12 @@
 import React from 'react';
 import { ArrowRight, MessageCircle, Users, Leaf, BarChart3 } from 'lucide-react';
 
-export const FinalCTA: React.FC = () => {
+interface FinalCTAProps {
+  onOpenDemoModal: () => void;
+  onOpenContactModal: () => void;
+}
+
+export const FinalCTA: React.FC<FinalCTAProps> = ({ onOpenDemoModal, onOpenContactModal }) => {
   return (
     <section className="relative w-full bg-[#0F1614] overflow-hidden font-sans">
       
@@ -43,11 +48,11 @@ export const FinalCTA: React.FC = () => {
 
           {/* Buttons */}
           <div className="flex flex-wrap items-center gap-4 mb-10">
-            <button className="bg-[#EB5E28] hover:bg-[#D84E1A] text-white px-6 py-3.5 rounded-full font-bold flex items-center justify-center gap-2 transition-colors text-sm w-full sm:w-auto">
+            <button onClick={onOpenDemoModal} className="bg-[#EB5E28] hover:bg-[#D84E1A] text-white px-6 py-3.5 rounded-full font-bold flex items-center justify-center gap-2 transition-colors text-sm w-full sm:w-auto">
               Get Started Today
               <ArrowRight className="w-4 h-4" />
             </button>
-            <button className="bg-transparent border border-gray-600 hover:border-gray-400 text-white px-6 py-3.5 rounded-full font-bold flex items-center justify-center gap-2 transition-colors text-sm w-full sm:w-auto">
+            <button onClick={onOpenContactModal} className="bg-transparent border border-gray-600 hover:border-gray-400 text-white px-6 py-3.5 rounded-full font-bold flex items-center justify-center gap-2 transition-colors text-sm w-full sm:w-auto">
               <MessageCircle className="w-4 h-4" />
               Talk to Our Team
             </button>

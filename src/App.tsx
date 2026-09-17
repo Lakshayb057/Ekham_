@@ -27,7 +27,6 @@ export const App: React.FC = () => {
   const handleOpenStory = () => setStoryModalOpen(true);
   const handleCloseStory = () => setStoryModalOpen(false);
 
-  const handleOpenLogin = () => setLoginModalOpen(true);
   const handleCloseLogin = () => setLoginModalOpen(false);
 
   return (
@@ -35,7 +34,6 @@ export const App: React.FC = () => {
       {/* Sticky Navigation Bar */}
       <Navbar 
         onOpenDemoModal={handleOpenDemo}
-        onOpenLoginModal={handleOpenLogin}
       />
 
       {/* Main Page Story Flow */}
@@ -62,10 +60,10 @@ export const App: React.FC = () => {
         <WorkflowSection onOpenDemoModal={handleOpenDemo} />
 
         {/* 7. Core Pillars Interactive Feature Tabs */}
-        <PillarsSection onOpenDemoModal={handleOpenDemo} />
+        <PillarsSection />
 
         {/* 8. Ecosystem / 4 Audience Roles */}
-        <EcosystemSection onSelectRole={() => handleOpenDemo()} />
+        <EcosystemSection />
 
         {/* 9. Interactive Savings & Compliance Calculator */}
         <SavingsCalculator onOpenDemoModal={handleOpenDemo} />

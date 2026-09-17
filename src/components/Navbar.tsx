@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
 import { Logo } from './Logo';
 
 interface NavbarProps {
   onOpenDemoModal: () => void;
-  onOpenLoginModal: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenDemoModal, onOpenLoginModal }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenDemoModal }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
