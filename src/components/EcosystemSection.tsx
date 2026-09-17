@@ -26,23 +26,23 @@ export const EcosystemSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 relative">
           
           {/* Column 1: Non-Profit Teams */}
-          <div className="bg-green-50/50 rounded-2xl p-5 border border-green-100 flex flex-col h-full relative overflow-hidden group">
+          <div className="bg-green-50/50 rounded-2xl p-4 sm:p-5 border border-green-100 flex flex-col h-full relative overflow-hidden group">
             
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center shadow-sm">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
+              <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center shadow-sm shrink-0">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900">Non-Profit Teams</h3>
-                <p className="text-[11px] text-gray-500 font-medium uppercase tracking-wider">For grassroots to large scale</p>
+                <h3 className="text-base sm:text-lg font-bold text-gray-900">Non-Profit Teams</h3>
+                <p className="text-[10px] sm:text-[11px] text-gray-500 font-medium uppercase tracking-wider">For grassroots to large scale</p>
               </div>
             </div>
             
             {/* Laptop Mockup */}
-            <div className="w-full flex-1 flex justify-center items-center py-4 min-h-[220px]">
-              <div className="w-full max-w-[250px]">
+            <div className="w-full flex-1 flex justify-center items-start sm:items-center py-2 sm:py-4 min-h-[160px] sm:min-h-[220px]">
+              <div className="w-full max-w-[250px] scale-[0.7] sm:scale-100 origin-top sm:origin-center mt-2 sm:mt-0">
                 <div className="bg-white rounded-t-lg border-[4px] border-b-0 border-gray-800 shadow-lg h-40 overflow-hidden relative w-full flex flex-col">
                   <div className="w-full h-4 bg-gray-100 flex items-center px-2 gap-1 border-b shrink-0">
                     <div className="w-1.5 h-1.5 rounded-full bg-red-400"></div>
@@ -111,20 +111,20 @@ export const EcosystemSection: React.FC = () => {
           </div>
 
           {/* Column 2: Donors */}
-          <div className="bg-orange-50/50 rounded-2xl p-5 border border-orange-100 flex flex-col h-full relative overflow-hidden group">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center shadow-sm">
+          <div className="bg-orange-50/50 rounded-2xl p-4 sm:p-5 border border-orange-100 flex flex-col h-full relative overflow-hidden group">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
+              <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center shadow-sm shrink-0">
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900">Donors & Patrons</h3>
-                <p className="text-[11px] text-gray-500 font-medium uppercase tracking-wider">Individuals and HNI donors</p>
+                <h3 className="text-base sm:text-lg font-bold text-gray-900">Donors & Patrons</h3>
+                <p className="text-[10px] sm:text-[11px] text-gray-500 font-medium uppercase tracking-wider">Individuals and HNI donors</p>
               </div>
             </div>
 
             {/* Phone Mockup */}
-            <div className="w-full flex-1 flex justify-center items-center py-6 min-h-[340px] relative">
-               
+            <div className="w-full flex-1 flex justify-center items-start sm:items-center py-2 sm:py-6 min-h-[240px] sm:min-h-[340px] relative">
+               <div className="w-full flex-1 flex justify-center items-center scale-[0.65] sm:scale-100 origin-top sm:origin-center mt-2 sm:mt-0">
                {/* Left Floating Badges */}
                <div className="absolute left-0 lg:-left-3 top-1/2 -translate-y-1/2 flex flex-col gap-5 z-10 w-[105px] sm:w-[125px]">
                  <div className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
@@ -211,27 +211,28 @@ export const EcosystemSection: React.FC = () => {
                     </div>
                   </div>
                </div>
+               </div>
             </div>
           </div>
 
           {/* Column 3: CSR & Corporates */}
-          <div className="bg-blue-50/50 rounded-2xl p-5 border border-blue-100 flex flex-col h-full relative overflow-hidden group">
+          <div className="bg-blue-50/50 rounded-2xl p-4 sm:p-5 border border-blue-100 flex flex-col h-full relative overflow-hidden group">
             
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center shadow-sm">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
+              <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center shadow-sm shrink-0">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900">CSR & Corporates</h3>
-                <p className="text-[11px] text-gray-500 font-medium uppercase tracking-wider">CSR partners, matching funds and NGO sponsors</p>
+                <h3 className="text-base sm:text-lg font-bold text-gray-900">CSR & Corporates</h3>
+                <p className="text-[10px] sm:text-[11px] text-gray-500 font-medium uppercase tracking-wider">CSR partners, matching funds and NGO sponsors</p>
               </div>
             </div>
 
             {/* Tablet Mockup */}
-            <div className="w-full flex-1 flex justify-center items-center py-4 min-h-[220px]">
-              <div className="w-full max-w-[250px]">
+            <div className="w-full flex-1 flex justify-center items-start sm:items-center py-2 sm:py-4 min-h-[160px] sm:min-h-[220px]">
+              <div className="w-full max-w-[250px] scale-[0.7] sm:scale-100 origin-top sm:origin-center mt-2 sm:mt-0">
                 <div className="bg-white rounded-t-lg border-[4px] border-b-0 border-gray-800 shadow-lg h-40 overflow-hidden relative w-full flex flex-col">
                    <div className="w-full h-4 bg-gray-100 flex items-center px-2 gap-1 border-b shrink-0">
                     <div className="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
@@ -320,47 +321,47 @@ export const EcosystemSection: React.FC = () => {
 
       {/* Full-width Bottom Footer Bar */}
       <div className="w-full bg-[#153D2B] py-3.5 sm:py-4 mt-auto">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-6">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-row flex-wrap justify-center sm:justify-between items-center gap-4 sm:gap-6">
           
-          <div className="flex items-center gap-4 flex-1 justify-center sm:justify-start">
-             <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-               <Leaf className="w-4 h-4 text-green-400" strokeWidth={1.5} />
+          <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-[130px] justify-center sm:justify-start">
+             <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
+               <Leaf className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" strokeWidth={1.5} />
              </div>
              <div>
-               <div className="text-sm font-bold text-white leading-[1.15]">More<br/>Transparency</div>
+               <div className="text-[10px] sm:text-sm font-bold text-white leading-[1.15]">More<br/>Transparency</div>
              </div>
           </div>
 
           <div className="hidden sm:block w-px h-8 bg-[#1F543C]"></div>
 
-          <div className="flex items-center gap-4 flex-1 justify-center">
-             <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-               <BarChart3 className="w-4 h-4 text-orange-400" strokeWidth={1.5} />
+          <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-[130px] justify-center">
+             <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
+               <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 text-orange-400" strokeWidth={1.5} />
              </div>
              <div>
-               <div className="text-sm font-bold text-white leading-[1.15]">Greater<br/>Accountability</div>
+               <div className="text-[10px] sm:text-sm font-bold text-white leading-[1.15]">Greater<br/>Accountability</div>
              </div>
           </div>
 
           <div className="hidden sm:block w-px h-8 bg-[#1F543C]"></div>
 
-          <div className="flex items-center gap-4 flex-1 justify-center">
-             <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-               <ShieldCheck className="w-4 h-4 text-blue-400" strokeWidth={1.5} />
+          <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-[130px] justify-center">
+             <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
+               <ShieldCheck className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400" strokeWidth={1.5} />
              </div>
              <div>
-               <div className="text-sm font-bold text-white leading-[1.15]">Sustainable<br/>Impact</div>
+               <div className="text-[10px] sm:text-sm font-bold text-white leading-[1.15]">Sustainable<br/>Impact</div>
              </div>
           </div>
 
           <div className="hidden sm:block w-px h-8 bg-[#1F543C]"></div>
 
-          <div className="flex items-center gap-4 flex-1 justify-center sm:justify-end">
-             <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-               <Users className="w-4 h-4 text-purple-400" strokeWidth={1.5} />
+          <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-[130px] justify-center sm:justify-end">
+             <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
+               <Users className="w-3 h-3 sm:w-4 sm:h-4 text-purple-400" strokeWidth={1.5} />
              </div>
              <div>
-               <div className="text-sm font-bold text-white leading-[1.15]">Unified<br/>Ecosystem</div>
+               <div className="text-[10px] sm:text-sm font-bold text-white leading-[1.15]">Unified<br/>Ecosystem</div>
              </div>
           </div>
         </div>

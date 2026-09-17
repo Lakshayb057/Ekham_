@@ -47,13 +47,13 @@ export const HeroImpactSlider: React.FC = () => {
         onMouseUp={handleMouseUp}
         onTouchMove={handleTouchMove}
         onClick={(e) => handleMove(e.clientX)}
-        className="relative w-full h-full min-h-[440px] sm:min-h-[520px] lg:min-h-0 overflow-hidden cursor-ew-resize group flex [mask-image:linear-gradient(to_right,transparent_0%,black_12%,black_100%)] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_12%,black_100%)]"
+        className="relative w-full h-full min-h-[250px] lg:min-h-0 overflow-hidden cursor-ew-resize group flex [mask-image:linear-gradient(to_right,transparent_0%,black_12%,black_100%)] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_12%,black_100%)]"
       >
         
         {/* ================= LEFT HALF: BEFORE ================= */}
         <div 
           style={{ width: `${sliderPos}%` }} 
-          className="relative h-full overflow-hidden flex-shrink-0 bg-[#E5DCD2]"
+          className="absolute top-0 bottom-0 left-0 overflow-hidden bg-[#E5DCD2]"
         >
           {/* Childhood girl with chin on hands looking up */}
           <img
@@ -61,11 +61,10 @@ export const HeroImpactSlider: React.FC = () => {
             alt="Young Indian girl before support looking upward with hope"
             className="w-full h-full object-cover object-[center_28%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#14201A] via-black/15 to-transparent pointer-events-none"></div>
 
           {/* Left Handwritten Script: "From uncertainty" with small arrow */}
           <div className="absolute top-6 sm:top-9 left-8 sm:left-12 z-10 pointer-events-none">
-            <span className="font-handwriting text-2xl sm:text-[26px] text-[#1A231F] font-bold block leading-tight -rotate-3 select-none drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
+            <span className="font-handwriting text-xl sm:text-[26px] text-[#1A231F] font-bold block leading-tight -rotate-3 select-none drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
               From<br />uncertainty
             </span>
             <svg className="w-7 h-7 text-[#1A231F] mt-1 ml-2 opacity-80" viewBox="0 0 40 40" fill="none">
@@ -79,7 +78,7 @@ export const HeroImpactSlider: React.FC = () => {
             <span className="inline-block px-3 py-1 bg-black/45 backdrop-blur-md rounded-full text-[10px] sm:text-[11px] font-bold tracking-widest text-white border border-white/20 uppercase shadow-sm mb-1.5">
               BEFORE
             </span>
-            <p className="text-xs sm:text-sm font-semibold text-white drop-shadow-md leading-tight">
+            <p className="text-[10px] sm:text-sm font-semibold text-white drop-shadow-md leading-tight">
               A childhood full<br className="sm:hidden" /> of limitations
             </p>
           </div>
@@ -88,7 +87,7 @@ export const HeroImpactSlider: React.FC = () => {
         {/* ================= RIGHT HALF: AFTER ================= */}
         <div 
           style={{ width: `${100 - sliderPos}%` }} 
-          className="relative h-full overflow-hidden flex-shrink-0 bg-[#1C2421]"
+          className="absolute top-0 bottom-0 right-0 overflow-hidden bg-[#1C2421]"
         >
           {/* Graduate Image: Head/cap touches top near navbar, touches right corner */}
           <img
@@ -96,11 +95,10 @@ export const HeroImpactSlider: React.FC = () => {
             alt="Young Indian woman university graduate with academic cap and gown"
             className="w-full h-full object-cover object-[center_6%]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#14201A] via-black/15 to-transparent pointer-events-none"></div>
 
           {/* Right Handwritten Script: "To a brighter tomorrow" with orange underline */}
           <div className="absolute top-6 sm:top-9 right-6 sm:right-10 text-right z-10 pointer-events-none">
-            <span className="font-handwriting text-2xl sm:text-[26px] text-white font-bold block leading-tight -rotate-2 select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
+            <span className="font-handwriting text-xl sm:text-[26px] text-white font-bold block leading-tight -rotate-2 select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
               To a<br />brighter<br />tomorrow
             </span>
             <svg className="w-20 h-3 text-[#EB5E28] ml-auto mt-1 drop-shadow-sm" viewBox="0 0 100 15" fill="none">
@@ -113,7 +111,7 @@ export const HeroImpactSlider: React.FC = () => {
             <span className="inline-block px-3 py-1 bg-[#EB5E28]/90 backdrop-blur-md rounded-full text-[10px] sm:text-[11px] font-bold tracking-widest text-white border border-white/30 uppercase shadow-sm mb-1.5">
               AFTER
             </span>
-            <p className="text-xs sm:text-sm font-semibold text-white drop-shadow-md leading-tight">
+            <p className="text-[10px] sm:text-sm font-semibold text-white drop-shadow-md leading-tight">
               Education creates<br className="sm:hidden" /> opportunities
             </p>
           </div>

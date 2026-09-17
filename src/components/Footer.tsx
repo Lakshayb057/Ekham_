@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, ShieldCheck } from 'lucide-react';
 import { Logo } from './Logo';
 
 export const Footer: React.FC = () => {
@@ -68,8 +68,8 @@ export const Footer: React.FC = () => {
               A complete digital infrastructure for charities — where fundraising, donations, donors, compliance, reporting, and AI unite on one platform.
             </p>
             <div className="text-xs font-semibold text-[#2D7A4F] flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#2D7A4F] animate-ping"></span>
-              All systems compliant with ITD 10BD & 80G
+              <ShieldCheck className="w-4 h-4 shrink-0" />
+              Bank-grade security & end-to-end encryption
             </div>
           </div>
 

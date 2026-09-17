@@ -17,13 +17,13 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onOpenDemoModal, onOpenConta
           alt="Smiling Indian Girl" 
           className="w-full h-full object-cover object-center contrast-125 brightness-110"
         />
-        {/* Gradient to seamlessly blend the left edge of the image into the solid dark background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0F1614] via-[#0F1614]/60 to-transparent"></div>
+        {/* Gradient to seamlessly blend the edge of the image into the solid dark background */}
+        <div className="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-[#0F1614] via-[#0F1614]/70 lg:via-[#0F1614]/60 to-transparent"></div>
         {/* Vertical gradient to soften top and bottom edges */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0F1614] via-transparent to-[#0F1614]/30"></div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 relative z-10 pt-20 pb-12 lg:pt-28 lg:pb-12 flex flex-col lg:flex-row justify-between h-full min-h-[580px]">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 relative z-10 pt-20 pb-36 sm:pb-12 lg:pt-28 lg:pb-12 flex flex-col lg:flex-row justify-between h-full min-h-[650px] sm:min-h-[580px]">
         
         {/* Left Content */}
         <div className="w-full lg:w-3/5 flex flex-col justify-center">
@@ -33,7 +33,6 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onOpenDemoModal, onOpenConta
             <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#EB5E28]">
               THE NEXT CHAPTER STARTS HERE
             </span>
-            <div className="h-[1px] w-12 bg-gray-600"></div>
           </div>
 
           {/* Main Heading */}
@@ -47,32 +46,32 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onOpenDemoModal, onOpenConta
           </p>
 
           {/* Buttons */}
-          <div className="flex flex-wrap items-center gap-4 mb-10">
-            <button onClick={onOpenDemoModal} className="bg-[#EB5E28] hover:bg-[#D84E1A] text-white px-6 py-3.5 rounded-full font-bold flex items-center justify-center gap-2 transition-colors text-sm w-full sm:w-auto">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-10">
+            <button onClick={onOpenDemoModal} className="bg-[#EB5E28] hover:bg-[#D84E1A] text-white px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-full font-bold flex items-center justify-center gap-1.5 sm:gap-2 transition-colors text-xs sm:text-sm w-full sm:w-auto">
               Get Started Today
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
-            <button onClick={onOpenContactModal} className="bg-transparent border border-gray-600 hover:border-gray-400 text-white px-6 py-3.5 rounded-full font-bold flex items-center justify-center gap-2 transition-colors text-sm w-full sm:w-auto">
-              <MessageCircle className="w-4 h-4" />
+            <button onClick={onOpenContactModal} className="bg-transparent border border-gray-600 hover:border-gray-400 text-white px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-full font-bold flex items-center justify-center gap-1.5 sm:gap-2 transition-colors text-xs sm:text-sm w-full sm:w-auto">
+              <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               Talk to Our Team
             </button>
           </div>
 
           {/* Metrics Row */}
-          <div className="flex flex-wrap items-center gap-8 border-t border-gray-700/50 pt-6">
-            <div className="flex items-center gap-3">
-              <Users className="w-6 h-6 text-gray-400" />
-              <span className="text-xs text-gray-300 font-semibold leading-tight">Stronger<br/>Communities</span>
+          <div className="flex flex-row items-center justify-between sm:justify-start gap-1 sm:gap-8 border-t border-gray-700/50 pt-5 sm:pt-6 w-full">
+            <div className="flex items-center gap-1.5 sm:gap-3">
+              <Users className="w-4 h-4 sm:w-6 sm:h-6 text-gray-400 shrink-0" />
+              <span className="text-[9px] sm:text-xs text-gray-300 font-semibold leading-tight">Stronger<br/>Communities</span>
             </div>
-            <div className="h-8 w-[1px] bg-gray-700 hidden sm:block"></div>
-            <div className="flex items-center gap-3">
-              <Leaf className="w-6 h-6 text-gray-400" />
-              <span className="text-xs text-gray-300 font-semibold leading-tight">More<br/>Transparency</span>
+            <div className="h-6 sm:h-8 w-px bg-gray-700 shrink-0"></div>
+            <div className="flex items-center gap-1.5 sm:gap-3">
+              <Leaf className="w-4 h-4 sm:w-6 sm:h-6 text-gray-400 shrink-0" />
+              <span className="text-[9px] sm:text-xs text-gray-300 font-semibold leading-tight">More<br/>Transparency</span>
             </div>
-            <div className="h-8 w-[1px] bg-gray-700 hidden sm:block"></div>
-            <div className="flex items-center gap-3">
-              <BarChart3 className="w-6 h-6 text-gray-400" />
-              <span className="text-xs text-gray-300 font-semibold leading-tight">Greater<br/>Impact</span>
+            <div className="h-6 sm:h-8 w-px bg-gray-700 shrink-0"></div>
+            <div className="flex items-center gap-1.5 sm:gap-3">
+              <BarChart3 className="w-4 h-4 sm:w-6 sm:h-6 text-gray-400 shrink-0" />
+              <span className="text-[9px] sm:text-xs text-gray-300 font-semibold leading-tight">Greater<br/>Impact</span>
             </div>
           </div>
           

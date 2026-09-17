@@ -68,7 +68,9 @@ export const TrustStrip: React.FC = () => {
   ];
 
   // Duplicate the logos array so the marquee loops seamlessly
-  const marqueeContent = [...logos, ...logos, ...logos];
+  const marqueeContent = [...logos, ...logos, ...logos].map((logo, idx) => 
+    React.cloneElement(logo, { key: `logo-${idx}` })
+  );
 
   return (
     <section className="pt-16 sm:pt-20 pb-4 sm:pb-6 bg-[#FAF8F5] border-t overflow-hidden relative">

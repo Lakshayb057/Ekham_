@@ -21,28 +21,28 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="w-full flex-grow flex flex-col lg:flex-row items-stretch min-h-[440px]">
         
         {/* Left Column (Content) */}
-        <div className="w-full lg:w-[47%] xl:w-[45%] flex flex-col justify-center px-5 sm:px-10 lg:pl-14 xl:pl-20 lg:pr-4 py-6 sm:py-8 lg:py-4 z-20 flex-shrink-0">
+        <div className="w-full lg:w-[47%] xl:w-[45%] flex flex-col justify-center px-4 sm:px-10 lg:pl-14 xl:pl-20 lg:pr-4 py-3 sm:py-8 lg:py-4 z-20 flex-shrink-0">
           
           {/* Eyebrow - Plain text only (no bullet dot) */}
-          <div className="mb-3 sm:mb-3.5">
-            <span className="text-[11px] sm:text-xs font-bold tracking-[0.2em] text-[#EB5E28] uppercase">
+          <div className="mb-2 sm:mb-3.5">
+            <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-[#EB5E28] uppercase">
               A KINDER. STRONGER. BRIGHTER INDIA.
             </span>
           </div>
 
           {/* Main Headline - Increased font size */}
-          <h1 className="text-5xl sm:text-6xl lg:text-[3.9rem] xl:text-[4.5rem] font-black text-[#14201A] tracking-[-0.04em] leading-[1.03] mb-4 sm:mb-5">
+          <h1 className="text-4xl sm:text-6xl lg:text-[3.9rem] xl:text-[4.5rem] font-black text-[#14201A] tracking-[-0.04em] leading-[1.03] mb-3 sm:mb-5">
             Good<br />
             Deserve <span className="text-[#EB5E28]">Better.</span>
           </h1>
 
           {/* Supporting Paragraph */}
-          <p className="text-xs sm:text-sm md:text-[14.5px] lg:text-[15px] text-[#4A5550] leading-[1.65] max-w-lg mb-5 sm:mb-6 font-normal">
+          <p className="text-[11.5px] sm:text-sm md:text-[14.5px] lg:text-[15px] text-[#4A5550] leading-[1.5] max-w-lg mb-4 sm:mb-6 font-normal">
             EKhum connects fundraising, donations, donors, campaigns, compliance, reporting, AI, and analytics on one intelligent platform — so charities can focus less on fragmented operations and more on creating meaningful impact.
           </p>
 
           {/* CTAs with tactile depth & micro-interactions */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-4 sm:mb-6">
             <button
               onClick={onOpenDemoModal}
               className="group inline-flex items-center gap-2.5 px-6 sm:px-7 py-3 text-xs sm:text-sm font-semibold text-white bg-[#EB5E28] hover:bg-[#D84E1A] rounded-full shadow-[0_4px_16px_rgba(235,94,40,0.32)] hover:shadow-[0_6px_22px_rgba(235,94,40,0.42)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
@@ -63,22 +63,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
 
           {/* Trust Indicators */}
-          <div className="flex flex-wrap items-center gap-y-2.5 gap-x-5 sm:gap-x-7 pt-4 border-t border-[#E8E2D8] text-[11px] sm:text-xs font-semibold text-[#3D4842]">
-            <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 rounded-full bg-[#2A724E]/12 flex items-center justify-center text-[#2A724E] flex-shrink-0">
-                <Check className="w-2.5 h-2.5 stroke-[3]" />
+          <div className="flex justify-between items-center w-full pt-3 sm:pt-4 border-t border-[#E8E2D8] text-[8.5px] sm:text-xs font-semibold text-[#3D4842]">
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#2A724E]/12 flex items-center justify-center text-[#2A724E] flex-shrink-0">
+                <Check className="w-2 h-2 sm:w-2.5 sm:h-2.5 stroke-[3]" />
               </div>
               <span>100% Charity-Owned Data</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 rounded-full bg-[#2A724E]/12 flex items-center justify-center text-[#2A724E] flex-shrink-0">
-                <Check className="w-2.5 h-2.5 stroke-[3]" />
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#2A724E]/12 flex items-center justify-center text-[#2A724E] flex-shrink-0">
+                <Check className="w-2 h-2 sm:w-2.5 sm:h-2.5 stroke-[3]" />
               </div>
               <span>Instant 80G Certificates</span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 rounded-full bg-[#2A724E]/12 flex items-center justify-center text-[#2A724E] flex-shrink-0">
-                <Check className="w-2.5 h-2.5 stroke-[3]" />
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#2A724E]/12 flex items-center justify-center text-[#2A724E] flex-shrink-0">
+                <Check className="w-2 h-2 sm:w-2.5 sm:h-2.5 stroke-[3]" />
               </div>
               <span>Built for Indian NGOs</span>
             </div>

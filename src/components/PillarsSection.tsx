@@ -64,11 +64,16 @@ export const PillarsSection: React.FC = () => {
   ];
 
   // Horizontal Module Card (Image on Right, No Border, Curved Left Edge)
-  const ModuleCard = ({ pillar }: { pillar: any }) => {
+  const ModuleCard = ({ pillar, index }: { pillar: any; index: number }) => {
     const Icon = pillar.icon;
+    // Alternate images left and right. 
+    // index 0, 2 (Left column on desktop) -> Image on Left
+    // index 1, 3 (Right column on desktop) -> Image on Right
+    const imageOnLeft = index % 2 === 0;
+
     return (
-      <div className={`flex flex-row ${pillar.bgClass} rounded-2xl shadow-lg relative z-10 w-full h-[150px] sm:h-[170px] lg:h-[200px] overflow-hidden transition-transform hover:scale-[1.02] duration-300`}>
-        {/* Left Content Area */}
+      <div className={`flex ${imageOnLeft ? 'flex-row-reverse' : 'flex-row'} ${pillar.bgClass} rounded-2xl shadow-lg relative z-10 w-full h-[150px] sm:h-[170px] lg:h-[200px] overflow-hidden transition-transform hover:scale-[1.02] duration-300`}>
+        {/* Content Area */}
         <div className="flex-1 flex flex-col p-4 lg:p-5 justify-between z-10">
           {/* Headline */}
           <div className="flex items-center gap-3 mb-2">
@@ -97,8 +102,8 @@ export const PillarsSection: React.FC = () => {
             ))}
           </div>
 
-          {/* Metric */}
-          <div className="mt-auto pt-2 lg:pt-3 border-t border-[#34464B]/60 flex items-center justify-between">
+          {/* Metric (Hidden on small screens) */}
+          <div className="mt-auto pt-2 lg:pt-3 border-t border-[#34464B]/60 items-center justify-between hidden sm:flex">
             <span className="text-[9px] lg:text-[10px] font-bold text-[#AAB7BA] uppercase tracking-wider">
               {pillar.metricLabel}
             </span>
@@ -108,8 +113,8 @@ export const PillarsSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Image Area - No Border, Curved Left Edge */}
-        <div className="w-[130px] sm:w-[160px] lg:w-[190px] h-full shrink-0 relative overflow-hidden rounded-l-[2rem] lg:rounded-l-[3rem]">
+        {/* Image Area - Curved Edge based on side */}
+        <div className={`w-[130px] sm:w-[160px] lg:w-[190px] h-full shrink-0 relative overflow-hidden ${imageOnLeft ? 'rounded-r-[2rem] lg:rounded-r-[3rem]' : 'rounded-l-[2rem] lg:rounded-l-[3rem]'}`}>
           <img 
             src={pillar.image} 
             alt={pillar.title} 
@@ -148,23 +153,20 @@ export const PillarsSection: React.FC = () => {
         {/* HUB AND SPOKE LAYOUT (DESKTOP) */}
         <div className="hidden lg:grid grid-cols-[minmax(340px,440px)_auto_minmax(340px,440px)] gap-6 xl:gap-12 items-center justify-between w-full max-w-[1300px] mx-auto flex-1">
           
-          {/* Curved Orange Connecting Lines (SVG Overlay) */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-            <path d="M 33% 35% C 43% 35%, 50% 40%, 50% 50%" fill="none" stroke="#FF5500" strokeWidth="2" />
-            <path d="M 33% 65% C 43% 65%, 50% 60%, 50% 50%" fill="none" stroke="#FF5500" strokeWidth="2" />
-            <path d="M 67% 35% C 57% 35%, 50% 40%, 50% 50%" fill="none" stroke="#FF5500" strokeWidth="2" />
-            <path d="M 67% 65% C 57% 65%, 50% 60%, 50% 50%" fill="none" stroke="#FF5500" strokeWidth="2" />
-          </svg>
-
           {/* Left Modules */}
           <div className="flex flex-col gap-6 xl:gap-10 col-start-1">
-            <ModuleCard pillar={pillars[0]} />
-            <ModuleCard pillar={pillars[2]} />
+            <ModuleCard pillar={pillars[0]} index={0} />
+            <ModuleCard pillar={pillars[2]} index={2} />
           </div>
 
-          {/* Central Hub - Simplified to a single clean circle */}
+          {/* Central Hub - Desktop */}
           <div className="col-start-2 place-self-center relative z-10 w-[200px] h-[200px] xl:w-[240px] xl:h-[240px] shrink-0 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full bg-white/95 backdrop-blur-sm border-2 border-[#FF5500] shadow-[0_0_50px_rgba(255,85,0,0.15)] flex flex-col items-center justify-center text-center p-4 z-20">
+            {/* Revolving Rings */}
+            <div className="absolute inset-0 rounded-full border-t-[3px] border-r-[3px] border-[#FF5500] animate-[spin_6s_linear_infinite] shadow-[0_0_15px_rgba(255,85,0,0.5)]"></div>
+            <div className="absolute inset-2 rounded-full border-b-[3px] border-l-[3px] border-[#FF5500]/70 animate-[spin_8s_linear_infinite_reverse]"></div>
+            <div className="absolute inset-4 rounded-full border-[1.5px] border-dashed border-[#FF5500]/40 animate-[spin_12s_linear_infinite]"></div>
+            
+            <div className="absolute inset-1.5 rounded-full bg-white/95 backdrop-blur-sm shadow-[0_0_50px_rgba(255,85,0,0.15)] flex flex-col items-center justify-center text-center p-4 z-20">
               <span className="text-2xl xl:text-3xl font-black text-[#030405] tracking-tight mb-2">EKhum</span>
               <span className="text-[#34464B] text-[11px] xl:text-[13px] font-bold leading-snug">
                 Digital<br/>infrastructure<br/>for charities
@@ -174,32 +176,37 @@ export const PillarsSection: React.FC = () => {
 
           {/* Right Modules */}
           <div className="flex flex-col gap-6 xl:gap-10 col-start-3">
-            <ModuleCard pillar={pillars[1]} />
-            <ModuleCard pillar={pillars[3]} />
+            <ModuleCard pillar={pillars[1]} index={1} />
+            <ModuleCard pillar={pillars[3]} index={3} />
           </div>
 
         </div>
 
         {/* VERTICAL LAYOUT (MOBILE / TABLET) */}
-        <div className="flex flex-col lg:hidden relative items-center gap-8 py-4 flex-1 overflow-y-auto">
+        <div className="flex flex-col lg:hidden relative items-center gap-6 py-2 flex-1 overflow-y-auto w-full">
           
-          {/* Central Hub (Mobile) - Simplified */}
-          <div className="relative z-10 w-40 h-40 shrink-0 flex items-center justify-center mb-2">
-            <div className="absolute inset-0 rounded-full bg-white/95 backdrop-blur-sm border-2 border-[#FF5500] shadow-[0_0_30px_rgba(255,85,0,0.15)] flex flex-col items-center justify-center text-center p-4 z-20">
-              <span className="text-xl font-black text-[#030405] tracking-tight mb-1">EKhum</span>
-              <span className="text-[#34464B] text-[10px] font-bold leading-snug">
-                Digital<br/>infrastructure<br/>for charities
+          {/* Central Hub (Mobile) - Increased size and revolving */}
+          <div className="relative z-10 w-28 h-28 sm:w-36 sm:h-36 shrink-0 flex items-center justify-center mb-1 mt-2">
+            {/* Revolving Rings */}
+            <div className="absolute inset-0 rounded-full border-t-[2.5px] border-r-[2.5px] border-[#FF5500] animate-[spin_6s_linear_infinite] shadow-[0_0_10px_rgba(255,85,0,0.4)]"></div>
+            <div className="absolute inset-1.5 rounded-full border-b-[2px] border-l-[2px] border-[#FF5500]/70 animate-[spin_8s_linear_infinite_reverse]"></div>
+            <div className="absolute inset-3 rounded-full border border-dashed border-[#FF5500]/40 animate-[spin_12s_linear_infinite]"></div>
+
+            <div className="absolute inset-1 rounded-full bg-white/95 backdrop-blur-sm shadow-[0_0_30px_rgba(255,85,0,0.15)] flex flex-col items-center justify-center text-center p-2 sm:p-4 z-20">
+              <span className="text-[1.1rem] sm:text-2xl font-black text-[#030405] tracking-tight mb-0.5">EKhum</span>
+              <span className="text-[#34464B] text-[8px] sm:text-[11px] font-bold leading-snug hidden sm:block">
+                Digital<br/>infrastructure
               </span>
             </div>
           </div>
 
-          {/* Vertical Connecting Line */}
-          <div className="absolute top-48 bottom-0 left-1/2 -translate-x-1/2 w-0.5 bg-[#FF5500] z-0"></div>
-
-          {/* Modules List */}
+          {/* Modules List with full vertical line inside */}
           <div className="flex flex-col gap-5 w-full max-w-md relative z-10">
+            {/* Vertical Connecting Line spanning full container */}
+            <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[1.5px] sm:w-0.5 bg-[#FF5500] z-[-1]"></div>
+            
             {pillars.map((pillar, idx) => (
-              <ModuleCard key={idx} pillar={pillar} />
+              <ModuleCard key={idx} pillar={pillar} index={idx} />
             ))}
           </div>
 

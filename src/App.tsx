@@ -39,7 +39,7 @@ export const App: React.FC = () => {
       {/* Main Page Story Flow */}
       <main>
         {/* Page 1: Hero Section + Metrics Strip (Dedicated 100vh Screen) */}
-        <div className="min-h-screen lg:h-screen flex flex-col justify-between overflow-hidden">
+        <div className="flex flex-col h-[100dvh] lg:h-screen lg:min-h-[700px] justify-between overflow-hidden">
           <HeroSection 
             onOpenDemoModal={handleOpenDemo}
             onOpenStoryModal={handleOpenStory}

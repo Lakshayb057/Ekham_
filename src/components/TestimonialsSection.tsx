@@ -154,7 +154,7 @@ export const TestimonialsSection: React.FC = () => {
 
             {/* Thumb 3 */}
             <div className="relative group overflow-hidden bg-[#111] rounded-sm cursor-pointer">
-              <img src="https://images.unsplash.com/photo-1603833785160-b9df56d2baeb?auto=format&fit=crop&w=400&q=80" alt="Futures" className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=400&q=80" alt="Futures" className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
               <span className="absolute bottom-3 left-4 text-[11px] font-bold text-white leading-tight">
                 Brighter<br/>Futures
