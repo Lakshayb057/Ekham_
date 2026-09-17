@@ -42,7 +42,7 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
         {/* =========================================================================
             HEADER: CLEAN & EDITORIAL (ALL EXTRA TEXT REMOVED)
         ========================================================================== */}
-        <div className="text-left pb-2 sm:pb-3 border-b border-[#E8DFD3]/80 mb-1 sm:mb-2">
+        <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false, amount: 0.2 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} className="text-left pb-2 sm:pb-3 border-b border-[#E8DFD3]/80 mb-1 sm:mb-2">
           <span className="text-[10.5px] sm:text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#F4512A] block mb-1">
             OUR END-TO-END WORKFLOW
           </span>
@@ -52,7 +52,7 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
           <p className="text-[11.5px] sm:text-xs text-[#687176] max-w-2xl font-normal leading-tight">
             From campaign creation to lasting impact — everything works together, automatically.
           </p>
-        </div>
+        </motion.div>
 
         {/* =========================================================================
             3 STAGES WITH ENLARGED PHONE INTERFACES & CENTERED ALIGNMENT
@@ -60,7 +60,7 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-7 items-stretch my-2 sm:my-3 lg:my-4">
           
           {/* ---------------- STAGE 01: LAUNCH (PHONE 1) ---------------- */}
-          <div className="relative flex flex-col justify-between lg:border-r lg:border-[#E5DCD0]/80 lg:pr-7">
+          <motion.div initial={{ opacity: 0, x: -50, y: 0 }} whileInView={{ opacity: 1, x: 0, y: 0 }} viewport={{ once: false, amount: 0.1 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0 }} className="relative flex flex-col justify-between lg:border-r lg:border-[#E5DCD0]/80 lg:pr-7">
             <div className="flex flex-col h-full justify-between">
               <div>
                 <div className="flex items-center justify-between mb-1">
@@ -167,10 +167,10 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
               </div>
 
             </div>
-          </div>
+          </motion.div>
 
           {/* ---------------- STAGE 02: TRANSACT (PHONE 2) ---------------- */}
-          <div className="relative flex flex-col justify-between lg:border-r lg:border-[#E5DCD0]/80 lg:pr-7">
+          <motion.div initial={{ opacity: 0, x: 0, y: -50 }} whileInView={{ opacity: 1, x: 0, y: 0 }} viewport={{ once: false, amount: 0.1 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }} className="relative flex flex-col justify-between lg:border-r lg:border-[#E5DCD0]/80 lg:pr-7">
             <div className="flex flex-col h-full justify-between">
               <div>
                 <div className="flex items-center justify-between mb-1">
@@ -279,10 +279,10 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
               </div>
 
             </div>
-          </div>
+          </motion.div>
 
           {/* ---------------- STAGE 03: MULTIPLY (PHONE 3) ---------------- */}
-          <div className="relative flex flex-col justify-between">
+          <motion.div initial={{ opacity: 0, x: 50, y: 0 }} whileInView={{ opacity: 1, x: 0, y: 0 }} viewport={{ once: false, amount: 0.1 }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }} className="relative flex flex-col justify-between">
             <div className="flex flex-col h-full justify-between">
               <div>
                 <div className="flex items-center justify-between mb-1">
@@ -382,7 +382,7 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
               </div>
 
             </div>
-          </div>
+          </motion.div>
 
         </div>
 
