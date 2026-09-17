@@ -1,8 +1,48 @@
 import React from 'react';
 import { ShieldCheck, CheckCircle2, MousePointer2, FileText, CalendarDays, Bell, RefreshCw, Download, LayoutDashboard, Megaphone, Users, MessageSquare, Shield, Leaf, BarChart3 } from 'lucide-react';
 import { Logo } from './Logo';
+import { motion } from 'framer-motion';
 
 export const EcosystemSection: React.FC = () => {
+  const listVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemDropVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { type: "spring" as any, stiffness: 120, damping: 14 }
+    }
+  };
+
+  const badgeLeftVariants = {
+    hidden: { opacity: 0, x: 50, scale: 0.8 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      scale: 1,
+      transition: { type: "spring" as any, stiffness: 100, damping: 15 }
+    }
+  };
+
+  const badgeRightVariants = {
+    hidden: { opacity: 0, x: -50, scale: 0.8 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      scale: 1,
+      transition: { type: "spring" as any, stiffness: 100, damping: 15 }
+    }
+  };
+
   return (
     <section id="ecosystem" className="pt-12 sm:pt-16 bg-[#F8F9FA] relative overflow-hidden font-sans flex flex-col">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 w-full mb-10 sm:mb-16 flex-1">
@@ -93,7 +133,13 @@ export const EcosystemSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-4 pt-4 border-t border-green-100/50">
+            <motion.div 
+              className="mt-4 pt-4 border-t border-green-100/50"
+              variants={listVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, margin: "-50px" }}
+            >
               <div className="text-center w-full mb-3 text-[10px] font-bold text-green-600 tracking-widest uppercase">For Non-Profits</div>
               <ul className="space-y-2">
                 {[
@@ -101,13 +147,13 @@ export const EcosystemSection: React.FC = () => {
                   'Instant compliance setup',
                   'Create & manage campaigns'
                 ].map((text, i) => (
-                  <li key={i} className="flex items-start text-xs lg:text-sm text-gray-600 font-medium leading-tight">
+                  <motion.li variants={itemDropVariants} key={i} className="flex items-start text-xs lg:text-sm text-gray-600 font-medium leading-tight">
                     <CheckCircle2 className="w-4 h-4 text-green-500 mr-2 shrink-0 mt-0.5" />
                     {text}
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           </div>
 
           {/* Column 2: Donors */}
@@ -124,59 +170,65 @@ export const EcosystemSection: React.FC = () => {
 
             {/* Phone Mockup */}
             <div className="w-full flex-1 flex justify-center items-start sm:items-center py-2 sm:py-6 min-h-[240px] sm:min-h-[340px] relative">
-               <div className="w-full flex-1 flex justify-center items-center scale-[0.65] sm:scale-100 origin-top sm:origin-center mt-2 sm:mt-0">
+               <motion.div 
+                 className="w-full flex-1 flex justify-center items-center scale-[0.65] sm:scale-100 origin-top sm:origin-center mt-2 sm:mt-0"
+                 variants={listVariants}
+                 initial="hidden"
+                 whileInView="visible"
+                 viewport={{ once: false }}
+               >
                {/* Left Floating Badges */}
                <div className="absolute left-0 lg:-left-3 top-1/2 -translate-y-1/2 flex flex-col gap-5 z-10 w-[105px] sm:w-[125px]">
-                 <div className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
+                 <motion.div variants={badgeLeftVariants} className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
                    <div className="flex items-center gap-1.5 mb-0.5">
                      <MousePointer2 className="w-4 h-4 text-orange-500 shrink-0" />
                      <div className="text-[10px] font-black text-gray-800 leading-tight">Give in seconds</div>
                    </div>
                    <div className="text-[8px] font-medium text-gray-500 leading-tight">via UPI, Card or Net Banking</div>
-                 </div>
+                 </motion.div>
                  
-                 <div className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
+                 <motion.div variants={badgeLeftVariants} className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
                    <div className="flex items-center gap-1.5 mb-0.5">
                      <FileText className="w-4 h-4 text-orange-500 shrink-0" />
                      <div className="text-[10px] font-black text-gray-800 leading-tight">Get instant 80G receipt</div>
                    </div>
                    <div className="text-[8px] font-medium text-gray-500 leading-tight">on WhatsApp</div>
-                 </div>
+                 </motion.div>
 
-                 <div className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
+                 <motion.div variants={badgeLeftVariants} className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
                    <div className="flex items-center gap-1.5 mb-0.5">
                      <CalendarDays className="w-4 h-4 text-orange-500 shrink-0" />
                      <div className="text-[10px] font-black text-gray-800 leading-tight">Track all</div>
                    </div>
                    <div className="text-[8px] font-medium text-gray-500 leading-tight">your donations in one place</div>
-                 </div>
+                 </motion.div>
                </div>
 
                {/* Right Floating Badges */}
                <div className="absolute right-0 lg:-right-3 top-1/2 -translate-y-1/2 flex flex-col gap-5 z-10 w-[105px] sm:w-[125px]">
-                 <div className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
+                 <motion.div variants={badgeRightVariants} className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
                    <div className="flex items-center gap-1.5 mb-0.5">
                      <Bell className="w-4 h-4 text-orange-500 shrink-0" />
                      <div className="text-[10px] font-black text-gray-800 leading-tight">Receive</div>
                    </div>
                    <div className="text-[8px] font-medium text-gray-500 leading-tight">updates on real impact</div>
-                 </div>
+                 </motion.div>
                  
-                 <div className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
+                 <motion.div variants={badgeRightVariants} className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
                    <div className="flex items-center gap-1.5 mb-0.5">
                      <RefreshCw className="w-4 h-4 text-orange-500 shrink-0" />
                      <div className="text-[10px] font-black text-gray-800 leading-tight">Manage</div>
                    </div>
                    <div className="text-[8px] font-medium text-gray-500 leading-tight">recurring pledges easily</div>
-                 </div>
+                 </motion.div>
 
-                 <div className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
+                 <motion.div variants={badgeRightVariants} className="bg-white p-2.5 rounded-xl shadow-sm border border-orange-100 flex flex-col gap-1 items-start relative text-left">
                    <div className="flex items-center gap-1.5 mb-0.5">
                      <Download className="w-4 h-4 text-orange-500 shrink-0" />
                      <div className="text-[10px] font-black text-gray-800 leading-tight">Download</div>
                    </div>
                    <div className="text-[8px] font-medium text-gray-500 leading-tight">annual tax bundle (80G)</div>
-                 </div>
+                 </motion.div>
                </div>
 
                {/* The Phone */}
@@ -211,7 +263,7 @@ export const EcosystemSection: React.FC = () => {
                     </div>
                   </div>
                </div>
-               </div>
+               </motion.div>
             </div>
           </div>
 
@@ -299,7 +351,13 @@ export const EcosystemSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-4 pt-4 border-t border-blue-100/50">
+            <motion.div 
+              className="mt-4 pt-4 border-t border-blue-100/50"
+              variants={listVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, margin: "-50px" }}
+            >
                <div className="text-center w-full mb-3 text-[10px] font-bold text-blue-500 tracking-widest uppercase">For CSR Partners</div>
               <ul className="space-y-2">
                 {[
@@ -307,13 +365,13 @@ export const EcosystemSection: React.FC = () => {
                   'Utilization certificates & audit trails',
                   'ESG compliance data'
                 ].map((text, i) => (
-                  <li key={i} className="flex items-start text-xs lg:text-sm text-gray-600 font-medium leading-tight">
+                  <motion.li variants={itemDropVariants} key={i} className="flex items-start text-xs lg:text-sm text-gray-600 font-medium leading-tight">
                     <CheckCircle2 className="w-4 h-4 text-blue-500 mr-2 shrink-0 mt-0.5" />
                     {text}
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           </div>
 
         </div>

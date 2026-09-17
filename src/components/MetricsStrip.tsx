@@ -1,26 +1,35 @@
 import React from 'react';
 import { Building2, Heart, Users, FileCheck } from 'lucide-react';
+import CountUpModule from 'react-countup';
+
+const CountUp = (CountUpModule as any).default || CountUpModule;
 
 export const MetricsStrip: React.FC = () => {
   const metrics = [
     {
       icon: Building2,
-      value: '1,000+',
+      value: 1000,
+      suffix: '+',
       label: 'NGOs Empowered',
     },
     {
       icon: Heart,
-      value: '₹500Cr+',
+      prefix: '₹',
+      value: 500,
+      suffix: 'Cr+',
       label: 'Donations Processed',
     },
     {
       icon: Users,
-      value: '5M+',
+      value: 5,
+      suffix: 'M+',
       label: 'Donors Connected',
     },
     {
       icon: FileCheck,
-      value: '99.9%',
+      value: 99.9,
+      decimals: 1,
+      suffix: '%',
       label: 'Compliance Ready',
     },
   ];
@@ -51,7 +60,16 @@ export const MetricsStrip: React.FC = () => {
                 </div>
                 <div>
                   <div className="text-[14px] sm:text-3xl lg:text-[30px] font-bold sm:font-black text-white tracking-tight leading-none">
-                    {item.value}
+                    <CountUp
+                      start={0}
+                      end={item.value}
+                      duration={2.5}
+                      decimals={item.decimals || 0}
+                      prefix={item.prefix || ''}
+                      suffix={item.suffix || ''}
+                      enableScrollSpy={true}
+                      scrollSpyOnce={false}
+                    />
                   </div>
                   <div className="text-[8.5px] sm:text-[13px] text-gray-300 font-medium mt-0.5 whitespace-nowrap">
                     {item.label}

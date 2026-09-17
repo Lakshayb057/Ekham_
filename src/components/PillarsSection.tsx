@@ -6,6 +6,7 @@ import {
   BarChart3, 
   CheckCircle2
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export const PillarsSection: React.FC = () => {
   const pillars = [
@@ -66,13 +67,33 @@ export const PillarsSection: React.FC = () => {
   // Horizontal Module Card (Image on Right, No Border, Curved Left Edge)
   const ModuleCard = ({ pillar, index }: { pillar: any; index: number }) => {
     const Icon = pillar.icon;
-    // Alternate images left and right. 
-    // index 0, 2 (Left column on desktop) -> Image on Left
-    // index 1, 3 (Right column on desktop) -> Image on Right
     const imageOnLeft = index % 2 === 0;
 
+    // Determine animation origin relative to the center hub
+    // index 0: Top Left (needs to come from bottom right)
+    // index 1: Top Right (needs to come from bottom left)
+    // index 2: Bottom Left (needs to come from top right)
+    // index 3: Bottom Right (needs to come from top left)
+    const getOrigin = () => {
+      switch(index) {
+        case 0: return { x: 150, y: 100 };
+        case 1: return { x: -150, y: 100 };
+        case 2: return { x: 150, y: -100 };
+        case 3: return { x: -150, y: -100 };
+        default: return { x: 0, y: 0 };
+      }
+    };
+
+    const origin = getOrigin();
+
     return (
-      <div className={`flex ${imageOnLeft ? 'flex-row-reverse' : 'flex-row'} ${pillar.bgClass} rounded-2xl shadow-lg relative z-10 w-full h-[150px] sm:h-[170px] lg:h-[200px] overflow-hidden transition-transform hover:scale-[1.02] duration-300`}>
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.5, x: origin.x, y: origin.y }}
+        whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: index * 0.1 }}
+        className={`flex ${imageOnLeft ? 'flex-row-reverse' : 'flex-row'} ${pillar.bgClass} rounded-2xl shadow-lg relative z-10 w-full h-[150px] sm:h-[170px] lg:h-[200px] overflow-hidden transition-transform hover:scale-[1.02] duration-300`}
+      >
         {/* Content Area */}
         <div className="flex-1 flex flex-col p-4 lg:p-5 justify-between z-10">
           {/* Headline */}
@@ -121,7 +142,7 @@ export const PillarsSection: React.FC = () => {
             className="w-full h-full object-cover"
           />
         </div>
-      </div>
+      </motion.div>
     );
   };
 

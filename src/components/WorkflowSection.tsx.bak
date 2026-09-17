@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { 
   Megaphone, 
   Share2, 
@@ -319,20 +318,20 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
                   {/* Dashboard Screen */}
                   <div className="bg-[#14201A] rounded-xl p-3 text-left border border-[#273B30] text-white">
                     {/* Settlement Stat */}
-                    <div className="bg-white rounded-lg p-2 mb-2 border border-gray-200">
+                    <div className="bg-white/5 rounded-lg p-2 mb-2 border border-white/5">
                       <div className="flex items-center justify-between">
                         <span className="text-[7.5px] text-gray-400 uppercase font-bold tracking-wider">
                           Net Settled Donations
                         </span>
-                        <span className="text-[8px] font-bold text-[#F4512A]">+28.4% YoY</span>
+                        <span className="text-[8px] font-bold text-emerald-400">+28.4% YoY</span>
                       </div>
-                      <span className="text-[15px] font-black text-[#153D2B] tracking-tight block">
+                      <span className="text-[15px] font-black text-white tracking-tight block">
                         ₹48,20,500
                       </span>
                     </div>
 
                     {/* Volume Bar visualization */}
-                    <div className="flex items-end gap-1.5 h-6 bg-white p-1.5 rounded-md mb-2 border border-gray-200">
+                    <div className="flex items-end gap-1.5 h-6 bg-white/5 p-1.5 rounded-md mb-2">
                       <div className="w-1/6 bg-emerald-500/40 h-[40%] rounded-xs"></div>
                       <div className="w-1/6 bg-emerald-500/50 h-[65%] rounded-xs"></div>
                       <div className="w-1/6 bg-emerald-500/60 h-[50%] rounded-xs"></div>
@@ -394,10 +393,57 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
           {/* Roadmap Label Strip */}
           <div className="flex items-center justify-between text-[10.5px] font-extrabold uppercase tracking-wider text-[#687176] mb-1 px-1">
             <span>AUTOMATED GIVING ROADMAP (01 → 09)</span>
-            
+            <span className="text-[#F4512A]">Continuous 9-Step Pipeline</span>
           </div>
 
-          <RoadmapLoop timelineSteps={timelineSteps} />
+          <div className="overflow-x-auto pb-1 scrollbar-none">
+            <div className="flex items-center justify-between min-w-[980px] gap-1 relative px-1">
+              
+              {timelineSteps.map((step, idx) => {
+                const Icon = step.icon;
+                const isEven = idx % 2 === 1;
+
+                return (
+                  <React.Fragment key={idx}>
+                    {/* Step Milestone item */}
+                    <div className="flex flex-col items-center text-center flex-1 max-w-[102px] group hover:-translate-y-0.5 transition-transform">
+                      {/* Circle Icon Badge */}
+                      <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mb-1 shadow-xs transition-all ${
+                        isEven 
+                          ? 'bg-[#F4512A]/15 text-[#F4512A] border-2 border-[#F4512A]/35 group-hover:bg-[#F4512A] group-hover:text-white' 
+                          : 'bg-[#153D2B]/15 text-[#153D2B] border-2 border-[#153D2B]/35 group-hover:bg-[#153D2B] group-hover:text-white'
+                      }`}>
+                        <Icon className="w-4 h-4 stroke-[2.4]" />
+                      </div>
+
+                      {/* Step Number & Title */}
+                      <div className="flex items-center gap-1 justify-center">
+                        <span className="text-[9.5px] font-mono font-black text-gray-500">
+                          {step.num}
+                        </span>
+                        <h5 className="text-[10px] font-black text-[#102126] leading-tight truncate">
+                          {step.title}
+                        </h5>
+                      </div>
+
+                      {/* Brief description */}
+                      <p className="text-[8.5px] text-[#687176] leading-tight font-medium line-clamp-2 mt-0.5">
+                        {step.desc}
+                      </p>
+                    </div>
+
+                    {/* Dashed connector arrow between steps */}
+                    {idx < timelineSteps.length - 1 && (
+                      <div className="flex items-center justify-center text-[#B5ABA0] select-none flex-shrink-0 -mt-3">
+                        <span className="text-[10px] font-mono font-bold tracking-tighter opacity-90">- -›</span>
+                      </div>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+
+            </div>
+          </div>
 
           {/* Centered Pitch CTA Button (Extra fluff removed) */}
           <div className="flex items-center justify-center mt-1.5">
@@ -421,62 +467,3 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
 
 
 
-
-const RoadmapLoop: React.FC<{ timelineSteps: any[] }> = ({ timelineSteps }) => {
-  const [activeIndex, setActiveIndex] = React.useState(0);
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % timelineSteps.length);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [timelineSteps.length]);
-
-  return (
-    <div className="overflow-x-auto py-5 px-2 scrollbar-none">
-      <div className="flex items-center justify-between min-w-[980px] gap-1 relative px-1">
-        {timelineSteps.map((step, idx) => {
-          const Icon = step.icon;
-          const isEven = idx % 2 === 1;
-
-          return (
-            <React.Fragment key={idx}>
-              <div className="flex flex-col items-center text-center flex-1 max-w-[102px] group hover:-translate-y-0.5 transition-transform">
-                <motion.div 
-                  animate={{ 
-                    scale: idx === activeIndex ? 1.5 : 1, 
-                    boxShadow: idx === activeIndex ? '0 0 20px rgba(244,81,42,0.8)' : 'none' 
-                  }} 
-                  transition={{ duration: 0.4 }} 
-                  className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mb-1 shadow-xs transition-all ${
-                  isEven 
-                    ? 'bg-[#F4512A]/15 text-[#F4512A] border-2 border-[#F4512A]/35 group-hover:bg-[#F4512A] group-hover:text-white' 
-                    : 'bg-[#153D2B]/15 text-[#153D2B] border-2 border-[#153D2B]/35 group-hover:bg-[#153D2B] group-hover:text-white'
-                }`}>
-                  <Icon className="w-4 h-4 stroke-[2.4]" />
-                </motion.div>
-
-                <div className="flex items-center gap-1 justify-center">
-                  <span className="text-[9.5px] font-mono font-black text-gray-500">
-                    {step.num}
-                  </span>
-                  <h5 className="text-[10px] font-black text-[#102126] leading-tight truncate">
-                    {step.title}
-                  </h5>
-                </div>
-                <p className="text-[8.5px] text-[#687176] leading-tight font-medium line-clamp-2 mt-0.5">
-                  {step.desc}
-                </p>
-              </div>
-              {idx < timelineSteps.length - 1 && (
-                <div className="flex items-center justify-center text-[#B5ABA0] select-none flex-shrink-0 -mt-3">
-                  <span className="text-[10px] font-mono font-bold tracking-tighter opacity-90">- -›</span>
-                </div>
-              )}
-            </React.Fragment>
-          );
-        })}
-      </div>
-    </div>
-  );
-};

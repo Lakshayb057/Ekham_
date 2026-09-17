@@ -1,0 +1,12 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { 
+  ArrowRight, 
+  Minus,
+  X as XIcon,
+  FileText, 
+  Database, 
+  BarChart3, 
+  Unlink, 
+  TrendingDown
+} from 'lucide-react';

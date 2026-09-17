@@ -15,6 +15,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { BotanicalFlourish } from './BotanicalFlourish';
+import { motion } from 'framer-motion';
 
 interface DashboardShowcaseProps {
   onOpenDemoModal: () => void;
@@ -53,7 +54,13 @@ export const DashboardShowcase: React.FC<DashboardShowcaseProps> = ({ onOpenDemo
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-10 items-center">
           
           {/* Left Column: SaaS Dashboard Mockup */}
-          <div className="lg:col-span-8 order-2 lg:order-1">
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: false, margin: "-100px" }}
+            className="lg:col-span-8 order-2 lg:order-1"
+          >
             <div className="bg-[#111A15] p-2 sm:p-3 rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl border border-[#26372E]">
               
               {/* Dashboard Browser Frame */}
@@ -267,10 +274,16 @@ export const DashboardShowcase: React.FC<DashboardShowcaseProps> = ({ onOpenDemo
               </div>
 
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: Copy & CTA */}
-          <div className="lg:col-span-4 order-1 lg:order-2">
+          <motion.div 
+            initial={{ opacity: 0, x: -60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            viewport={{ once: false, margin: "-100px" }}
+            className="lg:col-span-4 order-1 lg:order-2"
+          >
             <div className="inline-flex items-center gap-2 mb-1.5 sm:mb-3">
               <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#EB5E28]">
                 BUILT FOR IMPACT
@@ -290,7 +303,7 @@ export const DashboardShowcase: React.FC<DashboardShowcaseProps> = ({ onOpenDemo
               <span>See the Platform</span>
               <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
             </button>
-          </div>
+          </motion.div>
 
         </div>
       </div>

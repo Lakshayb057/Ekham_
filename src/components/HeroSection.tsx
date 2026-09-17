@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Play, Check } from 'lucide-react';
 import { HeroImpactSlider } from './HeroImpactSlider';
+import { motion } from 'framer-motion';
 
 interface HeroSectionProps {
   onOpenDemoModal: () => void;
@@ -21,7 +22,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="w-full flex-grow flex flex-col lg:flex-row items-stretch min-h-[440px]">
         
         {/* Left Column (Content) */}
-        <div className="w-full lg:w-[47%] xl:w-[45%] flex flex-col justify-center px-4 sm:px-10 lg:pl-14 xl:pl-20 lg:pr-4 py-3 sm:py-8 lg:py-4 z-20 flex-shrink-0">
+        <motion.div 
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: false, amount: 0.1 }}
+          className="w-full lg:w-[47%] xl:w-[45%] flex flex-col justify-center px-4 sm:px-10 lg:pl-14 xl:pl-20 lg:pr-4 py-3 sm:py-8 lg:py-4 z-20 flex-shrink-0"
+        >
           
           {/* Eyebrow - Plain text only (no bullet dot) */}
           <div className="mb-2 sm:mb-3.5">
@@ -80,11 +87,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#2A724E]/12 flex items-center justify-center text-[#2A724E] flex-shrink-0">
                 <Check className="w-2 h-2 sm:w-2.5 sm:h-2.5 stroke-[3]" />
               </div>
-              <span>Built for Indian NGOs</span>
+              <span>Built for NGOs</span>
             </div>
           </div>
 
-        </div>
+        </motion.div>
 
         {/* Right Column: Full-bleed image touching navbar bottom and right edge without boundaries */}
         <div className="w-full lg:w-[54%] xl:w-[56%] relative flex-grow flex items-stretch z-10 overflow-hidden">
