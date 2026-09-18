@@ -15,7 +15,7 @@ export const StoryModal: React.FC<StoryModalProps> = ({ isOpen, onClose, onOpenD
   if (!isOpen) return null;
 
   const chapters = [
-    { title: '1. The Fragmentation', duration: '0:45', quote: 'Indian NGOs lose 40% of their operational bandwidth to repetitive paperwork.' },
+    { title: '1. The Fragmentation', duration: '0:45', quote: 'NGOs lose 40% of their operational bandwidth to repetitive paperwork.' },
     { title: '2. The Lost Donors', duration: '1:12', quote: 'Third-party aggregators held donor data captive, starving causes of repeat support.' },
     { title: '3. The EKhum Awakening', duration: '1:50', quote: 'One unified operating system: instant 80G, 1-click 10BD, and donor ownership.' },
     { title: '4. Impact at Scale', duration: '2:30', quote: 'Technology that multiplies human kindness across millions of lives.' },

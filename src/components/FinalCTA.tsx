@@ -33,7 +33,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onOpenDemoModal, onOpenConta
       <div className="absolute top-0 right-0 bottom-0 w-full lg:w-[60%] z-0 pointer-events-none">
         <img 
           src="/smiling_indian_girl_cta.png" 
-          alt="Smiling Indian Girl" 
+          alt="Smiling Girl" 
           className="w-full h-full object-cover object-center contrast-125 brightness-110"
         />
         {/* Gradient to seamlessly blend the edge of the image into the solid dark background */}
@@ -62,7 +62,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onOpenDemoModal, onOpenConta
 
           {/* Main Heading */}
           <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl lg:text-5xl xl:text-5xl font-black text-white leading-[1.05] tracking-tight mb-3 lg:pr-20">
-            A Kinder, Stronger India<br />
+            A Kinder, Stronger Future<br />
             Starts with <span className="text-[#EB5E28]">Connected Giving.</span>
           </motion.h2>
 

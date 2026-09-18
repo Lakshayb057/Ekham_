@@ -58,7 +58,7 @@ export const HeroImpactSlider: React.FC = () => {
           {/* Childhood girl with chin on hands looking up */}
           <img
             src="/hero-before.jpg"
-            alt="Young Indian girl before support looking upward with hope"
+            alt="Young girl before support looking upward with hope"
             className="w-full h-full object-cover object-[center_28%]"
           />
 
@@ -92,7 +92,7 @@ export const HeroImpactSlider: React.FC = () => {
           {/* Graduate Image: Head/cap touches top near navbar, touches right corner */}
           <img
             src="/hero-after.jpg"
-            alt="Young Indian woman university graduate with academic cap and gown"
+            alt="Young woman university graduate with academic cap and gown"
             className="w-full h-full object-cover object-[center_6%]"
           />
 

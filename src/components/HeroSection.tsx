@@ -33,7 +33,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Eyebrow - Plain text only (no bullet dot) */}
           <div className="mb-2 sm:mb-3.5">
             <span className="text-[10px] sm:text-xs font-bold tracking-[0.2em] text-[#EB5E28] uppercase">
-              A KINDER. STRONGER. BRIGHTER INDIA.
+              A KINDER. STRONGER. BRIGHTER FUTURE.
             </span>
           </div>
 

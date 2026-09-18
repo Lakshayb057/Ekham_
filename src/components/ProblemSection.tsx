@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { 
   ArrowRight, 
   Minus,
@@ -113,7 +114,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
               THE PROBLEM
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-[2.25rem] xl:text-[2.45rem] font-black text-[#102126] tracking-[-0.035em] leading-[1.08] mb-2.5">
-              Indian Charities<br />
+              Charities<br />
               Deserve <span className="text-[#F4512A]">Better.</span>
             </h2>
             <p className="text-xs sm:text-[13px] text-[#687176] leading-relaxed max-w-sm mb-3.5 font-normal">
@@ -130,12 +131,29 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
 
           {/* Right Column: 4 Problem Cards in a horizontal row */}
           <div className="lg:col-span-8 xl:col-span-8">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-3.5">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.1 }}
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.25
+                  }
+                }
+              }}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-3.5"
+            >
               {problems.map((card, idx) => {
                 const Icon = card.icon;
                 return (
-                  <div
+                  <motion.div
                     key={idx}
+                    variants={{
+                      hidden: { opacity: 0, x: 0, y: -25 },
+                      visible: { opacity: 1, x: 0, y: 0, transition: { type: 'spring', stiffness: 70, damping: 15 } }
+                    }}
                     className="bg-[#F1EEE7] hover:bg-[#EAE4DC] rounded-2xl p-3.5 sm:p-4 flex flex-col justify-start border border-[#E2DAD0] shadow-2xs hover:shadow-xs hover:-translate-y-0.5 transition-all duration-200 min-h-[110px] sm:min-h-[120px]"
                   >
                     {/* Orange Circle Icon Badge */}
@@ -150,10 +168,10 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
                     <p className="text-[11px] text-[#687176] leading-snug font-normal">
                       {card.description}
                     </p>
-                  </div>
+                  </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
           </div>
 
         </div>
@@ -182,7 +200,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
           {/* Main Comparison Layout: DESKTOP (Horizontal) */}
           <div className="hidden lg:grid grid-cols-[1fr_auto_1.15fr] items-center gap-4 mb-5">
             {/* ---------------- LEFT PANEL: TRADITIONAL OPERATIONS ---------------- */}
-            <div className="bg-[#F1EEE7] border border-[#E2DAD0] rounded-3xl p-5 relative flex flex-col justify-center h-full min-h-[185px]">
+            <motion.div initial={{ opacity: 0, x: -60 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false, amount: 0.3 }} transition={{ duration: 0.6 }} className="bg-[#F1EEE7] border border-[#E2DAD0] rounded-3xl p-5 relative flex flex-col justify-center h-full min-h-[185px]">
               <div>
                 <div className="mb-3.5 flex justify-between items-start gap-2">
                   <div>
@@ -203,7 +221,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
                     const Icon = node.icon;
                     return (
                       <React.Fragment key={idx}>
-                        <div className="flex flex-col items-center flex-shrink-0">
+                        <motion.div initial={{ opacity: 0.25 }} whileInView={{ opacity: 1 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: (idx * 0.8) + 0.8 }} className="flex flex-col items-center flex-shrink-0">
                           <div className="w-[58px] xl:w-[64px] h-[60px] xl:h-[66px] bg-white rounded-xl border border-[#E0D8CC] shadow-2xs flex flex-col items-center justify-center p-1 text-center">
                             <Icon className="w-4 h-4 text-[#55605A] stroke-[1.8] mb-0.5" />
                             <span className="text-[9px] font-bold text-[#102126] leading-tight text-center whitespace-pre-line">
@@ -217,7 +235,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
                               <Minus className="w-2 h-2 stroke-[3]" />
                             )}
                           </div>
-                        </div>
+                        </motion.div>
                         {idx < traditionalNodes.length - 1 && (
                           <div className="flex items-center justify-center text-[#B0A79C] select-none px-1 flex-shrink-0">
                             <span className="text-[10px] font-mono tracking-tighter opacity-80">- -&#10140;</span>
@@ -228,7 +246,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
                   })}
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* ---------------- CENTER COMPARISON INDICATOR ---------------- */}
             <div className="flex flex-col items-center justify-center px-2 flex-shrink-0 self-center">
@@ -238,7 +256,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
             </div>
 
             {/* ---------------- RIGHT PANEL: WITH EKHUM ---------------- */}
-            <div className="bg-[#153D2B] border border-[#1F543C] rounded-3xl p-5 relative shadow-md flex flex-col justify-center h-full min-h-[185px] overflow-hidden">
+            <motion.div initial={{ opacity: 0, x: 60 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false, amount: 0.3 }} transition={{ duration: 0.6 }} className="bg-[#153D2B] border border-[#1F543C] rounded-3xl p-5 relative shadow-md flex flex-col justify-center h-full min-h-[185px] overflow-hidden">
               <div className="absolute top-0 right-1/4 w-48 h-12 bg-[#F4512A]/15 blur-xl pointer-events-none rounded-full"></div>
               <div className="relative z-10">
                 <div className="mb-3.5 flex justify-between items-start gap-2">
@@ -260,14 +278,14 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
                     const Icon = node.icon;
                     return (
                       <React.Fragment key={idx}>
-                        <div className="flex flex-col items-center flex-shrink-0">
+                        <motion.div initial={{ opacity: 0.25 }} whileInView={{ opacity: 1 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: (idx * 0.8) + 1.2 }} className="flex flex-col items-center flex-shrink-0">
                           <div className="w-[50px] xl:w-[56px] h-[54px] xl:h-[60px] bg-white rounded-xl shadow-xs border border-white flex flex-col items-center justify-center p-0.5 text-center group hover:scale-105 transition-transform">
                             <Icon className="w-4 h-4 text-[#F4512A] stroke-[2.2] mb-0.5" />
                             <span className="text-[8.5px] font-bold text-[#102126] leading-tight text-center">
                               {node.label}
                             </span>
                           </div>
-                        </div>
+                        </motion.div>
                         {idx < ekhumNodes.length - 1 && (
                           <div className="flex items-center justify-center text-white/60 select-none px-0.5 flex-shrink-0">
                             <span className="text-[11px] font-bold text-white/70">&#8594;</span>
@@ -307,14 +325,14 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Main Comparison Layout: MOBILE (Vertical Side-by-side) */}
           <div className="grid lg:hidden grid-cols-[1fr_auto_1fr] items-stretch gap-1.5 sm:gap-4 mb-4 sm:mb-5">
             
             {/* ---------------- LEFT PANEL: TRADITIONAL OPERATIONS ---------------- */}
-            <div className="bg-[#F1EEE7] border border-[#E2DAD0] rounded-xl sm:rounded-3xl p-3 sm:p-4.5 relative flex flex-col justify-start h-full min-h-[170px]">
+            <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false, amount: 0.1 }} transition={{ duration: 0.5 }} className="bg-[#F1EEE7] border border-[#E2DAD0] rounded-xl sm:rounded-3xl p-3 sm:p-4.5 relative flex flex-col justify-start h-full min-h-[170px]">
               <div>
                 <div className="mb-2 sm:mb-3.5 flex flex-col sm:flex-row justify-between items-start gap-1 sm:gap-2">
                   <div>
@@ -338,7 +356,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
                   {traditionalNodes.map((node, idx) => {
                     const Icon = node.icon;
                     return (
-                      <div key={idx} className="flex items-center gap-2.5 sm:gap-6 mb-3 sm:mb-6 last:mb-0 relative z-10">
+                      <motion.div key={idx} initial={{ opacity: 0.25 }} whileInView={{ opacity: 1 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: (idx * 0.8) + 0.8 }} className="flex items-center gap-2.5 sm:gap-6 mb-3 sm:mb-6 last:mb-0 relative z-10">
                         <div className="relative flex-shrink-0">
                           {/* White Rounded Card */}
                           <div className="w-8 h-8 sm:w-[60px] sm:h-[60px] bg-white rounded-lg sm:rounded-2xl border border-[#E0D8CC] shadow-sm flex items-center justify-center text-center relative z-10">
@@ -357,12 +375,12 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
                         <span className="text-[9.5px] sm:text-[15px] font-bold text-[#102126] leading-tight">
                           {node.label.replace('\n', ' ')}
                         </span>
-                      </div>
+                      </motion.div>
                     );
                   })}
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* ---------------- CENTER COMPARISON INDICATOR ---------------- */}
             <div className="flex flex-col items-center justify-center px-0.5 sm:px-2 flex-shrink-0 self-center">
@@ -372,7 +390,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
             </div>
 
             {/* ---------------- RIGHT PANEL: WITH EKHUM ---------------- */}
-            <div className="bg-[#153D2B] border border-[#1F543C] rounded-xl sm:rounded-3xl p-3 sm:p-4.5 relative shadow-md flex flex-col justify-start h-full min-h-[170px] overflow-hidden">
+            <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: false, amount: 0.1 }} transition={{ duration: 0.5 }} className="bg-[#153D2B] border border-[#1F543C] rounded-xl sm:rounded-3xl p-3 sm:p-4.5 relative shadow-md flex flex-col justify-start h-full min-h-[170px] overflow-hidden">
               <div className="absolute top-0 right-1/4 w-32 sm:w-48 h-12 bg-[#F4512A]/15 blur-xl pointer-events-none rounded-full"></div>
 
               <div className="relative z-10">
@@ -424,7 +442,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
                     {ekhumNodes.map((node, idx) => {
                       const Icon = node.icon;
                       return (
-                        <div key={idx} className="flex items-center gap-2 sm:gap-4 mb-2 sm:mb-4 last:mb-0 relative z-10 group cursor-default">
+                        <motion.div key={idx} initial={{ opacity: 0.25 }} whileInView={{ opacity: 1 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: (idx * 0.8) + 1.2 }} className="flex items-center gap-2 sm:gap-4 mb-2 sm:mb-4 last:mb-0 relative z-10 group cursor-default">
                           
                           {/* Horizontal Branch from Trunk to Node */}
                           <div className="absolute left-[-8px] sm:left-[-16px] top-1/2 -translate-y-1/2 w-2 sm:w-4 h-[2px] bg-[#F4512A] opacity-50 z-0 group-hover:opacity-100 transition-opacity"></div>
@@ -440,13 +458,13 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
                           <span className="text-[9px] sm:text-[14px] font-bold text-white leading-tight group-hover:text-[#F4512A] transition-colors">
                             {node.label.replace('\n', ' ')}
                           </span>
-                        </div>
+                        </motion.div>
                       );
                     })}
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
           </div>
 

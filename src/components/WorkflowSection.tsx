@@ -146,24 +146,24 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
 
               {/* 3 Step Highlights */}
               <div className="mt-2 space-y-1 text-left">
-                <div className="flex items-start gap-1.5">
+                <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: 1.0 }} className="flex items-start gap-1.5">
                   <span className="text-[10px] font-black text-[#153D2B]">01</span>
                   <p className="text-[10.5px] text-[#102126] font-medium leading-tight">
                     <strong>Portal:</strong> Secure KYC onboarding & roles
                   </p>
-                </div>
-                <div className="flex items-start gap-1.5">
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: 1.2 }} className="flex items-start gap-1.5">
                   <span className="text-[10px] font-black text-[#F4512A]">02</span>
                   <p className="text-[10.5px] text-[#102126] font-medium leading-tight">
                     <strong>Creation:</strong> Custom goal bars & ask ladders
                   </p>
-                </div>
-                <div className="flex items-start gap-1.5">
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: 1.4 }} className="flex items-start gap-1.5">
                   <span className="text-[10px] font-black text-[#153D2B]">03</span>
                   <p className="text-[10.5px] text-[#102126] font-medium leading-tight">
                     <strong>Connection:</strong> Universal widget & WhatsApp
                   </p>
-                </div>
+                </motion.div>
               </div>
 
             </div>
@@ -258,24 +258,24 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
 
               {/* 3 Step Highlights */}
               <div className="mt-2 space-y-1 text-left">
-                <div className="flex items-start gap-1.5">
+                <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: 1.1 }} className="flex items-start gap-1.5">
                   <span className="text-[10px] font-black text-[#F4512A]">04</span>
                   <p className="text-[10.5px] text-[#102126] font-medium leading-tight">
                     <strong>Donations & 80G:</strong> Instant WhatsApp 80G in &lt;3s
                   </p>
-                </div>
-                <div className="flex items-start gap-1.5">
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: 1.3 }} className="flex items-start gap-1.5">
                   <span className="text-[10px] font-black text-[#153D2B]">05</span>
                   <p className="text-[10.5px] text-[#102126] font-medium leading-tight">
                     <strong>Segmentation:</strong> Live tiers & tax classifications
                   </p>
-                </div>
-                <div className="flex items-start gap-1.5">
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: 1.5 }} className="flex items-start gap-1.5">
                   <span className="text-[10px] font-black text-[#F4512A]">06</span>
                   <p className="text-[10.5px] text-[#102126] font-medium leading-tight">
                     <strong>Journeys:</strong> Automated engagement communication
                   </p>
-                </div>
+                </motion.div>
               </div>
 
             </div>
@@ -361,24 +361,24 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
 
               {/* 3 Step Highlights */}
               <div className="mt-2 space-y-1 text-left">
-                <div className="flex items-start gap-1.5">
+                <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: 1.2 }} className="flex items-start gap-1.5">
                   <span className="text-[10px] font-black text-[#153D2B]">07</span>
                   <p className="text-[10.5px] text-[#102126] font-medium leading-tight">
                     <strong>Tracking:</strong> Live gross volume & health
                   </p>
-                </div>
-                <div className="flex items-start gap-1.5">
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: 1.4 }} className="flex items-start gap-1.5">
                   <span className="text-[10px] font-black text-[#F4512A]">08</span>
                   <p className="text-[10.5px] text-[#102126] font-medium leading-tight">
                     <strong>Reporting:</strong> 1-click Form 10BD export
                   </p>
-                </div>
-                <div className="flex items-start gap-1.5">
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.8 }} transition={{ duration: 0.4, delay: 1.6 }} className="flex items-start gap-1.5">
                   <span className="text-[10px] font-black text-[#153D2B]">09</span>
                   <p className="text-[10.5px] text-[#102126] font-medium leading-tight">
                     <strong>AI Engine:</strong> Lapsed donor risk & upgrades
                   </p>
-                </div>
+                </motion.div>
               </div>
 
             </div>
@@ -464,9 +464,15 @@ const RoadmapLoop: React.FC<{ timelineSteps: any[] }> = ({ timelineSteps }) => {
                     {step.title}
                   </h5>
                 </div>
-                <p className="text-[8.5px] text-[#687176] leading-tight font-medium line-clamp-2 mt-0.5">
+                <motion.p
+                  initial={{ opacity: 0, y: -10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.1 }}
+                  transition={{ duration: 0.4, delay: 1 }}
+                  className="text-[8.5px] text-[#687176] leading-tight font-medium line-clamp-2 mt-0.5"
+                >
                   {step.desc}
-                </p>
+                </motion.p>
               </div>
               {idx < timelineSteps.length - 1 && (
                 <div className="flex items-center justify-center text-[#B5ABA0] select-none flex-shrink-0 -mt-3">
