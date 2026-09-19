@@ -66,7 +66,7 @@ export const HeroImpactSlider: React.FC = () => {
             className="w-full h-full object-cover object-[center_6%]"
           />
           {/* Enhancement overlay for better contrast and text legibility */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/50 pointer-events-none"></div>
 
           {/* Right Handwritten Script: "To a brighter tomorrow" with orange underline */}
           <div className="absolute top-6 sm:top-9 right-6 sm:right-10 text-right z-10 pointer-events-none">

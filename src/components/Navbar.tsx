@@ -40,7 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenDemoModal }) => {
   return (
     <>
       <header 
-        className={`fixed top-0 left-0 right-0 z-50 bg-[#FAF8F5] py-3 transition-all duration-200 ${
+        className={`fixed top-0 left-0 right-0 z-50 bg-[#FAF8F5] py-2 lg:py-2 transition-all duration-200 ${
           isScrolled ? 'border-b border-[#E8E2D8]/70 shadow-xs' : 'border-b-0 shadow-none'
         }`}
       >

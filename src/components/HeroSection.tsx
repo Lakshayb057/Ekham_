@@ -13,7 +13,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenStoryModal 
 }) => {
   return (
-    <section id="hero" className="relative pt-[80px] lg:pt-[100px] pb-0 overflow-hidden bg-[#FAF8F5] flex-grow flex flex-col justify-center">
+    <section id="hero" className="relative pt-[48px] lg:pt-[48px] pb-0 overflow-hidden bg-[#FAF8F5] flex-grow flex flex-col justify-center">
       
       {/* Decorative Organic Muted Green Leaf on Bottom-Left Margin */}
       <div className="absolute bottom-2 left-0 w-24 sm:w-32 h-36 sm:h-44 bg-[#9AA99B]/30 rounded-[40%_60%_30%_70%/60%_30%_70%_40%] pointer-events-none transform -rotate-12 -translate-x-6 z-0"></div>
@@ -27,7 +27,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: false, amount: 0.1 }}
-          className="w-full lg:w-[47%] xl:w-[45%] flex flex-col justify-center px-4 sm:px-10 lg:pl-14 xl:pl-20 lg:pr-4 py-3 sm:py-8 lg:py-4 z-20 flex-shrink-0"
+          className="w-full lg:w-[47%] xl:w-[45%] flex flex-col justify-center px-4 sm:px-10 lg:pl-14 xl:pl-20 lg:pr-4 pt-4 sm:pt-8 lg:pt-12 pb-3 sm:pb-8 lg:pb-4 z-20 flex-shrink-0"
         >
           
           {/* Eyebrow - Plain text only (no bullet dot) */}

@@ -145,7 +145,7 @@ export const PillarsSection: React.FC = () => {
             <h2 className="text-xl lg:text-[2rem] font-black text-[#FFFFFF] tracking-[-0.035em] leading-[1.05] mb-2">
               Four Core Solution Pillars
             </h2>
-            <p className="text-[#AAB7BA] text-xs sm:text-sm lg:text-[15px] font-medium max-w-2xl">
+            <p className="text-[#AAB7BA] text-xs sm:text-sm lg:text-[15px] font-medium max-w-3xl">
               Everything you need to fundraise, engage, comply and grow - in one platform
             </p>
           </div>

@@ -56,8 +56,8 @@ export const EcosystemSection: React.FC = () => {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 leading-tight tracking-tight mb-2 flex flex-wrap gap-2">
               <span>Different Roles.</span> <span className="text-[#F4512A]">One Connected Experience.</span>
             </h2>
-            <p className="text-gray-500 font-medium text-sm lg:text-[15px] leading-relaxed">
-              EKhum brings NGOs, donors and CSR partners together on a single platform — so every contribution creates greater, measurable impact.
+            <p className="text-gray-500 font-medium text-sm lg:text-[15px] leading-relaxed max-w-[800px]">
+              EKhum brings NGOs, donors and CSR partners together on a single platform — so every contribution creates <span className="whitespace-nowrap">greater, measurable impact.</span>
             </p>
           </div>
         </div>

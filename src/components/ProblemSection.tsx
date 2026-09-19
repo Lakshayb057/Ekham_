@@ -192,8 +192,8 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
             <h2 className="text-2xl sm:text-3xl lg:text-[1.95rem] font-black text-[#102126] tracking-[-0.035em] leading-[1.12] mb-1.5">
               From Fragmented Tools to One <span className="text-[#F4512A]">Connected Platform.</span>
             </h2>
-            <p className="text-xs sm:text-[13px] text-[#687176] max-w-2xl leading-normal font-normal">
-              EKhum connects fundraising, donations, donors, compliance, engagement, and analytics in one intelligent platform.
+            <p className="text-xs sm:text-[13px] text-[#687176] max-w-3xl leading-normal font-normal">
+              EKhum connects fundraising, donations, donors, compliance, engagement, and analytics in one <span className="whitespace-nowrap">intelligent platform.</span>
             </p>
           </div>
 

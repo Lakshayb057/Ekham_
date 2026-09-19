@@ -67,8 +67,6 @@ export const MetricsStrip: React.FC = () => {
                       decimals={item.decimals || 0}
                       prefix={item.prefix || ''}
                       suffix={item.suffix || ''}
-                      enableScrollSpy={true}
-                      scrollSpyOnce={false}
                     />
                   </div>
                   <div className="text-[8.5px] sm:text-[13px] text-gray-300 font-medium mt-0.5 whitespace-nowrap">

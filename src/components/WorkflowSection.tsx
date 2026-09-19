@@ -49,7 +49,7 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ onOpenDemoModa
           <h2 className="text-2xl sm:text-3xl lg:text-[2.15rem] font-black text-[#102126] tracking-[-0.035em] leading-[1.08] mb-1">
             One Donation. <span className="text-[#F4512A]">Nine Connected Moments.</span>
           </h2>
-          <p className="text-[11.5px] sm:text-xs text-[#687176] max-w-2xl font-normal leading-tight">
+          <p className="text-[11.5px] sm:text-xs text-[#687176] max-w-3xl font-normal leading-tight">
             From campaign creation to lasting impact — everything works together, automatically.
           </p>
         </motion.div>

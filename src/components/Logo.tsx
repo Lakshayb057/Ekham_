@@ -14,9 +14,9 @@ export const Logo: React.FC<LogoProps> = ({
   const isDark = variant === 'dark';
   
   return (
-    <div className={`flex items-center gap-2.5 select-none ${className}`}>
-      {/* Revolving 8-Spoke Asterisk / Starburst Mark from Official EKhum Logo */}
-      <div className="relative w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center flex-shrink-0">
+    <div className={`relative grid grid-cols-[auto_1fr] gap-x-2 sm:gap-x-2.5 items-center select-none ${className}`}>
+      {/* Revolving 8-Spoke Asterisk / Starburst Mark */}
+      <div className="row-start-1 col-start-1 relative w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 flex items-center justify-center lg:translate-y-[1.5px]">
         <svg 
           viewBox="0 0 36 36" 
           fill="none" 
@@ -36,14 +36,15 @@ export const Logo: React.FC<LogoProps> = ({
         </svg>
       </div>
 
-      {/* Wordmark */}
-      <div className="flex flex-col">
-        <div className="flex items-center tracking-tight font-extrabold text-xl leading-none">
+      {/* Wordmark and Tagline */}
+      <div className="row-start-1 col-start-2 relative flex flex-col justify-center">
+        <div className="flex items-center tracking-tight font-extrabold text-[1.1rem] sm:text-xl lg:text-[1.35rem] leading-none">
           <span className={isDark ? "text-[#1C2421]" : "text-white"}>EK</span>
           <span className="text-[#EB5E28]">hum</span>
         </div>
+        {/* Tagline - Absolutely positioned directly under the text */}
         {showTagline && (
-          <span className={`text-[9px] tracking-wide font-medium mt-0.5 hidden sm:block ${isDark ? "text-[#6A756F]" : "text-gray-300"}`}>
+          <span className={`absolute top-[92%] left-[2px] text-[8px] sm:text-[9px] tracking-wide font-medium hidden sm:block whitespace-nowrap ${isDark ? "text-[#6A756F]" : "text-gray-300"}`}>
             Technology for a kinder tomorrow
           </span>
         )}
