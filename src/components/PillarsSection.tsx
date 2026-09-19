@@ -69,33 +69,12 @@ export const PillarsSection: React.FC = () => {
     const Icon = pillar.icon;
     const imageOnLeft = index % 2 === 0;
 
-    const [isMobile, setIsMobile] = React.useState(typeof window !== 'undefined' ? window.innerWidth < 1024 : false);
-    React.useEffect(() => {
-      const handleResize = () => setIsMobile(window.innerWidth < 1024);
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    const getOrigin = () => {
-      if (isMobile) {
-        return { x: 0, y: -100 - (index * 40) };
-      }
-      switch(index) {
-        case 0: return { x: 200, y: 150 };
-        case 1: return { x: -200, y: 150 };
-        case 2: return { x: 200, y: -150 };
-        case 3: return { x: -200, y: -150 };
-        default: return { x: 0, y: 0 };
-      }
-    };
-    const origin = getOrigin();
-
     return (
       <motion.div 
-        initial={{ opacity: 0, scale: 0.3, x: origin.x, y: origin.y }}
-        whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false, amount: 0.1 }}
-        transition={{ duration: 0.8, type: 'spring', stiffness: 50, damping: 14, delay: index * 0.1 }}
+        transition={{ duration: 0.8, ease: "easeOut" as any, delay: index * 0.1 }}
         className={`flex ${imageOnLeft ? 'flex-row-reverse' : 'flex-row'} ${pillar.bgClass} rounded-2xl shadow-lg relative z-10 w-full h-[150px] sm:h-[170px] lg:h-[200px] overflow-hidden transition-transform hover:scale-[1.02] duration-300`}
       >
         {/* Content Area */}
@@ -185,7 +164,13 @@ export const PillarsSection: React.FC = () => {
           </div>
 
           {/* Central Hub - Desktop */}
-          <div className="col-start-2 place-self-center relative z-10 w-[200px] h-[200px] xl:w-[240px] xl:h-[240px] shrink-0 flex items-center justify-center">
+          <motion.div 
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 0.8, ease: "easeOut" as any }}
+            className="col-start-2 place-self-center relative z-10 w-[200px] h-[200px] xl:w-[240px] xl:h-[240px] shrink-0 flex items-center justify-center"
+          >
             {/* Revolving Rings */}
             <div className="absolute inset-0 rounded-full border-t-[3px] border-r-[3px] border-[#FF5500] animate-[spin_6s_linear_infinite] shadow-[0_0_15px_rgba(255,85,0,0.5)]"></div>
             <div className="absolute inset-2 rounded-full border-b-[3px] border-l-[3px] border-[#FF5500]/70 animate-[spin_8s_linear_infinite_reverse]"></div>
@@ -197,7 +182,7 @@ export const PillarsSection: React.FC = () => {
                 Digital<br/>infrastructure<br/>for charities
               </span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Modules */}
           <div className="flex flex-col gap-6 xl:gap-10 col-start-3">
@@ -211,7 +196,13 @@ export const PillarsSection: React.FC = () => {
         <div className="flex flex-col lg:hidden relative items-center gap-6 py-2 flex-1 overflow-y-auto w-full">
           
           {/* Central Hub (Mobile) - Increased size and revolving */}
-          <div className="relative z-10 w-28 h-28 sm:w-36 sm:h-36 shrink-0 flex items-center justify-center mb-1 mt-2">
+          <motion.div 
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 0.8, ease: "easeOut" as any }}
+            className="relative z-10 w-28 h-28 sm:w-36 sm:h-36 shrink-0 flex items-center justify-center mb-1 mt-2"
+          >
             {/* Revolving Rings */}
             <div className="absolute inset-0 rounded-full border-t-[2.5px] border-r-[2.5px] border-[#FF5500] animate-[spin_6s_linear_infinite] shadow-[0_0_10px_rgba(255,85,0,0.4)]"></div>
             <div className="absolute inset-1.5 rounded-full border-b-[2px] border-l-[2px] border-[#FF5500]/70 animate-[spin_8s_linear_infinite_reverse]"></div>
@@ -223,7 +214,7 @@ export const PillarsSection: React.FC = () => {
                 Digital<br/>infrastructure
               </span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Modules List with full vertical line inside */}
           <div className="flex flex-col gap-5 w-full max-w-md relative z-10">

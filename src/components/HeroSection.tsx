@@ -13,7 +13,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenStoryModal 
 }) => {
   return (
-    <section id="hero" className="relative pt-[60px] pb-0 overflow-hidden bg-[#FAF8F5] flex-grow flex flex-col justify-center">
+    <section id="hero" className="relative pt-[80px] lg:pt-[100px] pb-0 overflow-hidden bg-[#FAF8F5] flex-grow flex flex-col justify-center">
       
       {/* Decorative Organic Muted Green Leaf on Bottom-Left Margin */}
       <div className="absolute bottom-2 left-0 w-24 sm:w-32 h-36 sm:h-44 bg-[#9AA99B]/30 rounded-[40%_60%_30%_70%/60%_30%_70%_40%] pointer-events-none transform -rotate-12 -translate-x-6 z-0"></div>

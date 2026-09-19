@@ -30,7 +30,7 @@ export const App: React.FC = () => {
   const handleCloseLogin = () => setLoginModalOpen(false);
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#1C2421] font-sans selection:bg-[#EB5E28]/20 selection:text-[#EB5E28] relative">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#1C2421] font-sans selection:bg-[#EB5E28]/20 selection:text-[#EB5E28] relative overflow-x-hidden">
       {/* Sticky Navigation Bar */}
       <Navbar 
         onOpenDemoModal={handleOpenDemo}

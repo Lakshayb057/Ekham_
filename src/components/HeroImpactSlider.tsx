@@ -1,58 +1,26 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export const HeroImpactSlider: React.FC = () => {
-  const [sliderPos, setSliderPos] = useState<number>(50); // percentage 0 to 100
-  const [isDragging, setIsDragging] = useState<boolean>(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const handleMove = useCallback((clientX: number) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const percentage = Math.max(8, Math.min(92, (x / rect.width) * 100));
-    setSliderPos(percentage);
-  }, []);
-
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    handleMove(e.touches[0].clientX);
-  }, [handleMove]);
-
-  const handleMouseDown = () => setIsDragging(true);
-  const handleMouseUp = useCallback(() => setIsDragging(false), []);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!isDragging) return;
-    handleMove(e.clientX);
-  }, [isDragging, handleMove]);
-
-  useEffect(() => {
-    const onWindowMouseUp = () => setIsDragging(false);
-    window.addEventListener('mouseup', onWindowMouseUp);
-    return () => window.removeEventListener('mouseup', onWindowMouseUp);
-  }, []);
-
   return (
     <div className="relative w-full h-full select-none flex items-stretch">
       
       {/* Main Container:
           - No boundary, no card border
           - Reaches to top and right edges
-          - Soft feather on left edge so image blends seamlessly into the cream text area
+          - Smooth gradient blend on the left edge instead of mask-image
       */}
-      <div
-        ref={containerRef}
-        onMouseMove={handleMouseMove}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onTouchMove={handleTouchMove}
-        onClick={(e) => handleMove(e.clientX)}
-        className="relative w-full h-full min-h-[250px] lg:min-h-0 overflow-hidden cursor-ew-resize group flex [mask-image:linear-gradient(to_right,transparent_0%,black_12%,black_100%)] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_12%,black_100%)]"
+      <div 
+        className="relative w-full h-full min-h-[250px] lg:min-h-0 overflow-hidden group flex"
+        style={{ 
+          WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 100%)',
+          maskImage: 'linear-gradient(to right, transparent, black 15%, black 100%)'
+        }}
       >
         
         {/* ================= LEFT HALF: BEFORE ================= */}
         <div 
-          style={{ width: `${sliderPos}%` }} 
+          style={{ width: `50%` }} 
           className="absolute top-0 bottom-0 left-0 overflow-hidden bg-[#E5DCD2]"
         >
           {/* Childhood girl with chin on hands looking up */}
@@ -61,13 +29,15 @@ export const HeroImpactSlider: React.FC = () => {
             alt="Young girl before support looking upward with hope"
             className="w-full h-full object-cover object-[center_28%]"
           />
+          {/* Enhancement overlay for better contrast and text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 pointer-events-none"></div>
 
           {/* Left Handwritten Script: "From uncertainty" with small arrow */}
           <div className="absolute top-6 sm:top-9 left-8 sm:left-12 z-10 pointer-events-none">
-            <span className="font-handwriting text-xl sm:text-[26px] text-[#1A231F] font-bold block leading-tight -rotate-3 select-none drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">
+            <span className="font-handwriting text-xl sm:text-[26px] text-[#E5DCD2] font-bold block leading-tight -rotate-3 select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
               From<br />uncertainty
             </span>
-            <svg className="w-7 h-7 text-[#1A231F] mt-1 ml-2 opacity-80" viewBox="0 0 40 40" fill="none">
+            <svg className="w-7 h-7 text-[#E5DCD2] mt-1 ml-2 opacity-90 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" viewBox="0 0 40 40" fill="none">
               <path d="M8 6 C 16 16, 20 22, 24 31" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
               <path d="M17 28 L 24 32 L 28 24" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -86,7 +56,7 @@ export const HeroImpactSlider: React.FC = () => {
 
         {/* ================= RIGHT HALF: AFTER ================= */}
         <div 
-          style={{ width: `${100 - sliderPos}%` }} 
+          style={{ width: `50%` }} 
           className="absolute top-0 bottom-0 right-0 overflow-hidden bg-[#1C2421]"
         >
           {/* Graduate Image: Head/cap touches top near navbar, touches right corner */}
@@ -95,6 +65,8 @@ export const HeroImpactSlider: React.FC = () => {
             alt="Young woman university graduate with academic cap and gown"
             className="w-full h-full object-cover object-[center_6%]"
           />
+          {/* Enhancement overlay for better contrast and text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 pointer-events-none"></div>
 
           {/* Right Handwritten Script: "To a brighter tomorrow" with orange underline */}
           <div className="absolute top-6 sm:top-9 right-6 sm:right-10 text-right z-10 pointer-events-none">
@@ -120,13 +92,13 @@ export const HeroImpactSlider: React.FC = () => {
         {/* ================= VERTICAL DIVIDER & CENTERED HANDLE ================= */}
         <div
           className="absolute top-0 bottom-0 z-30 pointer-events-none -translate-x-1/2"
-          style={{ left: `${sliderPos}%` }}
+          style={{ left: `50%` }}
         >
           {/* Vertical white divider line running full height through the center */}
           <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-white shadow-[0_0_10px_rgba(0,0,0,0.5)]"></div>
 
           {/* Centered Drag Handle - Centered directly on top of the vertical line */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#1C2421] shadow-[0_4px_24px_rgba(0,0,0,0.4)] flex items-center justify-center border-2 border-white pointer-events-auto cursor-ew-resize transform transition-transform duration-150 hover:scale-110 active:scale-95 group">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#1C2421] shadow-[0_4px_24px_rgba(0,0,0,0.4)] flex items-center justify-center border-2 border-white pointer-events-none group">
             <ChevronLeft className="w-3.5 h-3.5 -mr-0.5 text-[#14201A] stroke-[2.5]" />
             <ChevronRight className="w-3.5 h-3.5 text-[#14201A] stroke-[2.5]" />
           </div>

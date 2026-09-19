@@ -63,10 +63,10 @@ export const EcosystemSection: React.FC = () => {
         </div>
 
         {/* 3 Columns Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 relative items-start">
           
           {/* Column 1: Non-Profit Teams */}
-          <div className="bg-green-50/50 rounded-2xl p-4 sm:p-5 border border-green-100 flex flex-col h-full relative overflow-hidden group">
+          <div className="bg-green-50/50 rounded-2xl p-4 sm:p-5 border border-green-100 flex flex-col relative overflow-hidden group">
             
             <div className="flex items-center gap-3 mb-3 sm:mb-4">
               <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center shadow-sm shrink-0">
@@ -81,8 +81,8 @@ export const EcosystemSection: React.FC = () => {
             </div>
             
             {/* Laptop Mockup */}
-            <div className="w-full flex-1 flex justify-center items-start sm:items-center py-2 sm:py-4 min-h-[160px] sm:min-h-[220px]">
-              <div className="w-full max-w-[250px] scale-[0.7] sm:scale-100 origin-top sm:origin-center mt-2 sm:mt-0">
+            <div className="w-full flex justify-center items-start sm:items-center py-2 sm:py-4">
+              <div className="w-full max-w-[250px] scale-[0.7] sm:scale-100 origin-top sm:origin-center mt-2 sm:mt-0 -mb-[40px] sm:mb-0">
                 <div className="bg-white rounded-t-lg border-[4px] border-b-0 border-gray-800 shadow-lg h-40 overflow-hidden relative w-full flex flex-col">
                   <div className="w-full h-4 bg-gray-100 flex items-center px-2 gap-1 border-b shrink-0">
                     <div className="w-1.5 h-1.5 rounded-full bg-red-400"></div>
@@ -157,7 +157,7 @@ export const EcosystemSection: React.FC = () => {
           </div>
 
           {/* Column 2: Donors */}
-          <div className="bg-orange-50/50 rounded-2xl p-4 sm:p-5 border border-orange-100 flex flex-col h-full relative overflow-hidden group">
+          <div className="bg-orange-50/50 rounded-2xl p-4 sm:p-5 border border-orange-100 flex flex-col relative overflow-hidden group">
             <div className="flex items-center gap-3 mb-3 sm:mb-4">
               <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center shadow-sm shrink-0">
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -169,9 +169,9 @@ export const EcosystemSection: React.FC = () => {
             </div>
 
             {/* Phone Mockup */}
-            <div className="w-full flex-1 flex justify-center items-start sm:items-center py-2 sm:py-6 min-h-[240px] sm:min-h-[340px] relative">
+            <div className="w-full flex justify-center items-start sm:items-center py-2 sm:py-6 relative">
                <motion.div 
-                 className="w-full flex-1 flex justify-center items-center scale-[0.65] sm:scale-100 origin-top sm:origin-center mt-2 sm:mt-0"
+                 className="w-full flex justify-center items-center scale-[0.65] sm:scale-100 origin-top sm:origin-center mt-2 sm:mt-0 -mb-[100px] sm:mb-0"
                  variants={listVariants}
                  initial="hidden"
                  whileInView="visible"
@@ -268,7 +268,7 @@ export const EcosystemSection: React.FC = () => {
           </div>
 
           {/* Column 3: CSR & Corporates */}
-          <div className="bg-blue-50/50 rounded-2xl p-4 sm:p-5 border border-blue-100 flex flex-col h-full relative overflow-hidden group">
+          <div className="bg-blue-50/50 rounded-2xl p-4 sm:p-5 border border-blue-100 flex flex-col relative overflow-hidden group">
             
             <div className="flex items-center gap-3 mb-3 sm:mb-4">
               <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center shadow-sm shrink-0">
@@ -283,8 +283,8 @@ export const EcosystemSection: React.FC = () => {
             </div>
 
             {/* Tablet Mockup */}
-            <div className="w-full flex-1 flex justify-center items-start sm:items-center py-2 sm:py-4 min-h-[160px] sm:min-h-[220px]">
-              <div className="w-full max-w-[250px] scale-[0.7] sm:scale-100 origin-top sm:origin-center mt-2 sm:mt-0">
+            <div className="w-full flex justify-center items-start sm:items-center py-2 sm:py-4">
+              <div className="w-full max-w-[250px] scale-[0.7] sm:scale-100 origin-top sm:origin-center mt-2 sm:mt-0 -mb-[40px] sm:mb-0">
                 <div className="bg-white rounded-t-lg border-[4px] border-b-0 border-gray-800 shadow-lg h-40 overflow-hidden relative w-full flex flex-col">
                    <div className="w-full h-4 bg-gray-100 flex items-center px-2 gap-1 border-b shrink-0">
                     <div className="w-1.5 h-1.5 rounded-full bg-gray-300"></div>

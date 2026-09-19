@@ -43,7 +43,7 @@ export const Logo: React.FC<LogoProps> = ({
           <span className="text-[#EB5E28]">hum</span>
         </div>
         {showTagline && (
-          <span className={`text-[9px] tracking-wide font-medium mt-0.5 ${isDark ? "text-[#6A756F]" : "text-gray-300"}`}>
+          <span className={`text-[9px] tracking-wide font-medium mt-0.5 hidden sm:block ${isDark ? "text-[#6A756F]" : "text-gray-300"}`}>
             Technology for a kinder tomorrow
           </span>
         )}

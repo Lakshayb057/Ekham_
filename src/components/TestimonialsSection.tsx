@@ -3,6 +3,14 @@ import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export const TestimonialsSection: React.FC = () => {
+  const [isDesktop, setIsDesktop] = React.useState(typeof window !== 'undefined' ? window.innerWidth >= 1024 : true);
+  
+  React.useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const textContainer = {
     hidden: {},
     visible: {
@@ -11,27 +19,27 @@ export const TestimonialsSection: React.FC = () => {
   };
 
   const textItem = {
-    hidden: { opacity: 0, x: -100 },
-    visible: { opacity: 1, x: 0, transition: { type: "spring" as any, stiffness: 50, damping: 15 } }
+    hidden: { opacity: 0, x: isDesktop ? -100 : 0, y: isDesktop ? 0 : 30 },
+    visible: { opacity: 1, x: 0, y: 0, transition: { duration: 0.8, ease: "easeOut" as any } }
   };
 
   const gridContainer = {
-    hidden: { opacity: 0, x: 100 },
-    visible: { opacity: 1, x: 0, transition: { type: "spring" as any, stiffness: 50, damping: 15, duration: 0.8, delayChildren: 0.6, staggerChildren: 0.2 } }
+    hidden: { opacity: 0, x: isDesktop ? 100 : 0, y: isDesktop ? 0 : 40 },
+    visible: { opacity: 1, x: 0, y: 0, transition: { duration: 0.8, ease: "easeOut" as any, delayChildren: 0.3, staggerChildren: 0.15 } }
   };
 
   const innerTextItem = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring" as any, stiffness: 50, damping: 12 } }
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as any } }
   };
 
   return (
-    <section id="testimonials" className="bg-[#0a0a0a] min-h-screen w-full flex items-center justify-center overflow-hidden font-sans py-12 lg:py-0">
-      <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-10 h-full flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+    <section id="testimonials" className="bg-[#0a0a0a] min-h-screen w-full flex items-center justify-center font-sans py-12 lg:py-16">
+      <div className="max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-10 h-full flex flex-col lg:grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         
         {/* LEFT COLUMN - TEXT & CTA */}
         <motion.div 
-          className="lg:w-[35%] flex flex-col justify-center"
+          className="lg:col-span-4 flex flex-col justify-center"
           variants={textContainer}
           initial="hidden"
           whileInView="visible"
@@ -60,7 +68,7 @@ export const TestimonialsSection: React.FC = () => {
 
         {/* RIGHT COLUMN - IMAGES GRID */}
         <motion.div 
-          className="lg:w-[65%] w-full flex flex-col gap-4 max-h-[85vh] justify-center"
+          className="lg:col-span-8 w-full flex flex-col gap-4 justify-center"
           variants={gridContainer}
           initial="hidden"
           whileInView="visible"
