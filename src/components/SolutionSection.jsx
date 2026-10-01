@@ -330,8 +330,7 @@ export default function SolutionSection({ onOpenDemo }) {
                                   type="text"
                                   placeholder="Search..."
                                   className="w-full pl-6 sm:pl-8 pr-2 sm:pr-3 py-1 sm:py-1.5 text-[9px] sm:text-xs bg-white border border-[#E8E2D8] rounded-full focus:outline-none"
-                                  readOnly=""
-                                  value=""
+                                  readOnly
                                 />
                               </div>
                               <div

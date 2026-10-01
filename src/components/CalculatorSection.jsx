@@ -47,7 +47,7 @@ export default function CalculatorSection({ onOpenDemo }) {
         <div className="bg-white border border-[#E8E2D8] rounded-[2rem] p-5 sm:p-8 lg:p-10 shadow-card max-w-5xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             {/* Left Column: 2 Interactive Sliders + Fixed 8% Aggregator Callout */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="order-2 lg:order-1 lg:col-span-7 space-y-6">
               {/* Slider 1: Monthly Donation Volume */}
               <div>
                 <div className="flex justify-between items-center mb-2">
@@ -116,7 +116,7 @@ export default function CalculatorSection({ onOpenDemo }) {
             </div>
 
             {/* Right Column: Estimated Annual Impact */}
-            <div className="lg:col-span-5 bg-[#111520] text-white rounded-3xl p-5 sm:p-6 flex flex-col justify-between shadow-xl border border-gray-800 relative overflow-hidden h-full min-h-[360px]">
+            <div className="order-1 lg:order-2 lg:col-span-5 bg-[#111520] text-white rounded-3xl p-5 sm:p-6 flex flex-col justify-between shadow-xl border border-gray-800 relative overflow-hidden h-full min-h-[360px]">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#EB5E28]/10 rounded-full blur-3xl pointer-events-none"></div>
               <div>
                 <div className="flex items-center justify-between pb-4 mb-4 border-b border-gray-800">

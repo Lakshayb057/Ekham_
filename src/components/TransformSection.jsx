@@ -5,11 +5,11 @@ export default function TransformSection({ onOpenDemo }) {
 <section
             className="transform-section relative w-full h-[calc(100vh-80px)] min-h-[600px] overflow-hidden bg-black flex items-center border-t border-white/5"
           >
-            <div className="absolute top-0 right-0 w-full md:w-[75%] h-full">
+            <div className="transform-img-wrapper absolute top-0 left-0 right-0 w-full h-[48dvh] md:h-full md:left-auto md:w-[75%]">
               <img
                 src="./beyond-1.jpg"
                 alt="Impact"
-                className="transform-bg-img absolute inset-0 w-full h-full object-cover"
+                className="transform-bg-img absolute inset-0 w-full h-full object-cover object-[center_top] md:object-[right_center]"
                 style={{filter: 'contrast(1.15) saturate(1.25) brightness(1.05)', opacity: '1'}}
               />
             </div>
@@ -49,7 +49,7 @@ export default function TransformSection({ onOpenDemo }) {
               <div className="w-8 h-[1px] bg-white/60 ml-auto"></div>
             </div>
             <div
-              className="transform-content-container relative z-30 w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col justify-end pb-28 md:pb-0 md:justify-center h-full"
+              className="transform-content-container relative z-30 w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col justify-end pt-[44dvh] pb-12 md:pt-0 md:pb-0 md:justify-center min-h-[100dvh] md:min-h-0 h-full"
             >
               <div className="max-w-[400px] lg:max-w-[460px] xl:max-w-[500px]">
                 <div className="flex items-center gap-4 mb-4">

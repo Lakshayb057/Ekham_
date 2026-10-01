@@ -1,0 +1,20 @@
+{
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "https://ekhum.org/admin",
+      "permanent": false
+    },
+    {
+      "source": "/login",
+      "destination": "https://ekhum.org/admin",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

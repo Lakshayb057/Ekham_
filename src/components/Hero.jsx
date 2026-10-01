@@ -7,10 +7,6 @@ export default function Hero({ onOpenDemo }) {
       id="hero"
       className="relative pt-[64px] w-full min-h-screen lg:h-screen flex flex-col justify-between overflow-hidden bg-[#FAF8F5]"
     >
-      <div
-        className="absolute bottom-2 left-0 w-24 sm:w-32 h-36 sm:h-44 bg-[#9AA99B]/30 rounded-[40%_60%_30%_70%/60%_30%_70%_40%] pointer-events-none transform -rotate-12 -translate-x-6 z-0"
-      ></div>
-
       <div className="w-full flex-grow flex flex-col lg:flex-row items-stretch min-h-[420px] z-10 overflow-hidden">
         {/* Left Column Text Content */}
         <div

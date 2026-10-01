@@ -485,7 +485,9 @@ export default function ProblemSection({ onOpenDemo }) {
               </div>
 
               {/* 7. CRM (Bottom-Left Cluster) */}
+              {/* 7. CRM (Bottom-Left Cluster) */}
               <div
+                className="why-card-crm"
                 style={{
                   position: 'absolute',
                   bottom: '14px',
@@ -517,6 +519,7 @@ export default function ProblemSection({ onOpenDemo }) {
 
               {/* 8. Donor Database (Bottom-Center Cluster) */}
               <div
+                className="why-card-donors"
                 style={{
                   position: 'absolute',
                   bottom: '12px',
@@ -542,12 +545,14 @@ export default function ProblemSection({ onOpenDemo }) {
                   </svg>
                 </div>
                 <span style={{ fontSize: '11px', fontWeight: '700', color: '#173F30' }}>
-                  Donor Database
+                  <span className="sm:hidden">Donors</span>
+                  <span className="hidden sm:inline">Donor Database</span>
                 </span>
               </div>
 
               {/* 9. Compliance Tracking (Bottom-Right Cluster) */}
               <div
+                className="why-card-compliance"
                 style={{
                   position: 'absolute',
                   bottom: '14px',

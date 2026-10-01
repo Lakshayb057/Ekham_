@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function DemoModal({ isOpen, onClose }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    organizationType: 'ngo',
+    organizationType: '',
     organization: '',
-    time: 'morning'
+    time: '11:00 AM IST'
   });
 
   const dialogRef = useRef(null);
@@ -30,6 +31,9 @@ export default function DemoModal({ isOpen, onClose }) {
     } else {
       document.body.classList.remove('demo-open');
     }
+    return () => {
+      document.body.classList.remove('demo-open');
+    };
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -41,134 +45,157 @@ export default function DemoModal({ isOpen, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent('EKhum demo request — ' + formData.organization);
+    const subject = encodeURIComponent('EKhum demo request — ' + (formData.organization || formData.name));
     const body = encodeURIComponent(
       `Name: ${formData.name}\nWork email: ${formData.email}\nPhone: ${formData.phone}\nOrganization type: ${formData.organizationType}\nOrganization: ${formData.organization}\nPreferred time: ${formData.time}`
     );
     window.location.href = `mailto:contact@ekhum.org?subject=${subject}&body=${body}`;
   };
 
-  return (
+  const modalContent = (
     <div
       id="demo-overlay"
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      className="demo-overlay"
       onClick={(e) => {
         if (e.target.id === 'demo-overlay') onClose();
       }}
     >
       <div
-        ref={dialogRef}
+        className="demo-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="demo-heading"
         tabIndex={-1}
-        className="demo-dialog relative w-full max-w-lg bg-[#FAF8F5] rounded-3xl border border-[#E5DCD0] p-6 sm:p-8 shadow-2xl overflow-hidden"
+        ref={dialogRef}
       >
         <button
           type="button"
+          className="demo-close"
+          aria-label="Close demo form"
           onClick={onClose}
-          className="demo-close absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors"
-          aria-label="Close dialog"
+          style={{ cursor: 'pointer', background: 'transparent', border: 'none' }}
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          &times;
         </button>
-
-        <h3 className="text-2xl font-bold text-[#1C2421] mb-2">Book a 15-Min Demo</h3>
-        <p className="text-sm text-[#4A5550] mb-6">
-          See how EKhum automates donor acquisition, 80G/10BD compliance, and recurring donations for your NGO.
+        <div className="demo-eyebrow">15-MINUTE PLATFORM WALKTHROUGH</div>
+        <h2 id="demo-heading">Book a Live Demo of EKhum</h2>
+        <p className="demo-intro">
+          Discover how unified infrastructure frees your team from manual compliance and drives 3× repeat donors.
         </p>
-
-        <form id="demo-form" onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-xs font-semibold text-[#1C2421] mb-1">Full Name</label>
+        <form id="demo-form" onSubmit={handleSubmit}>
+          <div className="demo-field demo-full">
+            <label htmlFor="demo-name">Your Full Name</label>
             <input
-              type="text"
+              id="demo-name"
               name="name"
+              autoComplete="name"
+              placeholder="Your Full Name"
               required
               value={formData.name}
               onChange={handleChange}
-              placeholder="e.g. Ananya Sharma"
-              className="w-full px-3.5 py-2.5 bg-white border border-[#E5DCD0] rounded-xl text-sm focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-[#1C2421] mb-1">Work Email</label>
+          <div className="demo-field">
+            <label htmlFor="demo-email">Work Email</label>
             <input
-              type="email"
+              id="demo-email"
               name="email"
+              type="email"
+              autoComplete="email"
+              placeholder="Work Email"
               required
               value={formData.email}
               onChange={handleChange}
-              placeholder="ananya@ngo.org"
-              className="w-full px-3.5 py-2.5 bg-white border border-[#E5DCD0] rounded-xl text-sm focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-[#1C2421] mb-1">Phone Number</label>
+          <div className="demo-field">
+            <label htmlFor="demo-phone">Phone / WhatsApp</label>
             <input
-              type="tel"
+              id="demo-phone"
               name="phone"
+              type="tel"
+              autoComplete="tel"
+              placeholder="Phone / WhatsApp"
               required
               value={formData.phone}
               onChange={handleChange}
-              placeholder="+91 98765 43210"
-              className="w-full px-3.5 py-2.5 bg-white border border-[#E5DCD0] rounded-xl text-sm focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-[#1C2421] mb-1">Organization Type</label>
-              <select
-                name="organizationType"
-                value={formData.organizationType}
-                onChange={handleChange}
-                className="w-full px-3.5 py-2.5 bg-white border border-[#E5DCD0] rounded-xl text-sm focus:outline-none focus:border-[#EB5E28]"
-              >
-                <option value="ngo">Registered NGO / Trust</option>
-                <option value="section8">Section 8 Company</option>
-                <option value="csr">CSR / Foundation</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-[#1C2421] mb-1">Preferred Time</label>
-              <select
-                name="time"
-                value={formData.time}
-                onChange={handleChange}
-                className="w-full px-3.5 py-2.5 bg-white border border-[#E5DCD0] rounded-xl text-sm focus:outline-none focus:border-[#EB5E28]"
-              >
-                <option value="morning">Morning (10 AM - 1 PM)</option>
-                <option value="afternoon">Afternoon (1 PM - 5 PM)</option>
-                <option value="evening">Evening (5 PM - 8 PM)</option>
-              </select>
-            </div>
+          <div className="demo-field">
+            <label htmlFor="demo-type">Organization Type</label>
+            <select
+              id="demo-type"
+              name="organizationType"
+              required
+              value={formData.organizationType}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Organization Type
+              </option>
+              <option value="Registered NGO (12A / 80G)">Registered NGO (12A / 80G)</option>
+              <option value="Nonprofit / Foundation">Nonprofit / Foundation</option>
+              <option value="CSR / Corporate">CSR / Corporate</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-[#1C2421] mb-1">Organization Name</label>
+          <div className="demo-field">
+            <label htmlFor="demo-org">Organization Name</label>
             <input
-              type="text"
+              id="demo-org"
               name="organization"
+              autoComplete="organization"
+              placeholder="Organization Name"
               required
               value={formData.organization}
               onChange={handleChange}
-              placeholder="e.g. Hope India Foundation"
-              className="w-full px-3.5 py-2.5 bg-white border border-[#E5DCD0] rounded-xl text-sm focus:outline-none focus:border-[#EB5E28]"
             />
           </div>
-
-          <button
-            type="submit"
-            className="w-full py-3 px-4 bg-[#EB5E28] hover:bg-[#d44f1c] text-white font-bold rounded-xl text-sm transition-all shadow-md mt-2"
-          >
-            Confirm Demo Request
+          <fieldset className="demo-times demo-full">
+            <legend>Preferred Time Slot</legend>
+            <div className="demo-time-options">
+              <label>
+                <input
+                  type="radio"
+                  name="time"
+                  value="11:00 AM IST"
+                  checked={formData.time === '11:00 AM IST'}
+                  onChange={handleChange}
+                />
+                <span>11:00 AM IST</span>
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="time"
+                  value="3:30 PM IST"
+                  checked={formData.time === '3:30 PM IST'}
+                  onChange={handleChange}
+                />
+                <span>3:30 PM IST</span>
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="time"
+                  value="5:00 PM IST"
+                  checked={formData.time === '5:00 PM IST'}
+                  onChange={handleChange}
+                />
+                <span>5:00 PM IST</span>
+              </label>
+            </div>
+          </fieldset>
+          <button type="submit" className="demo-submit" style={{ cursor: 'pointer' }}>
+            Confirm Walkthrough <span aria-hidden="true">→</span>
           </button>
         </form>
+        <div className="demo-privacy">
+          <span aria-hidden="true">♢</span> 100% Confidential. No spam. Instant calendar link.
+        </div>
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(modalContent, document.body) : modalContent;
 }

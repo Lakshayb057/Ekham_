@@ -53,14 +53,18 @@ export default function Footer({ onOpenDemo }) {
                   <ul className="space-y-1.5">
                     <li>
                       <a
-                        href="/login"
+                        href="https://ekhum.org/admin"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-xs text-[#EB5E28] hover:text-[#D84E1A] transition-colors font-bold"
                         >NGO Login</a
                       >
                     </li>
                     <li>
                       <a
-                        href="/admin"
+                        href="https://ekhum.org/admin"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-xs text-[#555F59] hover:text-[#EB5E28] transition-colors font-medium"
                         >Admin Portal</a
                       >
@@ -272,9 +276,9 @@ export default function Footer({ onOpenDemo }) {
                 © 2026 EKhum Platform Inc. All rights reserved.
               </div>
               <div className="flex items-center gap-3 sm:gap-4 text-[11px] font-medium">
-                <a href="/login" className="text-[#EB5E28] hover:underline font-bold">NGO Login</a>
+                <a href="https://ekhum.org/admin" target="_blank" rel="noopener noreferrer" className="text-[#EB5E28] hover:underline font-bold">NGO Login</a>
                 <span className="text-[#CFC5B8]">|</span>
-                <a href="/admin" className="text-[#555F59] hover:text-[#EB5E28] font-semibold">Admin Login</a>
+                <a href="https://ekhum.org/admin" target="_blank" rel="noopener noreferrer" className="text-[#555F59] hover:text-[#EB5E28] font-semibold">Admin Login</a>
                 <span className="text-[#CFC5B8]">|</span>
                 <span>Building a kinder tomorrow, together</span>
               </div>

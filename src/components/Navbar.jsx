@@ -48,10 +48,10 @@ export default function Navbar({ onOpenDemo }) {
           </a>
 
           <div className="w-full h-px bg-[#E5DCD0]/70 my-1 lg:hidden"></div>
-          <a href="/login" className="text-xs font-bold text-[#EB5E28] flex items-center justify-between py-1 lg:hidden">
+          <a href="https://ekhum.org/admin" target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-[#EB5E28] flex items-center justify-between py-1 lg:hidden">
             <span>NGO Login</span><span>→</span>
           </a>
-          <a href="/admin" className="text-xs font-semibold text-[#1C2421]/80 flex items-center justify-between py-1 lg:hidden">
+          <a href="https://ekhum.org/admin" target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-[#1C2421]/80 flex items-center justify-between py-1 lg:hidden">
             <span>Admin Portal</span><span>→</span>
           </a>
         </nav>
@@ -59,14 +59,18 @@ export default function Navbar({ onOpenDemo }) {
         {/* Right CTA Actions - Compact and Perfectly Proportioned */}
         <div className="hidden sm:flex items-center space-x-2">
           <a
-            href="/admin"
+            href="https://ekhum.org/admin"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-[12px] font-semibold text-[#1C2421]/70 hover:text-[#EB5E28] transition-colors px-2.5 py-1 rounded-full hover:bg-[#F1ECE1]"
             title="Superadmin Authentication"
           >
             Admin
           </a>
           <a
-            href="/login"
+            href="https://ekhum.org/admin"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-[#1C2421] bg-white hover:bg-[#F1ECE1] border border-[#E5DCD0] rounded-full shadow-xs hover:shadow transition-all duration-200"
             title="NGO Partner Portal Login"
           >
@@ -100,7 +104,9 @@ export default function Navbar({ onOpenDemo }) {
         {/* Mobile Hamburger Menu Toggle */}
         <div className="flex items-center sm:hidden gap-2">
           <a
-            href="/login"
+            href="https://ekhum.org/admin"
+            target="_blank"
+            rel="noopener noreferrer"
             className="px-2.5 py-1 text-[11px] font-semibold text-[#1C2421] bg-white border border-[#E5DCD0] rounded-full shadow-xs"
           >
             Login
