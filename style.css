@@ -293,6 +293,30 @@ body.demo-open { overflow: hidden; }
   transform: scale(1.08);
 }
 
+.footer-pitch-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #E8E2D8;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .footer-pitch-container {
+    display: grid;
+    grid-template-columns: 1.4fr 1.1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-pitch-container {
+    gap: 3.5rem;
+  }
+}
+
 .scroll-reveal {
   opacity: 0;
   transform: translate3d(0, 28px, 0);

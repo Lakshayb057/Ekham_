@@ -7,42 +7,70 @@ export default function Footer({ onOpenDemo }) {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-4 pb-4 sm:pb-6 border-b border-[#E8E2D8]"
+              className="footer-pitch-container pb-8 border-b border-[#E8E2D8]"
             >
-              <div className="lg:col-span-3">
-                <a href="#hero" aria-label="EKhum home" className="footer-brand">
-                  <img src="./ekhum-logo.png" alt="EKhum" />
+              {/* Left Column: Brand & Core Mission */}
+              <div className="flex flex-col items-center lg:items-start text-center lg:text-left max-w-sm">
+                <a href="#hero" aria-label="EKhum home" className="footer-brand mb-2.5">
+                  <img src="./ekhum-logo.png" alt="EKhum" className="h-6 w-auto" />
                 </a>
-                <p
-                  className="text-xs sm:text-[13px] text-[#555F59] leading-relaxed max-w-xs mb-4"
-                >
-                  A complete digital infrastructure for charities — where
-                  fundraising, donations, donors, compliance, reporting, and AI
-                  unite on one platform.
+                <p className="text-xs text-[#555F59] leading-relaxed mb-3">
+                  A unified digital infrastructure for charities — connecting fundraising, donors, compliance, and AI on one intelligent platform.
                 </p>
-                <div
-                  className="text-xs font-semibold text-[#2D7A4F] flex items-center gap-1.5"
-                >
+                <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#2D7A4F]">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
+                    width="14"
+                    height="14"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="lucide lucide-shield-check w-4 h-4 shrink-0"
-                    aria-hidden="true"
+                    className="shrink-0"
                   >
-                    <path
-                      d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
-                    ></path>
-                    <path d="m9 12 2 2 4-4"></path></svg
-                  >Bank-grade security &amp; end-to-end encryption
+                    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                  <span>Bank-grade security &amp; end-to-end encryption</span>
                 </div>
               </div>
+
+              {/* Center Column: Clean Core Guarantees */}
+              <div className="flex flex-col items-center md:items-start text-left max-w-xs">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#1C2421] mb-2.5">
+                  Core Guarantees
+                </h4>
+                <ul className="space-y-2 text-xs text-[#555F59]">
+                  <li className="flex items-center gap-2">
+                    <span className="w-4 h-4 rounded-full bg-[#2A724E]/12 flex items-center justify-center text-[#2A724E] shrink-0">
+                      <svg className="w-2.5 h-2.5 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                    <span className="font-medium">100% Charity-Owned Data</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-4 h-4 rounded-full bg-[#2A724E]/12 flex items-center justify-center text-[#2A724E] shrink-0">
+                      <svg className="w-2.5 h-2.5 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                    <span className="font-medium">Instant 80G Tax Certificates</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-4 h-4 rounded-full bg-[#2A724E]/12 flex items-center justify-center text-[#2A724E] shrink-0">
+                      <svg className="w-2.5 h-2.5 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
+                    <span className="font-medium">Automated NGO Compliance</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Navigation columns (Platform, Use Cases, Company, Resources) commented out for clean pitch presentation
               <div className="lg:col-span-5 grid grid-cols-2 sm:grid-cols-4 gap-6">
                 <div>
                   <h4
@@ -211,20 +239,22 @@ export default function Footer({ onOpenDemo }) {
                   </ul>
                 </div>
               </div>
-              <div className="lg:col-span-4">
+              */}
+
+              {/* Right Column: Connect & Social */}
+              <div className="flex flex-col items-center lg:items-end text-center lg:text-right max-w-xs">
                 <h4
-                  className="text-xs font-bold uppercase tracking-wider text-[#1C2421] mb-3"
+                  className="text-xs font-bold uppercase tracking-wider text-[#1C2421] mb-2"
                 >
-                  Subscribe to our updates
+                  Stay Connected
                 </h4>
-                <p className="text-xs text-[#555F59] mb-3">
-                  Stay connected to the future of giving, compliance policy
-                  alerts, and social impact insights.
+                <p className="text-xs text-[#555F59] mb-3 leading-relaxed">
+                  Compliance alerts, non-profit policy updates &amp; social impact insights.
                 </p>
                 
 {/* Newsletter subscription hidden until connected to a mailing list. */}
 
-                <div className="flex items-center gap-3 text-gray-500">
+                <div className="flex items-center gap-2 text-gray-500">
                   <a
                     href="https://linkedin.com"
                     target="_blank"
