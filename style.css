@@ -272,6 +272,27 @@ body.demo-open { overflow: hidden; }
   flex-shrink: 0;
 }
 
+.partner-logo-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.partner-logo-img {
+  width: auto;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+}
+
+.partner-logo-img:hover {
+  transform: scale(1.08);
+}
+
 .scroll-reveal {
   opacity: 0;
   transform: translate3d(0, 28px, 0);
