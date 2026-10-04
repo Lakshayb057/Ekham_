@@ -10,14 +10,14 @@ export default function Footer({ onOpenDemo }) {
               className="footer-pitch-container pb-8 border-b border-[#E8E2D8]"
             >
               {/* Left Column: Brand & Core Mission */}
-              <div className="flex flex-col items-center lg:items-start text-center lg:text-left max-w-sm">
+              <div className="footer-col-brand">
                 <a href="#hero" aria-label="EKhum home" className="footer-brand mb-2.5">
                   <img src="./ekhum-logo.png" alt="EKhum" className="h-6 w-auto" />
                 </a>
                 <p className="text-xs text-[#555F59] leading-relaxed mb-3">
                   A unified digital infrastructure for charities — connecting fundraising, donors, compliance, and AI on one intelligent platform.
                 </p>
-                <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#2D7A4F]">
+                <div className="footer-badge-security">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="14"
@@ -38,11 +38,11 @@ export default function Footer({ onOpenDemo }) {
               </div>
 
               {/* Center Column: Clean Core Guarantees */}
-              <div className="flex flex-col items-center md:items-start text-left max-w-xs">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#1C2421] mb-2.5">
+              <div className="footer-col-guarantees">
+                <h4 className="footer-guarantees-title">
                   Core Guarantees
                 </h4>
-                <ul className="space-y-2 text-xs text-[#555F59]">
+                <ul className="footer-guarantees-list">
                   <li className="flex items-center gap-2">
                     <span className="w-4 h-4 rounded-full bg-[#2A724E]/12 flex items-center justify-center text-[#2A724E] shrink-0">
                       <svg className="w-2.5 h-2.5 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -242,10 +242,8 @@ export default function Footer({ onOpenDemo }) {
               */}
 
               {/* Right Column: Connect & Social */}
-              <div className="flex flex-col items-center lg:items-end text-center lg:text-right max-w-xs">
-                <h4
-                  className="text-xs font-bold uppercase tracking-wider text-[#1C2421] mb-2"
-                >
+              <div className="footer-col-connect">
+                <h4 className="footer-connect-title">
                   Stay Connected
                 </h4>
                 <p className="text-xs text-[#555F59] mb-3 leading-relaxed">
@@ -254,7 +252,7 @@ export default function Footer({ onOpenDemo }) {
                 
 {/* Newsletter subscription hidden until connected to a mailing list. */}
 
-                <div className="flex items-center gap-2 text-gray-500">
+                <div className="footer-social-row text-gray-500">
                   <a
                     href="https://linkedin.com"
                     target="_blank"
@@ -299,13 +297,11 @@ export default function Footer({ onOpenDemo }) {
                 </div>
               </div>
             </div>
-            <div
-              className="pt-4 flex flex-col sm:flex-row items-center justify-between text-xs text-[#6A756F] gap-4"
-            >
+            <div className="footer-bottom-row">
               <div>
                 © 2026 EKhum Platform Inc. All rights reserved.
               </div>
-              <div className="flex items-center gap-3 sm:gap-4 text-[11px] font-medium">
+              <div className="footer-bottom-links">
                 <a href="https://ekhum.org/admin" target="_blank" rel="noopener noreferrer" className="text-[#EB5E28] hover:underline font-bold">NGO Login</a>
                 <span className="text-[#CFC5B8]">|</span>
                 <a href="https://ekhum.org/admin" target="_blank" rel="noopener noreferrer" className="text-[#555F59] hover:text-[#EB5E28] font-semibold">Admin Login</a>
