@@ -1,60 +1,54 @@
 import React from 'react';
 import unicefLogo from '../../partners-logo/unicef.png';
 import saveChildrenLogo from '../../partners-logo/save-children.png';
-import usaidLogo from '../../partners-logo/usaid.png';
-import magicBusLogo from '../../partners-logo/magic-bus.png';
 import roundGlassLogo from '../../partners-logo/roundglass.png';
+import magicBusLogo from '../../partners-logo/magic-bus.png';
+import medcellLogo from '../../partners-logo/medcell.png';
 import wwfLogo from '../../partners-logo/wwf.png';
 import cbmLogo from '../../partners-logo/cbm.png';
 import ethanBeanLogo from '../../partners-logo/ethan-bean.png';
-import medcellLogo from '../../partners-logo/medcell.png';
 
 export default function Marquee() {
   const logos = [
     {
       src: unicefLogo,
       alt: 'UNICEF',
-      height: 30, // 30x78px - Cyan Blue
+      height: 30, // Cyan Blue (Wide)
     },
     {
       src: saveChildrenLogo,
       alt: 'Save the Children',
-      height: 34, // 34x33px - Red & Black
-    },
-    {
-      src: usaidLogo,
-      alt: 'USAID',
-      height: 28, // 28x92px - Navy & Red
-    },
-    {
-      src: magicBusLogo,
-      alt: 'Magic Bus',
-      height: 36, // 36x35px - Yellow & Red
+      height: 34, // Red & Black (Badge)
     },
     {
       src: roundGlassLogo,
       alt: 'Roundglass Foundation',
-      height: 28, // 28x95px - Emerald & Black
+      height: 28, // Emerald & Black (Wide)
     },
     {
-      src: wwfLogo,
-      alt: 'WWF',
-      height: 36, // 36x24px - Black Panda Icon
-    },
-    {
-      src: cbmLogo,
-      alt: 'cbm',
-      height: 30, // 30x59px - Red & Amber
-    },
-    {
-      src: ethanBeanLogo,
-      alt: 'Ethan & The Bean',
-      height: 38, // 38x38px - Warm Black Circle Badge
+      src: magicBusLogo,
+      alt: 'Magic Bus',
+      height: 36, // Yellow & Red (Circular Badge)
     },
     {
       src: medcellLogo,
       alt: 'MEDCELL',
-      height: 27, // 27x77px - Teal & Blue
+      height: 27, // Teal & Blue (Wide)
+    },
+    {
+      src: wwfLogo,
+      alt: 'WWF',
+      height: 36, // Black Panda Icon (Vertical)
+    },
+    {
+      src: cbmLogo,
+      alt: 'cbm',
+      height: 30, // Red & Amber (Wide)
+    },
+    {
+      src: ethanBeanLogo,
+      alt: 'Ethan & The Bean',
+      height: 38, // Warm Black (Circular Badge)
     },
   ];
 
